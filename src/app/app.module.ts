@@ -10,7 +10,9 @@ import { BlogsComponent } from './pages/blogs/blogs.component';
 import { AuthorComponent } from './pages/author/author.component';
 import { HttpClientModule } from '@angular/common/http';
 import { MatCardModule } from '@angular/material/card';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { FooterComponent } from './components/footer/footer.component';
+import { BlogDetailsComponent } from './pages/blog-details/blog-details.component';
 
 @NgModule({
   declarations: [
@@ -19,14 +21,16 @@ import { FooterComponent } from './components/footer/footer.component';
     BlogComponent,
     BlogsComponent,
     AuthorComponent,
-    FooterComponent
+    FooterComponent,
+    BlogDetailsComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     HttpClientModule,
-    MatCardModule
+    MatCardModule,
+    MatFormFieldModule
   ],
   providers: [],
   bootstrap: [AppComponent]

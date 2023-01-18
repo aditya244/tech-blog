@@ -1,5 +1,7 @@
-<mat-card class="blog-card">
-    <mat-card-header class="blog-header"> {{blogContent.blog_title}} </mat-card-header>
-    <img mat-card-image src={{blogContent.blog_img_url}} height="200" width="350">
-    <mat-card-content class="blog-content"> {{blogContent.blog_text | slice:0:250}}</mat-card-content>
-</mat-card>
+<a [routerLink]="['/blog-details', blogContent.id]">
+    <mat-card class="blog-card">
+        <mat-card-header class="blog-header"> {{blogContent.blog_title}} </mat-card-header>
+        <img mat-card-image src={{blogContent.blog_img_url}} height="200" width="350">
+        <mat-card-content class="blog-content"> {{blogContent.blog_text | slice:0:250}}</mat-card-content>
+    </mat-card>
+</a>

@@ -11,7 +11,7 @@ export class BlogComponent implements OnInit {
   constructor() { }
 
   ngOnInit(){
-    console.log(this.blogContent, 'blog')
+    //console.log(this.blogContent, 'blog')
   }
 
 }

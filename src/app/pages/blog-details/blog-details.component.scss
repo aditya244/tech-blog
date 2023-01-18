@@ -1,0 +1,17 @@
+.blog-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+}
+
+.blog-title {
+    margin: 50px 0 50px 0;
+    font-weight: 400;
+    font-size: 32px;
+}
+
+.comment-section {
+    width: 70%;
+    margin: auto;
+}

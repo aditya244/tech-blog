@@ -12,4 +12,8 @@ export class BlogService {
   getBlogsForHomeFeed(): Observable<any> {
     return this.httpClient.get("assets/mock-data.json");
   }
+
+  getBlogDetails(): Observable<any> {
+    return this.httpClient.get("assets/mock-data-blog-details.json")
+  }
 }
