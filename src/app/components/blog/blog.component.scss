@@ -1,0 +1,21 @@
+.blog-card {
+    width: 270px;
+    margin: 20px;
+    padding: 20px;
+    height: 400px;
+    float: left;
+    display: flex;
+    flex-direction: column;
+}
+
+.blog-header {
+    padding-bottom: 10px;
+    font-size: 16px;
+    font-weight: 400;
+    text-align: center;
+}
+
+.blog-content {
+    font-family: 'Verdana';
+    font-size: 13px;
+}

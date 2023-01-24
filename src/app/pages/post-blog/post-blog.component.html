@@ -1,0 +1,24 @@
+<div >
+    <form [formGroup] = "blogPostForm" class="post-blog-form" (ngSubmit)="onSubmitBlog()">
+        <label>Enter the Blog's title</label>
+        <mat-form-field appearance="fill">
+            <mat-label>Input</mat-label>
+            <input matInput formControlName="blogTitle">
+        </mat-form-field>
+        <label> Enter the blog's paragraph.</label>
+
+            <mat-form-field appearance="outline" formArrayName="blogParas" *ngFor="let t of blogParas.controls; let i = index">
+                <mat-label>Textarea</mat-label>
+                <textarea matInput rows="15" cols="50" [formControlName]="i" id="{{'name'+i}}" placeholder="Add another para"></textarea>
+            </mat-form-field>
+
+            
+            <!-- <label for="input-file-id" class="input-label">
+                <input mat-raised-button id="input-file-id" color="primary" class="input-file" multiple type="file" />
+            </label> -->
+
+            <button mat-raised-button color="basic" (click)='addPara()'>Add another para</button>
+        
+        <button type="submit" mat-raised-button  class="post-blog-btn" color="primary">Submit</button>
+    </form>
+</div>

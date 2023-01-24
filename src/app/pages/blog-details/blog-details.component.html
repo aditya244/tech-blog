@@ -1,0 +1,20 @@
+<div class="blog-content">
+    <p class="blog-title">{{selectedBlog.blog_title}}</p>
+    <p>
+        <img src={{selectedBlog.blog_img_url1}} height="400px" width="650px"/>
+    </p>
+    <p>{{selectedBlog.blog_para1}}</p>
+    <p>{{selectedBlog.blog_para2}}</p>
+    <p>{{selectedBlog.blog_para3}}</p>
+    <p>{{selectedBlog.blog_para4}}</p>
+    <p>{{selectedBlog.blog_para5}}</p>
+</div>
+<div>
+    <mat-card class="comment-section">
+        <mat-card-content>Comments</mat-card-content>
+        <mat-form-field class="example-full-width">
+            <mat-label>Leave a comment</mat-label>
+            <textarea matInput placeholder="Leave a comment..."></textarea>
+        </mat-form-field>
+    </mat-card>
+</div>
