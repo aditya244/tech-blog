@@ -4,13 +4,15 @@ import { BlogComponent } from './components/blog/blog.component';
 import { AuthorComponent } from './pages/author/author.component';
 import { BlogDetailsComponent } from './pages/blog-details/blog-details.component';
 import { HomepageComponent } from './pages/homepage/homepage.component';
+import { PostBlogComponent } from './pages/post-blog/post-blog.component';
 
 const routes: Routes = [
   {path: '', redirectTo: '/home', pathMatch: 'full'},
   {path: 'home', component: HomepageComponent},
   {path: 'blogs', component: BlogComponent},
   {path: 'blog-details/:id', component: BlogDetailsComponent},
-  {path: 'about-author', component: AuthorComponent}
+  {path: 'about-author', component: AuthorComponent},
+  {path: 'post-blog', component: PostBlogComponent}
 ];
 
 @NgModule({
