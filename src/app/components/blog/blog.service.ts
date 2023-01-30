@@ -10,7 +10,7 @@ export class BlogService {
   constructor(private httpClient: HttpClient) { }
 
   getBlogsForHomeFeed(): Observable<any> {
-    return this.httpClient.get("assets/mock-data.json");
+    return this.httpClient.get("http://localhost:3000/api/blogs");
   }
 
   getBlogDetails(): Observable<any> {
