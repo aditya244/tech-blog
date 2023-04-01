@@ -1,13 +1,11 @@
 <div class="blog-content">
-    <p class="blog-title">{{selectedBlog.blog_title}}</p>
+    <p class="blog-title">{{selectedBlog.title}}</p>
     <p>
         <img src={{selectedBlog.blog_img_url1}} height="400px" width="650px"/>
     </p>
-    <p>{{selectedBlog.blog_para1}}</p>
-    <p>{{selectedBlog.blog_para2}}</p>
-    <p>{{selectedBlog.blog_para3}}</p>
-    <p>{{selectedBlog.blog_para4}}</p>
-    <p>{{selectedBlog.blog_para5}}</p>
+    <p *ngFor="let para of selectedBlog.paras">
+        {{para}}
+    </p>
 </div>
 <div>
     <mat-card class="comment-section">
