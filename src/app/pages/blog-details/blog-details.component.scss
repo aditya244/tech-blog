@@ -7,11 +7,20 @@
     margin-right: 15%;
 }
 
+.blog-img {
+    align-items: center;
+    height: auto;
+    width: 100%;;
+}
+
 .blog-content {
     display: flex;
+    margin-left: 15%;
+    margin-right: 15%;
     flex-direction: column;
     justify-content: center;
-    text-align: center;
+    text-align: justify;
+    text-justify: inter-word;
 }
 
 .blog-title {

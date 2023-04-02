@@ -11,7 +11,7 @@
 <div class="blog-content">
     <p class="blog-title">{{selectedBlog.title}}</p>
     <p>
-        <img src={{selectedBlog.blog_img_url1}} height="400px" width="650px"/>
+        <img src={{selectedBlog.blog_img_url1}} height="400px" width="650px" class="blog-img"/>
     </p>
     <p *ngFor="let para of selectedBlog.paras">
         {{para}}
