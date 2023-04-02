@@ -58,4 +58,13 @@ app.get('/api/blogs/:id', (req, res, next) => {
     })
 })
 
+app.delete('/api/blogs/:id', (req, res, next) => {
+    Blog.deleteOne({_id:req.params.id}).then(result => {
+        console.log(result)
+        res.status(200).json({
+            message: 'Blog Post Deleted Successfully',
+        })
+    })
+})
+
 module.exports = app;

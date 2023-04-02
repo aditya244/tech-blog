@@ -8,10 +8,17 @@ import { Component, Input, OnInit } from '@angular/core';
 export class BlogComponent implements OnInit {
 
   @Input() blogContent:any;
+  trimmedContent: string = '';
+
   constructor() { }
 
   ngOnInit(){
-    //console.log(this.blogContent, 'blog')
+    this.trimBlogtextForCard();
+  }
+
+  trimBlogtextForCard(){
+    this.trimmedContent = this.blogContent.paras[0].slice(0,250);
+    return this.trimmedContent;
   }
 
 }

@@ -1,3 +1,13 @@
+<div class="blog-operations-bar">
+    <button mat-raised-button color="basic">
+        Edit
+    </button>
+
+    <button mat-raised-button color="warn" (click)="onDeleteBlog(selectedBlog._id)">
+        Delete
+    </button>
+</div>
+
 <div class="blog-content">
     <p class="blog-title">{{selectedBlog.title}}</p>
     <p>

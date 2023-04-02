@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { pipe } from 'rxjs';
+import { map, pipe } from 'rxjs';
 import { BlogService } from 'src/app/components/blog/blog.service';
 
 @Component({
@@ -11,7 +11,6 @@ import { BlogService } from 'src/app/components/blog/blog.service';
 export class BlogDetailsComponent implements OnInit {
 
   selectedBlog: any = {};
-  van = 'Helo'
 
   constructor(
     private route: ActivatedRoute,
@@ -22,8 +21,14 @@ export class BlogDetailsComponent implements OnInit {
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
     this.blogService.getBlogDetails(id).subscribe(res => {
-      console.log(res, 'BLOG DETAIL')
       this.selectedBlog = res.blog
+    })
+  }
+
+  onDeleteBlog(id:any) {
+    this.blogService.deleteBlogPost(id)
+    .subscribe(res => {
+      this.router.navigate(['home'])
     })
   }
 
