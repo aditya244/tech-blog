@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Blog } from 'src/app/components/blog/blog.interface';
 import { BlogService } from 'src/app/components/blog/blog.service';
+import { map } from 'rxjs';
 
 @Component({
   selector: 'app-homepage',
@@ -8,12 +10,23 @@ import { BlogService } from 'src/app/components/blog/blog.service';
 })
 export class HomepageComponent implements OnInit {
 
-  blogForFeed:any = [];
+  blogForFeed: Blog[] = [];
 
   constructor(private blogService: BlogService) { }
 
   ngOnInit(): void {
-    this.blogService.getBlogsForHomeFeed().subscribe(data => {
+    this.blogService.getBlogsForHomeFeed()
+    .pipe(map(data => {
+      // added this pipe and map to convert each data _id to id to map with frontends
+      return data.blogs.map((blogData: any) => {
+        return {
+          title: blogData.title,
+          id: blogData._id,
+          paras: blogData.paras
+        }
+      })
+    }))
+    .subscribe(data => {
       this.blogForFeed = data;
     })
   }

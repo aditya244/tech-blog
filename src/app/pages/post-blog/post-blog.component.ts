@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, FormArray, FormBuilder } from '@angular/forms';
 
@@ -8,7 +9,7 @@ import { FormControl, FormGroup, FormArray, FormBuilder } from '@angular/forms';
 })
 export class PostBlogComponent implements OnInit {
 
-  constructor(private fb: FormBuilder) { }
+  constructor(private fb: FormBuilder, private http: HttpClient) { }
 
   ngOnInit(): void {}
 
@@ -18,7 +19,10 @@ export class PostBlogComponent implements OnInit {
   })
 
   onSubmitBlog() {
-    console.log(this.blogPostForm.value)
+    console.log('onSubmitBlog called');
+    this.http.post<{message: string}>("http://localhost:3000/api/blogs", this.blogPostForm.value).subscribe((response) => {
+      console.log(response)
+    })
   }
 
   get blogParas(): FormArray{
@@ -27,6 +31,7 @@ export class PostBlogComponent implements OnInit {
 
   addPara(){
     this.blogParas.push(new FormControl(''))
+    console.log('addPara called');
   }
 
 }
