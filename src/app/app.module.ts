@@ -10,14 +10,16 @@ import { BlogsComponent } from './pages/blogs/blogs.component';
 import { AuthorComponent } from './pages/author/author.component';
 import { HttpClientModule } from '@angular/common/http';
 import { MatCardModule } from '@angular/material/card';
-import { MatFormFieldModule, MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
+import { MatFormFieldModule, MatLabel, MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
 import { FooterComponent } from './components/footer/footer.component';
 import { BlogDetailsComponent } from './pages/blog-details/blog-details.component';
 import { PostBlogComponent } from './pages/post-blog/post-blog.component';
 import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { DialogComponent } from './components/shared/dialog/dialog.component';
+import { MatDialogModule } from '@angular/material/dialog';
 
 @NgModule({
   declarations: [
@@ -29,6 +31,7 @@ import { ReactiveFormsModule } from '@angular/forms';
     FooterComponent,
     BlogDetailsComponent,
     PostBlogComponent,
+    DialogComponent
   ],
   imports: [
     BrowserModule,
@@ -40,6 +43,10 @@ import { ReactiveFormsModule } from '@angular/forms';
     MatSelectModule,
     MatInputModule,
     MatButtonModule,
+    MatFormFieldModule,
+    FormsModule,
+    MatDialogModule,
+    //MatLabel,
     ReactiveFormsModule
   ],
   providers: [],

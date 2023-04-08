@@ -7,11 +7,20 @@
     margin-right: 15%;
 }
 
+.blog-img {
+    align-items: center;
+    height: auto;
+    width: 100%;;
+}
+
 .blog-content {
     display: flex;
+    margin-left: 15%;
+    margin-right: 15%;
     flex-direction: column;
     justify-content: center;
-    text-align: center;
+    text-align: justify;
+    text-justify: inter-word;
 }
 
 .blog-title {
@@ -20,7 +29,19 @@
     font-size: 32px;
 }
 
-.comment-section {
+.post-comment-card {
     width: 70%;
     margin: auto;
+}
+
+.comment-text-area {
+    width: 70%;
+    margin-right: 10%;
+}
+
+.comments-thread {
+    width: 70%;
+    margin: auto;
+    margin-top: 10px;
+    margin-bottom: 10px;
 }
