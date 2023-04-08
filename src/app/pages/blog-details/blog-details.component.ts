@@ -4,6 +4,8 @@ import { map, pipe } from 'rxjs';
 import { BlogService } from 'src/app/components/blog/blog.service';
 import {MatDialog, MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import { DialogComponent } from 'src/app/components/shared/dialog/dialog.component';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-blog-details',
@@ -13,11 +15,15 @@ import { DialogComponent } from 'src/app/components/shared/dialog/dialog.compone
 export class BlogDetailsComponent implements OnInit {
 
   selectedBlog: any = {};
+  comments:string[] = [];
+  comment: string = '';
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private blogService: BlogService,
+    private fb: FormBuilder,
+    private http: HttpClient,
     public dialog: MatDialog
   ) { }
 
@@ -28,12 +34,9 @@ export class BlogDetailsComponent implements OnInit {
     })
   }
 
-  // onDeleteBlog(id:any) {
-  //   this.blogService.deleteBlogPost(id)
-  //   .subscribe(res => {
-  //     this.router.navigate(['home'])
-  //   })
-  // }
+  commentForm: FormGroup = this.fb.group({
+    blogComments: this.fb.array([new FormControl('')]),
+  })
 
   onDeleteBlog(id:any) {
     this.blogService.deleteBlogPost(id)
@@ -46,13 +49,17 @@ export class BlogDetailsComponent implements OnInit {
   openDialog(): void {
     let dialogRef = this.dialog.open(DialogComponent, {
       width: '250px',
-      //data: {selectedBlog: this.selectedBlog, onDeleteBlog: this.onDeleteBlog}
     });
     dialogRef.componentInstance.delete.subscribe(res => {
       if(res) {
         this.onDeleteBlog(this.selectedBlog._id);
       }
     })
+  }
+
+  onCommentSubmit(comment: string){
+    this.comments.push(comment);
+    this.comment = '';
   }
 }
 
