@@ -2,6 +2,6 @@
     <mat-card class="blog-card">
         <mat-card-header class="blog-header"> {{blogContent.title}} </mat-card-header>
         <img mat-card-image src={{blogContent.blog_img_url}} height="200" width="350">
-        <mat-card-content class="blog-content"> {{trimmedContent | slice:0:250}}</mat-card-content>
+        <mat-card-content class="blog-content"> {{blogContent.content | slice:0:250}}</mat-card-content>
     </mat-card>
 </a>

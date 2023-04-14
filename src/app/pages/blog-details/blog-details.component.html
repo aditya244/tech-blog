@@ -1,4 +1,4 @@
-<div class="blog-operations-bar">
+<!-- <div class="blog-operations-bar">
     <button mat-raised-button color="basic">
         Edit
     </button>
@@ -33,4 +33,10 @@
     <mat-card *ngFor="let comment of comments">
         <mat-card-content>{{comment}}</mat-card-content>
     </mat-card>
+</div> -->
+
+<div class="blog-content">
+    <p class="blog-title">{{selectedBlog.title}}</p>
+    <!-- <span [innerHTML]=>"selectedBlog.content"</span> -->
+    <span innerHTML={{selectedBlog.content}}></span>
 </div>

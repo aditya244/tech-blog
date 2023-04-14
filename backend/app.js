@@ -28,9 +28,10 @@ app.use((req, res, next) => {
 })
 
 app.post("/api/blogs", (req, res, next) => {
+    console.log(req.body, 'req__body')
     const blogs = new Blog({
-        title: req.body.blogTitle,
-        paras: req.body.blogParas
+        title: req.body.title,
+        content: req.body.content
     });
     blogs.save();
     console.log(req.body)

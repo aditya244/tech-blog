@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, FormArray, FormBuilder } from '@angular/forms';
+import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 
 @Component({
   selector: 'app-post-blog',
@@ -9,29 +10,36 @@ import { FormControl, FormGroup, FormArray, FormBuilder } from '@angular/forms';
 })
 export class PostBlogComponent implements OnInit {
 
+  public Editor: any = ClassicEditor;
+  public blog = {
+    title: '',
+    content: '',
+  }
+
   constructor(private fb: FormBuilder, private http: HttpClient) { }
 
   ngOnInit(): void {}
 
-  blogPostForm: FormGroup = this.fb.group({
-    blogTitle: new FormControl(''),
-    blogParas: this.fb.array([new FormControl('')]),
-  })
+  blogDetails = new FormControl();
+
+  // blogPostForm: FormGroup = this.fb.group({
+  //   blogTitle: new FormControl(''),
+  //   blogParas: this.fb.array([new FormControl('')]),
+  // })
 
   onSubmitBlog() {
-    console.log('onSubmitBlog called');
-    this.http.post<{message: string}>("http://localhost:3000/api/blogs", this.blogPostForm.value).subscribe((response) => {
+    this.http.post<{message: string}>("http://localhost:3000/api/blogs", this.blog).subscribe((response) => {
       console.log(response)
     })
   }
 
-  get blogParas(): FormArray{
-    return <FormArray> this.blogPostForm.get('blogParas')
-  }
+  // get blogParas(): FormArray{
+  //   return <FormArray> this.blogPostForm.get('blogParas')
+  // }
 
-  addPara(){
-    this.blogParas.push(new FormControl(''))
-    console.log('addPara called');
-  }
+  // addPara(){
+  //   this.blogParas.push(new FormControl(''))
+  //   console.log('addPara called');
+  // }
 
 }

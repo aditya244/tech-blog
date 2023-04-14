@@ -1,9 +1,10 @@
 export interface Blog {
     id: string;
     title: string;
-    paras: Paras[];
+    content: any;
+    //paras: Paras[];
 }
 
-export interface Paras {
-    content: string;
-}
+// export interface Paras {
+//     content: string;
+// }
