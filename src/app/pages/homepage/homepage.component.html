@@ -1,3 +1,6 @@
-<div class="blog-feed-conteiner">
-    <app-blog *ngFor="let blog of blogForFeed" [blogContent]="blog"></app-blog>
+<div class="blog-container">
+    <div class="blog-feed-conteiner" *ngFor="let blog of blogForFeed">
+        <h1>{{blog.title}}</h1>
+        <div [innerHTML]='blog.content'></div>
+    </div>
 </div>

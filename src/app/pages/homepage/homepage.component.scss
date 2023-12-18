@@ -1,6 +1,13 @@
-.blog-feed-conteiner {
+.blog-container {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: space-around;
+}
+
+.blog-feed-conteiner {
+    padding: 30px;
+    margin-top: 30px;
+    width: 400px;
+    border: solid 1px black;
 }
