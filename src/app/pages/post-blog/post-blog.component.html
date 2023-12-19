@@ -1,19 +1,23 @@
 
 <div >
     <form (submit)="onSubmitBlog()">
-        <mat-form-field appearance="fill">
-            <mat-label >Enter the Blog's title</mat-label>
-            <input matInput [(ngModel)]="blog.title" name="blog_title" >
-        </mat-form-field>
+        <p>
+            <mat-form-field >
+                <mat-label >Enter the Blog's title</mat-label>
+                <input matInput [(ngModel)]="blog.title" name="blog_title" >
+            </mat-form-field>
+        </p>
+        
 
-    <ckeditor 
-        [editor]="Editor"
-        [(ngModel)]="blog.content" 
-        data="Write the blog!"
-        name="blog_content"
-    ></ckeditor>
-
-    <button type="submit" mat-raised-button  class="post-blog-btn" color="primary" >Submit</button>
+        <ckeditor 
+            [editor]="Editor"
+            [(ngModel)]="blog.content" 
+            data="Write the blog!"
+            name="blog_content"
+        ></ckeditor>
+        <p>
+            <button type="submit" mat-raised-button  class="post-blog-btn" color="primary" >Submit</button>
+        </p>
     </form>
 </div>
 

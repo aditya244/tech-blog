@@ -1,6 +1,7 @@
 <div class="blog-container">
     <div class="blog-feed-conteiner" *ngFor="let blog of blogForFeed">
         <h1>{{blog.title}}</h1>
-        <div [innerHTML]='blog.content'></div>
+        <div [innerHTML]='blog.content.slice(0,200)'></div>
+        <button type="button" class="read-more-btn">Read More</button>
     </div>
 </div>
