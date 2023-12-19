@@ -20,6 +20,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DialogComponent } from './components/shared/dialog/dialog.component';
 import { MatDialogModule } from '@angular/material/dialog';
+import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 
 @NgModule({
   declarations: [
@@ -46,6 +47,7 @@ import { MatDialogModule } from '@angular/material/dialog';
     MatFormFieldModule,
     FormsModule,
     MatDialogModule,
+    CKEditorModule,
     //MatLabel,
     ReactiveFormsModule
   ],

@@ -18,11 +18,12 @@ export class HomepageComponent implements OnInit {
     this.blogService.getBlogsForHomeFeed()
     .pipe(map(data => {
       // added this pipe and map to convert each data _id to id to map with frontends
+      console.log(data, 'FETCHED_BLOGS')
       return data.blogs.map((blogData: any) => {
         return {
           title: blogData.title,
           id: blogData._id,
-          paras: blogData.paras
+          content: blogData.content
         }
       })
     }))

@@ -1,6 +1,23 @@
-.blog-feed-conteiner {
+.blog-container {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: space-around;
+}
+
+.blog-feed-conteiner {
+    padding: 20px;
+    margin-top: 30px;
+    width: 400px;
+    height: 250px;
+    box-shadow: 2px 2px 5px #C2C1C2;
+
+}
+
+.read-more-btn {
+    padding: 8px;
+    border-radius: 2px;
+    background-color: white;
+    box-shadow: 2px 2px 5px #C2C1C2;
+    border: none;
 }

@@ -17,7 +17,7 @@ export class BlogComponent implements OnInit {
   }
 
   trimBlogtextForCard(){
-    this.trimmedContent = this.blogContent.paras[0].slice(0,250);
+    //this.trimmedContent = this.blogContent.paras[0].slice(0,250);
     return this.trimmedContent;
   }
 
