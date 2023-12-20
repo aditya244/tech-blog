@@ -15,8 +15,9 @@ import { HttpClient } from '@angular/common/http';
 export class BlogDetailsComponent implements OnInit {
 
   selectedBlog: any = {};
-  comments:string[] = [];
+  comments:any[] = [];
   comment: string = '';
+  id: any;
 
   constructor(
     private route: ActivatedRoute,
@@ -28,16 +29,24 @@ export class BlogDetailsComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    const id = this.route.snapshot.paramMap.get('id');
-    this.blogService.getBlogDetails(id).subscribe(res => {
+    this.id = this.route.snapshot.paramMap.get('id');
+    this.blogService.getBlogDetails(this.id).subscribe(res => {
       console.log(res, 'response_blogDetails')
       this.selectedBlog = res.blog;
-    })
+    });
+    this.fetchComments();
   }
 
   commentForm: FormGroup = this.fb.group({
     blogComments: this.fb.array([new FormControl('')]),
   })
+
+  fetchComments() {
+    this.blogService.getCommentsForBlog(this.id).subscribe(res => {
+      console.log(res, 'RESPONSE')
+      this.comments = res.comments
+    })
+  }
 
   onDeleteBlog(id:any) {
     this.blogService.deleteBlogPost(id)
@@ -59,7 +68,16 @@ export class BlogDetailsComponent implements OnInit {
   }
 
   onCommentSubmit(comment: string){
-    this.comments.push(comment);
+    console.log(comment, 'comment');
+    const requestBody = {
+      comment: comment,
+      blogId: this.id
+    }
+    this.http.post<{message: string}>("http://localhost:3000/api/comments", requestBody).subscribe((response) => {
+      console.log(response);
+      this.fetchComments();
+    })
+    //this.comments.push(comment);
     this.comment = '';
   }
 }

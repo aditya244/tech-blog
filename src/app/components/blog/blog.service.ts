@@ -20,4 +20,8 @@ export class BlogService {
   deleteBlogPost(id: any): Observable<any> {
     return this.httpClient.delete("http://localhost:3000/api/blogs/" + id)
   }
+
+  getCommentsForBlog(blogId: any): Observable<any> {
+    return this.httpClient.get("http://localhost:3000/api/comments/" + blogId)
+  }
 }
