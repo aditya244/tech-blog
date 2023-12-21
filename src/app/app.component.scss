@@ -1,5 +1,5 @@
 .container {
-    padding: 50px 0px;
+    padding: 0px 0px;
     height: 100%;
     margin: 0px 100px;
     // width: auto;
@@ -8,6 +8,9 @@
 .navbar {
     display: flex;
     flex-direction: row;
+    background-color: #25303B;
+    color: #FAFAFA;
+    width: 100%;
 }
 
 .nav-item-logo {

@@ -1,7 +1,7 @@
 <div class="blog-container">
     <div class="blog-feed-conteiner" *ngFor="let blog of blogForFeed">
         <h1>{{blog.title}}</h1>
-        <div [innerHTML]='blog.content.slice(0,200)'></div>
+        <div class="font-style" [innerHTML]='blog.content.slice(0,200)'></div>
         <a [routerLink]="['/blog-details/', blog.id, {relaiveTo: null}]"><button type="button" class="read-more-btn">Read More</button></a>
         <!-- without / in blog-details url, the router was taking the current url as relative
         and was navigating to home/blog-details -->

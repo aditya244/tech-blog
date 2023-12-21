@@ -11,7 +11,7 @@
 <div class="blog-content">
     <p class="blog-title">{{selectedBlog.title}}</p>
     <!-- <span [innerHTML]=>"selectedBlog.content"</span> -->
-    <span innerHTML={{selectedBlog.content}}></span>
+    <span class="content-font" innerHTML={{selectedBlog.content}}></span>
 </div>
 
 <div class="post-comment-card">
@@ -28,7 +28,7 @@
 
 <div class="comments-thread">
     <mat-card class="comment-box" *ngFor="let comment of comments">
-        <mat-card-content>{{comment.comment}}</mat-card-content>
-        <span class="comment-date"> Posted on {{comment.dateOfPublish | date}}</span>
+        <mat-card-content class="comment-font">{{comment.comment}}</mat-card-content>
+        <span class="comment-date-font"> Posted on {{comment.dateOfPublish | date}}</span>
     </mat-card>
 </div>

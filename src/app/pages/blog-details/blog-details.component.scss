@@ -23,6 +23,13 @@
     text-justify: inter-word;
 }
 
+.content-font {
+    font-family:'Times New Roman', Times, serif;
+    color: #26323D;
+    letter-spacing: 1px;
+    font-size: 18px;
+}
+
 .blog-title {
     margin: 50px 0 50px 0;
     font-weight: 400;
@@ -50,7 +57,14 @@
     margin-top: 15px;
 }
 
-.comment-date {
-    font-weight: 400;
+.comment-date-font {
+    font-weight: 300;
     font-size: 10px;
+}
+
+.comment-font {
+    font-family:'Times New Roman', Times, serif;
+    color: #26323D;
+    letter-spacing: 1px;
+    font-size: 14px;
 }
