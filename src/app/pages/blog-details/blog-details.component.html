@@ -29,5 +29,6 @@
 <div class="comments-thread">
     <mat-card class="comment-box" *ngFor="let comment of comments">
         <mat-card-content>{{comment.comment}}</mat-card-content>
+        <span class="comment-date"> Posted on {{comment.dateOfPublish | date}}</span>
     </mat-card>
 </div>

@@ -67,17 +67,27 @@ export class BlogDetailsComponent implements OnInit {
     })
   }
 
+  private convertDateFormat() {
+    const currentDate = new Date();
+    const formattedDate = new Intl.DateTimeFormat('en-US', {
+      day: 'numeric',
+      month: 'short',
+      year: 'numeric'
+    }).format(currentDate);
+    return formattedDate
+  }
+
   onCommentSubmit(comment: string){
-    console.log(comment, 'comment');
+    const formattedDate = this.convertDateFormat();
     const requestBody = {
       comment: comment,
-      blogId: this.id
+      blogId: this.id,
+      dateOfPublish: formattedDate
     }
     this.http.post<{message: string}>("http://localhost:3000/api/comments", requestBody).subscribe((response) => {
-      console.log(response);
+      console.log(response, 'COMMENTS');
       this.fetchComments();
     })
-    //this.comments.push(comment);
     this.comment = '';
   }
 }

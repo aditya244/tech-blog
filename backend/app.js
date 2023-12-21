@@ -44,8 +44,10 @@ app.post("/api/blogs", (req, res, next) => {
 app.post("/api/comments", (req, res, next) => {
     const comments = new Comment({
         comment: req.body.comment,
-        blogId: req.body.blogId
+        blogId: req.body.blogId,
+        dateOfPublish: req.body.dateOfPublish
     });
+    console.log(req.body)
     comments.save();
     res.status(201).json({
         message: 'Comment Added successfully'
