@@ -12,6 +12,7 @@ mongoose.connect("mongodb+srv://aditya:V53bkdhA4QHBKB9U@cluster0.eciv35m.mongodb
     })
 
 const Blog = require('./models/blog');
+const Comment = require('./models/comment');
 
 app.use(bodyParser.json());
 
@@ -40,6 +41,19 @@ app.post("/api/blogs", (req, res, next) => {
     });
 });
 
+app.post("/api/comments", (req, res, next) => {
+    const comments = new Comment({
+        comment: req.body.comment,
+        blogId: req.body.blogId,
+        dateOfPublish: req.body.dateOfPublish
+    });
+    console.log(req.body)
+    comments.save();
+    res.status(201).json({
+        message: 'Comment Added successfully'
+    })
+})
+
 app.get('/api/blogs', (req, res, next) => {
     Blog.find()
         .then(documents => {
@@ -55,6 +69,15 @@ app.get('/api/blogs/:id', (req, res, next) => {
         res.status(200).json({
             message: 'Blog Post fetched successfully',
             blog: document
+        })
+    })
+})
+
+app.get('/api/comments/:blogId', (req, res, next) => {
+    Comment.find({blogId:req.params.blogId}).then(documents => {
+        res.status(200).json({
+            message: 'Comments fetched succesfully',
+            comments: documents
         })
     })
 })

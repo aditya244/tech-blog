@@ -21,6 +21,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DialogComponent } from './components/shared/dialog/dialog.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
+import { ReadingListComponent } from './pages/reading-list/reading-list.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
     FooterComponent,
     BlogDetailsComponent,
     PostBlogComponent,
-    DialogComponent
+    DialogComponent,
+    ReadingListComponent
   ],
   imports: [
     BrowserModule,

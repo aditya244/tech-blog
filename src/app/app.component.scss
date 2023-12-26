@@ -1,13 +1,16 @@
 .container {
-    padding: 50px 0px;
+    padding: 0px 0px;
     height: 100%;
     margin: 0px 100px;
-    // width: auto;
 }
 
 .navbar {
     display: flex;
     flex-direction: row;
+    background-color: #25303B;
+    color: #FAFAFA;
+    width: 100%;
+    align-items: center;
 }
 
 .nav-item-logo {
@@ -17,7 +20,7 @@
 }
 
 .nav-item {
-    float: right;
+    float: left;
     margin: 25px 50px;
     font-size: 20px;
 }
@@ -26,4 +29,17 @@
     background-color:black;
     width: 100%;
     height: 100px;
+}
+
+ul {
+    display: flex;
+}
+
+.search-bar {
+    border-radius: 5px;
+    height: 15px;
+    font-size: 12px;
+    font-weight: 500;
+    padding-left: 10px;
+    width: 150px;
 }
