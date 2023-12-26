@@ -8,10 +8,18 @@
     </button>
 </div>
 
-<div class="blog-content">
-    <p class="blog-title">{{selectedBlog.title}}</p>
-    <!-- <span [innerHTML]=>"selectedBlog.content"</span> -->
-    <span class="content-font" innerHTML={{selectedBlog.content}}></span>
+<div class="blog-body">
+    <div class="blog-content">
+        <p class="blog-title">{{selectedBlog.title}}</p>
+        <!-- <span [innerHTML]=>"selectedBlog.content"</span> -->
+        <span class="content-font" innerHTML={{selectedBlog.content}}></span>
+    </div>
+    <div class="tag-container">
+        <!-- <p class="tag-header"> Suggested Tags</p> -->
+        <div class="tag-content"> Web Performance</div>
+        <div class="tag-content"> System Design</div>
+        <div class="tag-content"> Web Security </div>
+    </div>
 </div>
 
 <div class="post-comment-card">
