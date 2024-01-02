@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, Inject, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { map, pipe } from 'rxjs';
 import { BlogService } from 'src/app/components/blog/blog.service';
@@ -20,6 +20,7 @@ export class BlogDetailsComponent implements OnInit {
   id: any;
 
   constructor(
+    private cdr: ChangeDetectorRef,
     private route: ActivatedRoute,
     private router: Router,
     private blogService: BlogService,
@@ -44,7 +45,10 @@ export class BlogDetailsComponent implements OnInit {
   fetchComments() {
     this.blogService.getCommentsForBlog(this.id).subscribe(res => {
       console.log(res, 'RESPONSE')
-      this.comments = res.comments
+      this.comments = res.comments;
+      // was having intermittent issues with comment rendering on submit, thus added this.
+      // check for this later as well
+      this.cdr.detectChanges();
     })
   }
 
@@ -86,7 +90,13 @@ export class BlogDetailsComponent implements OnInit {
     }
     this.http.post<{message: string}>("http://localhost:3000/api/comments", requestBody).subscribe((response) => {
       console.log(response, 'COMMENTS');
-      this.fetchComments();
+      if (response && response.message === 'Comment added successfully') {
+        console.log('inside the response')
+        this.fetchComments();
+      }
+    },
+    (error) => {
+      console.error('Error adding comment:', error);
     })
     this.comment = '';
   }
