@@ -6,7 +6,8 @@ router.post("", (req, res, next) => {
     console.log(req.body, 'req__body')
     const blogs = new Blog({
         title: req.body.title,
-        content: req.body.content
+        content: req.body.content,
+        tags: req.body.tags
     });
     blogs.save();
     console.log(req.body)
