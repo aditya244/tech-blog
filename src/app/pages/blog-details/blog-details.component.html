@@ -37,6 +37,9 @@
 <div class="comments-thread">
     <mat-card class="comment-box" *ngFor="let comment of comments">
         <mat-card-content class="comment-font">{{comment.comment}}</mat-card-content>
-        <span class="comment-date-font"> Posted on {{comment.dateOfPublish | date}}</span>
+        <div class="comment-bottom-section">
+            <span class="comment-date-font"> Posted on {{comment.dateOfPublish | date}}</span>
+            <button mat-raised-button class="delete-comment-btn" (click)="onDeleteComment(comment._id)" type="button"> Delete</button>
+        </div>
     </mat-card>
 </div>

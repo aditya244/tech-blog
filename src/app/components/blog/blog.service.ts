@@ -24,4 +24,8 @@ export class BlogService {
   getCommentsForBlog(blogId: any): Observable<any> {
     return this.httpClient.get("http://localhost:3000/api/comments/" + blogId)
   }
+
+  deleteComment(commentId: string): Observable<any> {
+    return this.httpClient.delete("http://localhost:3000/api/comments/" + commentId)
+  }
 }

@@ -24,4 +24,13 @@ router.get('/:blogId', (req, res, next) => {
     })
 })
 
+router.delete('/:commentId', (req, res, next) => {
+    Comment.deleteOne({_id: req.params.commentId}).then(result => {
+        console.log(result);
+        res.status(200).json({
+            message: 'Comment deleted successfully'
+        })
+    })
+})
+
 module.exports = router;
