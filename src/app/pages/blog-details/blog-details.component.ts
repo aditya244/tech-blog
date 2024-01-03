@@ -44,7 +44,6 @@ export class BlogDetailsComponent implements OnInit {
 
   fetchComments() {
     this.blogService.getCommentsForBlog(this.id).subscribe(res => {
-      console.log(res, 'RESPONSE')
       this.comments = res.comments;
       // was having intermittent issues with comment rendering on submit, thus added this.
       // check for this later as well
@@ -99,6 +98,12 @@ export class BlogDetailsComponent implements OnInit {
       console.error('Error adding comment:', error);
     })
     this.comment = '';
+  }
+
+  onDeleteComment(commentId: string) {
+    this.blogService.deleteComment(commentId).subscribe(res => {
+      this.fetchComments();
+    })
   }
 }
 

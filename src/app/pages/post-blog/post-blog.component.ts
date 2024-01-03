@@ -11,10 +11,15 @@ import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 export class PostBlogComponent implements OnInit {
 
   public Editor: any = ClassicEditor;
-  public blog = {
+
+  public blog: { title: string; content: string; tags: string[] } = {
+    // added this explicit type since was having issues with pushing tag in blog.tags in method addTagtoTagsArray
     title: '',
     content: '',
+    tags: []
   }
+
+  public tag: string = '';
 
   constructor(private fb: FormBuilder, private http: HttpClient) { }
 
@@ -22,24 +27,14 @@ export class PostBlogComponent implements OnInit {
 
   blogDetails = new FormControl();
 
-  // blogPostForm: FormGroup = this.fb.group({
-  //   blogTitle: new FormControl(''),
-  //   blogParas: this.fb.array([new FormControl('')]),
-  // })
+  addTagtoTagsArray(){
+    this.blog.tags.push(this.tag);
+    this.tag = ''    
+  }
 
   onSubmitBlog() {
     this.http.post<{message: string}>("http://localhost:3000/api/blogs", this.blog).subscribe((response) => {
       console.log(response)
     })
   }
-
-  // get blogParas(): FormArray{
-  //   return <FormArray> this.blogPostForm.get('blogParas')
-  // }
-
-  // addPara(){
-  //   this.blogParas.push(new FormControl(''))
-  //   console.log('addPara called');
-  // }
-
 }

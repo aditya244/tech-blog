@@ -25,12 +25,12 @@
     text-align: justify;
     text-justify: inter-word;
 }
-// .tag-header {
-//     font-size: 16px;
-//     font-family:'Times New Roman', Times, serif;
-//     letter-spacing: 1px;
-// }
-
+.blog-title {
+    margin: 50px 0 50px 0;
+    font-weight: 400;
+    font-size: 32px;
+    line-height: 1;
+}
 .tag-container {
     margin-top: 10%;
     width: 25%;
@@ -43,21 +43,14 @@
     padding: 3px;
     padding-left: 7px;
     margin-top: 7px;
-
 }
+
 .content-font {
     font-family:'Times New Roman', Times, serif;
     color: #26323D;
     letter-spacing: 1px;
     font-size: 18px;
 }
-
-.blog-title {
-    margin: 50px 0 50px 0;
-    font-weight: 400;
-    font-size: 32px;
-}
-
 .post-comment-card {
     width: 70%;
     margin: auto;
@@ -80,6 +73,12 @@
     margin-top: 15px;
 }
 
+.comment-bottom-section {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
 .comment-date-font {
     font-weight: 300;
     font-size: 10px;
@@ -90,4 +89,13 @@
     color: #26323D;
     letter-spacing: 1px;
     font-size: 14px;
+}
+
+.delete-comment-btn {
+    font-size: 10px;
+    color: red;
+    height: 20px;
+    text-align: center;
+    padding: 0;
+    line-height: 20px;
 }

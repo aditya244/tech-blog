@@ -11,14 +11,12 @@
 <div class="blog-body">
     <div class="blog-content">
         <p class="blog-title">{{selectedBlog.title}}</p>
-        <!-- <span [innerHTML]=>"selectedBlog.content"</span> -->
         <span class="content-font" innerHTML={{selectedBlog.content}}></span>
     </div>
     <div class="tag-container">
-        <!-- <p class="tag-header"> Suggested Tags</p> -->
-        <div class="tag-content"> Web Performance</div>
-        <div class="tag-content"> System Design</div>
-        <div class="tag-content"> Web Security </div>
+        <div class="tag-content" *ngFor="let tag of selectedBlog.tags">
+            {{tag}}
+        </div>
     </div>
 </div>
 
@@ -37,6 +35,9 @@
 <div class="comments-thread">
     <mat-card class="comment-box" *ngFor="let comment of comments">
         <mat-card-content class="comment-font">{{comment.comment}}</mat-card-content>
-        <span class="comment-date-font"> Posted on {{comment.dateOfPublish | date}}</span>
+        <div class="comment-bottom-section">
+            <span class="comment-date-font"> Posted on {{comment.dateOfPublish | date}}</span>
+            <button mat-raised-button class="delete-comment-btn" (click)="onDeleteComment(comment._id)" type="button"> Delete</button>
+        </div>
     </mat-card>
 </div>

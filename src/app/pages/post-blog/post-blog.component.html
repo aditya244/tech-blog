@@ -16,11 +16,21 @@
             name="blog_content"
         ></ckeditor>
         <p>
+            <mat-form-field >
+                <mat-label >Add a tag</mat-label>
+                <input matInput [(ngModel)]="tag" name="tag" >
+            </mat-form-field>
+            <button type="button" (click)="addTagtoTagsArray()"> Add tag </button>
+        </p>
+        <p>
             <button type="submit" mat-raised-button  class="post-blog-btn" color="primary" >Submit</button>
         </p>
     </form>
 </div>
-
-{{blog | json}}
+<div class="tag-content" *ngFor="let tag of blog.tags">
+{{tag}}
+</div>
+<!-- 
+{{blog | json}} -->
 
 
