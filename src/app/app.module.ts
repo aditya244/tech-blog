@@ -22,6 +22,8 @@ import { DialogComponent } from './components/shared/dialog/dialog.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 import { ReadingListComponent } from './pages/reading-list/reading-list.component';
+import { LoginComponent } from './pages/login/login.component';
+import { SignUpComponent } from './pages/sign-up/sign-up.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +36,9 @@ import { ReadingListComponent } from './pages/reading-list/reading-list.componen
     BlogDetailsComponent,
     PostBlogComponent,
     DialogComponent,
-    ReadingListComponent
+    ReadingListComponent,
+    LoginComponent,
+    SignUpComponent
   ],
   imports: [
     BrowserModule,

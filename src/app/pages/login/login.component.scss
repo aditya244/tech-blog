@@ -1,0 +1,19 @@
+.page-heading {
+    padding-top: 8%;
+    text-align: center;
+}
+
+.login-form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.form-input {
+    width: 400px;
+}
+
+.login-btn {
+    width: 120px;
+}
