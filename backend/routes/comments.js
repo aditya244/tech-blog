@@ -1,8 +1,9 @@
 const express = require("express");
 const Comment = require('../models/comment');
 const router = express.Router();
+const checkAuth = require("../middleware/check-auth");
 
-router.post("", (req, res, next) => {
+router.post("", checkAuth, (req, res, next) => {
     const comments = new Comment({
         comment: req.body.comment,
         blogId: req.body.blogId,
@@ -24,7 +25,7 @@ router.get('/:blogId', (req, res, next) => {
     })
 })
 
-router.delete('/:commentId', (req, res, next) => {
+router.delete('/:commentId', checkAuth, (req, res, next) => {
     Comment.deleteOne({_id: req.params.commentId}).then(result => {
         console.log(result);
         res.status(200).json({

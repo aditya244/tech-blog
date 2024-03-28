@@ -8,7 +8,7 @@ import { BlogComponent } from './components/blog/blog.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BlogsComponent } from './pages/blogs/blogs.component';
 import { AuthorComponent } from './pages/author/author.component';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule, MatLabel, MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
 import { FooterComponent } from './components/footer/footer.component';
@@ -22,6 +22,9 @@ import { DialogComponent } from './components/shared/dialog/dialog.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 import { ReadingListComponent } from './pages/reading-list/reading-list.component';
+import { LoginComponent } from './pages/login/login.component';
+import { SignUpComponent } from './pages/sign-up/sign-up.component';
+import { AuthInterceptor } from './services/auth-interceptor';
 
 @NgModule({
   declarations: [
@@ -34,7 +37,9 @@ import { ReadingListComponent } from './pages/reading-list/reading-list.componen
     BlogDetailsComponent,
     PostBlogComponent,
     DialogComponent,
-    ReadingListComponent
+    ReadingListComponent,
+    LoginComponent,
+    SignUpComponent
   ],
   imports: [
     BrowserModule,
@@ -53,7 +58,7 @@ import { ReadingListComponent } from './pages/reading-list/reading-list.componen
     //MatLabel,
     ReactiveFormsModule
   ],
-  providers: [],
+  providers: [{provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true}],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

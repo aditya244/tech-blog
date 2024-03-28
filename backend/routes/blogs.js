@@ -1,8 +1,11 @@
 const express = require("express");
 const Blog = require('../models/blog');
 const router = express.Router();
+const checkAuth = require("../middleware/check-auth");
 
-router.post("", (req, res, next) => {
+router.post("", 
+checkAuth,
+(req, res, next) => {
     console.log(req.body, 'req__body')
     const blogs = new Blog({
         title: req.body.title,
@@ -35,7 +38,9 @@ router.get('/:id', (req, res, next) => {
     })
 })
 
-router.delete('/:id', (req, res, next) => {
+router.delete('/:id', 
+checkAuth,
+(req, res, next) => {
     Blog.deleteOne({_id:req.params.id}).then(result => {
         console.log(result)
         res.status(200).json({
