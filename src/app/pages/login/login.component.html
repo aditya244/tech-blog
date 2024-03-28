@@ -2,20 +2,6 @@
     Please Login using your credentials
 </h1>
 
-<!-- <mat-card>
-    <form class="login-form" (submit)="onLogin(loginForm)" #loginForm="ngForm">
-        <mat-form-field class="form-input">
-            <input type="email" name="email" matInput ngModel placeholder="Enter your email id" #emailInput="ngModel">
-            <mat-error *ngIf="emailInput.invalid && (emailInput.dirty || emailInput.touched)"> Please enter a valid email!</mat-error>
-        </mat-form-field>
-        <mat-form-field class="form-input">
-            <input type="password" name="password" matInput ngModel placeholder="Enter your password" matInput #passwordInput="ngModel" required>
-            <mat-error *ngIf="passwordInput.invalid"> Please enter a valid password!</mat-error>
-        </mat-form-field>
-          <button class="login-btn" mat-raised-button>Login</button>
-    </form>
-</mat-card> -->
-
 <mat-card>
     <form class="login-form" [formGroup]="loginForm" (ngSubmit)="onLogin()">
         <mat-form-field>
