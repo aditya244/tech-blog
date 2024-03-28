@@ -2,18 +2,36 @@
     Please Login using your credentials
 </h1>
 
-<mat-card>
-    <!-- check material documentation for email example, has validation as well -->
-    <form class="login-form">
+<!-- <mat-card>
+    <form class="login-form" (submit)="onLogin(loginForm)" #loginForm="ngForm">
         <mat-form-field class="form-input">
-            <mat-label>Email id</mat-label>
-            <input type="text" matInput>
+            <input type="email" name="email" matInput ngModel placeholder="Enter your email id" #emailInput="ngModel">
+            <mat-error *ngIf="emailInput.invalid && (emailInput.dirty || emailInput.touched)"> Please enter a valid email!</mat-error>
         </mat-form-field>
         <mat-form-field class="form-input">
-            <mat-label> Password </mat-label>
-            <input type="password" matInput>
+            <input type="password" name="password" matInput ngModel placeholder="Enter your password" matInput #passwordInput="ngModel" required>
+            <mat-error *ngIf="passwordInput.invalid"> Please enter a valid password!</mat-error>
         </mat-form-field>
           <button class="login-btn" mat-raised-button>Login</button>
     </form>
-    
+</mat-card> -->
+
+<mat-card>
+    <form class="login-form" [formGroup]="loginForm" (ngSubmit)="onLogin()">
+        <mat-form-field>
+            <input type="email" id="email" placeholder="Email" matInput formControlName="email">
+            <!-- <mat-error *ngIf="login['email'].hasError('email')"> Please enter a valid email!</mat-error> -->
+            <div *ngIf="login['email'].hasError('email') && login['email'].hasError('required')">
+                Please enter a valid email address.
+              </div>
+            
+        </mat-form-field>
+        <mat-form-field>
+            <input type="password" id="password" placeholder="Password" matInput formControlName="password">
+            <div *ngIf="loginForm.controls['password']?.hasError('minlength')">
+                Password must be at least 6 characters long.
+            </div>
+        </mat-form-field>
+        <button type="submit" [disabled]="loginForm.invalid">Login</button>
+    </form>
 </mat-card>
