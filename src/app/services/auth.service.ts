@@ -28,8 +28,6 @@ export class AuthService {
   };
 
   onLogin(loginData: any) {
-    //const email = loginData.email;
-    //const password = loginData.password
     const userData: any = {
         email: loginData.email,
         password: loginData.password
