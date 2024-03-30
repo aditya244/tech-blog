@@ -3,9 +3,12 @@
     <li routerLink="/home" class="nav-item-logo" type="none"> Blog </li>
     <li routerLink="/about-author" class="nav-item" type="none"> Author </li>
     <li routerLink="/blogs" class="nav-item" type="none"> Blogs </li>
-    <li routerLink="/post-blog" class="nav-item" type="none"> Add New Blog </li>
-    <li routerLink="/my-reading-list" class="nav-item" type="none"> My Reading List</li>
+    <li *ngIf="isUserAuthenticated" class="nav-item" type="none"> Add New Blog </li>
+    <li *ngIf="isUserAuthenticated" routerLink="/my-reading-list" class="nav-item" type="none"> My Reading List</li>
+    <li *ngIf="!isUserAuthenticated" routerLink="/login" class="nav-item" type="none"> Login</li>
+    <li *ngIf="!isUserAuthenticated" routerLink="/sign-up" class="nav-item" type="none"> Sign Up</li>
     <li class="nav-item" type="none"> <input type="text" class="search-bar" placeholder="Search"></li>
+    <li *ngIf="isUserAuthenticated" class="nav-item" type="none"> <button mat-button (click)="logout()"> Logout </button> </li>
   </ul>
 </nav>
 <div class="container">

@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { response } from 'express';
-import { Observable } from 'rxjs';
+import { Router } from '@angular/router';
+import { Observable, Subject } from 'rxjs';
 import { AuthData } from '../pages/sign-up/auth-data.model';
 
 @Injectable({
@@ -9,12 +9,24 @@ import { AuthData } from '../pages/sign-up/auth-data.model';
 })
 export class AuthService {
 
-   private token: string = '';
+   private token: any = '';
+   private authStatusListener = new Subject<boolean>();
+   private isAuthenticated = false;
+   private tokenTimer: any;
 
-  constructor(private httpClient: HttpClient) { }
+  constructor(private httpClient: HttpClient,
+    private router: Router) { }
 
   public getToken() {
     return this.token;
+  }
+
+  public getIsAuthenticated() {
+    return this.isAuthenticated;
+  }
+
+  getAuthStatusListerner() {
+    return this.authStatusListener.asObservable();
   }
 
   onSignUp(userData: AuthData){
@@ -32,12 +44,75 @@ export class AuthService {
         email: loginData.email,
         password: loginData.password
     }
-    console.log(userData, 'USER_DATA')
-    this.httpClient.post<{token: string}>("http://localhost:3000/api/user/login", userData)
+    this.httpClient.post<{token: string, expiresIn: number}>("http://localhost:3000/api/user/login", userData)
         .subscribe(response => {
+            console.log(response)
             const token = response.token;
             this.token = token;
-            console.log(response, 'LOGIN_DATA')
+            if (token) {
+                const expiresInDuration = response.expiresIn;
+                this.setAuthTimer(expiresInDuration);
+                // to conver sec into miliseconds
+                this.authStatusListener.next(true);
+                this.isAuthenticated = true;
+                const currentTimeStamp = new Date();
+                const expirationDate = new Date(currentTimeStamp.getTime() + expiresInDuration * 1000)
+                this.saveAuthData(token, expirationDate);
+                this.router.navigate(['/home'])
+            }
         });
   };
+
+  onLogout(){
+    this.clearAuthData();
+    // Had to puss null but due to issues passing empty string, check later
+    this.token = '';
+    this.authStatusListener.next(false);
+    this.isAuthenticated = false;
+    clearTimeout(this.tokenTimer);
+  }
+
+  autoAuthUser() {
+    const autoAuthInfo = this.getAuthData();
+    const currentTimeStamp = new Date();
+    let expiresIn: any = '';
+    if (autoAuthInfo) {
+        expiresIn = autoAuthInfo.expirationDate.getTime() - currentTimeStamp.getTime();
+    }
+    if (expiresIn > 0) {
+        this.token = autoAuthInfo?.token;
+        this.isAuthenticated = true;
+        // expiresIn is coming in seconds, converting it into miliseconds
+        this.setAuthTimer(expiresIn / 1000)
+        this.authStatusListener.next(true);
+    }
+  }
+
+  private saveAuthData(token: string, expirationDate: Date) {
+    localStorage.setItem('token', token)
+    localStorage.setItem('expiration', expirationDate.toISOString());
+  }
+
+  private clearAuthData(){
+    localStorage.removeItem('token');
+    localStorage.removeItem('expiration');
+  }
+
+  private setAuthTimer(duration: number) {
+    this.tokenTimer = setTimeout(() => {
+        this.onLogout();
+    }, duration * 1000)
+  }
+
+  private getAuthData() {
+    const token = localStorage.getItem('token');
+    const expirationDate = localStorage.getItem('expiration');
+    if (!token || !expirationDate) {
+      return;
+    }
+    return {
+      token: token,
+      expirationDate: new Date(expirationDate),
+    };
+  }
 }

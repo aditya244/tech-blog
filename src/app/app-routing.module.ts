@@ -8,6 +8,7 @@ import { LoginComponent } from './pages/login/login.component';
 import { PostBlogComponent } from './pages/post-blog/post-blog.component';
 import { ReadingListComponent } from './pages/reading-list/reading-list.component';
 import { SignUpComponent } from './pages/sign-up/sign-up.component';
+import { AuthGuard } from './services/auth.guard';
 
 const routes: Routes = [
   {path: '', redirectTo: '/home', pathMatch: 'full'},
@@ -17,12 +18,13 @@ const routes: Routes = [
   {path: 'blogs', component: BlogComponent},
   {path: 'blog-details/:id', component: BlogDetailsComponent},
   {path: 'about-author', component: AuthorComponent},
-  {path: 'post-blog', component: PostBlogComponent},
-  {path: 'my-reading-list', component: ReadingListComponent}
+  {path: 'post-blog', component: PostBlogComponent, canActivate: [AuthGuard]},
+  {path: 'my-reading-list', component: ReadingListComponent, canActivate: [AuthGuard]}
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
+  providers: [AuthGuard]
 })
 export class AppRoutingModule { }
