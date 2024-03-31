@@ -13,6 +13,7 @@ export class AuthService {
    private authStatusListener = new Subject<boolean>();
    private isAuthenticated = false;
    private tokenTimer: any;
+   private isAdminUser: boolean = false;
 
   constructor(private httpClient: HttpClient,
     private router: Router) { }
@@ -23,6 +24,10 @@ export class AuthService {
 
   public getIsAuthenticated() {
     return this.isAuthenticated;
+  }
+
+  public isAdmin() {
+    return this.isAdminUser;
   }
 
   getAuthStatusListerner() {
@@ -44,15 +49,15 @@ export class AuthService {
         email: loginData.email,
         password: loginData.password
     }
-    this.httpClient.post<{token: string, expiresIn: number}>("http://localhost:3000/api/user/login", userData)
+    this.httpClient.post<{token: string, expiresIn: number, isAdmin: boolean}>("http://localhost:3000/api/user/login", userData)
         .subscribe(response => {
-            console.log(response)
             const token = response.token;
             this.token = token;
             if (token) {
                 const expiresInDuration = response.expiresIn;
                 this.setAuthTimer(expiresInDuration);
                 // to conver sec into miliseconds
+                this.isAdminUser = response.isAdmin;
                 this.authStatusListener.next(true);
                 this.isAuthenticated = true;
                 const currentTimeStamp = new Date();
