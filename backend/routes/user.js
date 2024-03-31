@@ -29,12 +29,10 @@ router.post("/sign-up", (req, res, next) => {
 });
 
 router.post("/login", (req, res, next) => {
-  console.log(req.body, "REQ_BODY");
   // checks if the email exists or not
   let userData;
   User.findOne({ email: req.body.email })
     .then((user) => {
-      console.log(user, "USER");
       if (!user) {
         return res.status(401).json({
           message: "User does not exist!",
@@ -58,7 +56,8 @@ router.post("/login", (req, res, next) => {
       );
       return res.status(200).json({
         token: token,
-        expiresIn: 3600
+        expiresIn: 3600,
+        isAdmin: userData.isAdmin
       });
     })
     .catch((err) => {

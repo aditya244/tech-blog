@@ -1,7 +1,8 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, FormArray, FormBuilder } from '@angular/forms';
 import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-post-blog',
@@ -20,10 +21,14 @@ export class PostBlogComponent implements OnInit {
   }
 
   public tag: string = '';
+  private isAdmin: boolean = false;
 
-  constructor(private fb: FormBuilder, private http: HttpClient) { }
+  constructor(private fb: FormBuilder, private http: HttpClient, private authService: AuthService) { }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.isAdmin = this.authService.isAdmin();
+    console.log(this.isAdmin, 'ISADMIN')
+  }
 
   blogDetails = new FormControl();
 
@@ -33,7 +38,10 @@ export class PostBlogComponent implements OnInit {
   }
 
   onSubmitBlog() {
-    this.http.post<{message: string}>("http://localhost:3000/api/blogs", this.blog).subscribe((response) => {
+    const headers = new HttpHeaders({
+      'isAdmin': this.isAdmin.toString()
+    })
+    this.http.post<{message: string}>("http://localhost:3000/api/blogs", this.blog, {headers: headers}).subscribe((response) => {
       console.log(response)
     })
   }

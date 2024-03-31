@@ -14,8 +14,6 @@ export class AppComponent implements OnInit {
 
   constructor( private authService: AuthService) {}
 
-  title = 'tech-blog';
-
   ngOnInit(): void {
     this.isUserAuthenticated = this.authService.getIsAuthenticated();
     // the below subscription might take longer than expect, and we have a getter for the auth status
