@@ -32,4 +32,8 @@ export class HomepageComponent implements OnInit {
     })
   }
 
+  onAddToReadingList(blogId: string) {
+    this.blogService.addToReadingList(blogId)
+  }
+
 }

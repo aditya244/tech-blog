@@ -6,7 +6,8 @@ const userSchema = mongoose.Schema({
     lastName: {type: String},
     email: {type: String, required: true, unique: true},
     password: {type: String, required: true},
-    isAdmin: { type: Boolean, default: false }
+    isAdmin: { type: Boolean, default: false },
+    readingList: []
 })
 
 userSchema.plugin(uniqueValidator);

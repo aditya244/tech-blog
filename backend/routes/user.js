@@ -5,6 +5,8 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
 router.post("/sign-up", (req, res, next) => {
+  // add the logic to check if the userId already exist
+  // emailId has to be unique
   bcrypt.hash(req.body.password, 10).then((hash) => {
     const user = new User({
       firstName: req.body.email,
@@ -67,5 +69,27 @@ router.post("/login", (req, res, next) => {
       });
     });
 });
+
+router.post("/add-reading-list",  (req, res, next) => {
+  User.findOne({ email: req.body.userEmailid })
+    .then((user) => {
+      if (!user.readingList.includes(req.body.blogId)) {
+        user.readingList.push(req.body.blogId)
+        user.save()
+        return res.status(200).json({
+          message: 'Successfully added to reading list'
+        })
+      }
+      return res.status(401).json({
+        mesaage: 'This blog already exists in the reading list'
+      })
+    })
+    .catch((err) => {
+      return res.status(401).json({
+        message: 'Add to reading list failed'
+      })
+    })
+  
+})
 
 module.exports = router;
