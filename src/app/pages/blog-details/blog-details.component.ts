@@ -6,6 +6,7 @@ import {MatDialog, MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog
 import { DialogComponent } from 'src/app/components/shared/dialog/dialog.component';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-blog-details',
@@ -18,6 +19,8 @@ export class BlogDetailsComponent implements OnInit {
   comments:any[] = [];
   comment: string = '';
   id: any;
+  public isAdmin: boolean = false;
+  public isAuthenticated: boolean = false;
 
   constructor(
     private cdr: ChangeDetectorRef,
@@ -26,6 +29,7 @@ export class BlogDetailsComponent implements OnInit {
     private blogService: BlogService,
     private fb: FormBuilder,
     private http: HttpClient,
+    private authService: AuthService,
     public dialog: MatDialog
   ) { }
 
@@ -35,6 +39,9 @@ export class BlogDetailsComponent implements OnInit {
       console.log(res, 'response_blogDetails')
       this.selectedBlog = res.blog;
     });
+    this.authService.getIsAuthenticated();
+    this.isAdmin = this.authService.isAdmin();
+    this.isAuthenticated = this.authService.getIsAuthenticated();
     this.fetchComments();
   }
 

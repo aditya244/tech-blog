@@ -14,6 +14,7 @@ export class AuthService {
    private isAuthenticated = false;
    private tokenTimer: any;
    private isAdminUser: boolean = false;
+   private userEmailId: any
 
   constructor(private httpClient: HttpClient,
     private router: Router) { }
@@ -32,6 +33,10 @@ export class AuthService {
 
   getAuthStatusListerner() {
     return this.authStatusListener.asObservable();
+  }
+
+  public getUserEmailid() {
+    return this.userEmailId;
   }
 
   onSignUp(userData: AuthData){
@@ -54,6 +59,7 @@ export class AuthService {
             const token = response.token;
             this.token = token;
             if (token) {
+                this.userEmailId = loginData.email;
                 const expiresInDuration = response.expiresIn;
                 this.setAuthTimer(expiresInDuration);
                 // to conver sec into miliseconds

@@ -1,4 +1,4 @@
-<div class="blog-operations-bar">
+<div *ngIf="isAdmin && isAuthenticated" class="blog-operations-bar">
     <button mat-raised-button color="basic">
         Edit
     </button>

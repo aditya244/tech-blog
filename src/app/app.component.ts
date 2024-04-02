@@ -10,6 +10,7 @@ import { AuthService } from './services/auth.service';
 export class AppComponent implements OnInit {
 
   public isUserAuthenticated: boolean = false;
+  public isAdmin: boolean = false;
   private authListenerSubs: Subscription = new Subscription;
 
   constructor( private authService: AuthService) {}
@@ -20,6 +21,7 @@ export class AppComponent implements OnInit {
     this.authListenerSubs = this.authService.getAuthStatusListerner().subscribe(isAuthenticated =>{
       this.isUserAuthenticated = isAuthenticated
     });
+    this.isAdmin = this.authService.isAdmin();
     // Move the navigator to a separate component and thus the logic
     this.authService.autoAuthUser();
   }
