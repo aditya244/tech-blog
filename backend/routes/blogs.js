@@ -62,4 +62,28 @@ router.delete("/:id", checkAuth, (req, res, next) => {
   });
 });
 
+router.get('/readingListBlogs/:ids', (req, res, next) => {
+  // tried sending ids by query params but it is not helping
+  const blogIds = req.params.ids.split(','); 
+  Blog.find({ _id: { $in: blogIds } })
+    .then((blogs) => {
+      if (blogs.length) {
+        return res.status(200).json({
+          message: 'Blogs fetched successfully',
+          blogs: blogs
+        });
+      } else {
+        return res.status(404).json({
+          message: 'No blogs present in the Reading list. Add new blogs!'
+        });
+      }
+    })
+    .catch((error) => {
+      console.log(error);
+      return res.status(500).json({
+        message: 'An error occurred while fetching blogs'
+      });
+    });
+});
+
 module.exports = router;

@@ -59,7 +59,8 @@ router.post("/login", (req, res, next) => {
       return res.status(200).json({
         token: token,
         expiresIn: 3600,
-        isAdmin: userData.isAdmin
+        isAdmin: userData.isAdmin,
+        email: userData.email
       });
     })
     .catch((err) => {
@@ -90,6 +91,21 @@ router.post("/add-reading-list",  (req, res, next) => {
       })
     })
   
+})
+
+router.get("/reading-list/:emailId", (req, res, next) => {
+  User.findOne({ email: req.params.emailId })
+    .then((user) => {
+      if (!user) {
+        return res.status(401).json({
+          message: 'You are not signed in.'
+        })
+      }
+      return res.status(200).json({
+        readingList: user.readingList,
+        message: 'Reading List fetched'
+      })
+    })
 })
 
 module.exports = router;
