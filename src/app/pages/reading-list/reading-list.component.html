@@ -1,1 +1,5 @@
-<p>reading-list works!</p>
+<div class="blog-feed-conteiner" *ngFor="let blog of readingList">
+    <h1>{{blog.title}}</h1>
+    <div class="font-style" [innerHTML]='blog.content.slice(0,200)'></div>
+    <a [routerLink]="['/blog-details/', blog.id, {relaiveTo: null}]"><button type="button" class="read-more-btn">Read More</button></a>
+</div>

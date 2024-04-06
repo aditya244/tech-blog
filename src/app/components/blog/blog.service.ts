@@ -1,5 +1,6 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { response } from 'express';
 import { Observable } from 'rxjs';
 import { AuthService } from 'src/app/services/auth.service';
 
@@ -42,5 +43,15 @@ export class BlogService {
       .subscribe((response) => {
         console.log(response, 'READING_LIST_RES');
       });
+  }
+
+  getReadingListData(emailId: any) {
+    return this.httpClient.get(`http://localhost:3000/api/user/reading-list/${emailId}`);
+  }
+
+  getReadingListBlogsData(ids: string[]) {
+    const stringId = ids.join(',')
+    const url = 'http://localhost:3000/api/blogs/readingListBlogs/' + stringId;
+    return this.httpClient.get(url);
   }
 }

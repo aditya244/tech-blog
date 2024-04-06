@@ -54,15 +54,16 @@ export class AuthService {
         email: loginData.email,
         password: loginData.password
     }
-    this.httpClient.post<{token: string, expiresIn: number, isAdmin: boolean}>("http://localhost:3000/api/user/login", userData)
+    this.httpClient.post<{token: string, expiresIn: number, isAdmin: boolean, email: string}>("http://localhost:3000/api/user/login", userData)
         .subscribe(response => {
             const token = response.token;
+            this.userEmailId = response.email;
             this.token = token;
             if (token) {
-                this.userEmailId = loginData.email;
                 const expiresInDuration = response.expiresIn;
                 this.setAuthTimer(expiresInDuration);
                 // to conver sec into miliseconds
+                localStorage.setItem('email', response.email)
                 this.isAdminUser = response.isAdmin;
                 this.authStatusListener.next(true);
                 this.isAuthenticated = true;
