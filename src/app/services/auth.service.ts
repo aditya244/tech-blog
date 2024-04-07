@@ -14,7 +14,9 @@ export class AuthService {
    private isAuthenticated = false;
    private tokenTimer: any;
    private isAdminUser: boolean = false;
-   private userEmailId: any
+   private userEmailId: any;
+   private userDetails: any;
+   private userDetailsListerner = new Subject<any>();
 
   constructor(private httpClient: HttpClient,
     private router: Router) { }
@@ -35,8 +37,17 @@ export class AuthService {
     return this.authStatusListener.asObservable();
   }
 
+  getUserDetailsListener() {
+    return this.userDetailsListerner.asObservable();
+  }
+
   public getUserEmailid() {
+    // check if this is required since we are using from sessionStorage
     return this.userEmailId;
+  }
+
+  public getUserDetails() {
+    return this.userDetails
   }
 
   onSignUp(userData: AuthData){
@@ -54,7 +65,7 @@ export class AuthService {
         email: loginData.email,
         password: loginData.password
     }
-    this.httpClient.post<{token: string, expiresIn: number, isAdmin: boolean, email: string}>("http://localhost:3000/api/user/login", userData)
+    this.httpClient.post<{token: string, expiresIn: number, isAdmin: boolean, email: string, firstName: string}>("http://localhost:3000/api/user/login", userData)
         .subscribe(response => {
             const token = response.token;
             this.userEmailId = response.email;
@@ -64,8 +75,14 @@ export class AuthService {
                 this.setAuthTimer(expiresInDuration);
                 // to conver sec into miliseconds
                 localStorage.setItem('email', response.email)
+                console.log(response, 'RES')
+                //this.userDetails = response.firstName
                 this.isAdminUser = response.isAdmin;
                 this.authStatusListener.next(true);
+                this.userDetailsListerner.next({
+                  userEmailId: response.email,
+                  firstName: response.firstName
+                })
                 this.isAuthenticated = true;
                 const currentTimeStamp = new Date();
                 const expirationDate = new Date(currentTimeStamp.getTime() + expiresInDuration * 1000)
@@ -80,8 +97,10 @@ export class AuthService {
     // Had to puss null but due to issues passing empty string, check later
     this.token = '';
     this.authStatusListener.next(false);
+    this.userDetailsListerner.next({})
     this.isAuthenticated = false;
     clearTimeout(this.tokenTimer);
+    this.navigateToLoginPage();
   }
 
   autoAuthUser() {
@@ -108,6 +127,8 @@ export class AuthService {
   private clearAuthData(){
     localStorage.removeItem('token');
     localStorage.removeItem('expiration');
+    localStorage.removeItem('email')
+    sessionStorage.removeItem('userDetails')
   }
 
   private setAuthTimer(duration: number) {
@@ -126,5 +147,9 @@ export class AuthService {
       token: token,
       expirationDate: new Date(expirationDate),
     };
+  }
+
+  private navigateToLoginPage() {
+    this.router.navigate(['/login'])
   }
 }

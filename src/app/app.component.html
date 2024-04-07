@@ -9,6 +9,7 @@
     <li *ngIf="!isUserAuthenticated" routerLink="/sign-up" class="nav-item" type="none"> Sign Up</li>
     <li class="nav-item" type="none"> <input type="text" class="search-bar" placeholder="Search"></li>
     <li *ngIf="isUserAuthenticated" class="nav-item" type="none"> <button mat-button (click)="logout()"> Logout </button> </li>
+    <li routerLink="/" class="nav-item-right" type="none"> {{userDetils?.firstName}}</li>
   </ul>
 </nav>
 <div class="container">

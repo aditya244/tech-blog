@@ -1,0 +1,45 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.page-heading {
+    margin-top: 30px;
+    font-family:'Times New Roman', Times, serif;
+    color: #26323D;
+    letter-spacing: 1px;
+    font-size: 52px;
+    text-align: center;
+}
+
+.blog-container {
+    display: flex;
+    flex-direction: row;
+    width: 70%;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+.blog-feed-conteiner {
+    padding: 20px;
+    margin-top: 30px;
+    width: 90%;
+    height: 250px;
+    box-shadow: 2px 2px 5px #C2C1C2;
+}
+
+.read-more-btn {
+    padding: 8px;
+    border-radius: 2px;
+    background-color: white;
+    box-shadow: 2px 2px 5px #C2C1C2;
+    border: none;
+}
+
+.font-style {
+    font-family:'Times New Roman', Times, serif;
+    color: #26323D;
+    letter-spacing: 1px;
+    font-size: 14px;
+}
