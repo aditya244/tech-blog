@@ -1,6 +1,9 @@
+<div class="loader" *ngIf="isLoading">
+    <img src="../../../assets/loader.gif"/>
+</div>
 <div class="container">
     <div class="blog-container">
-        <div class="fallback-coomponent" *ngIf="!blogForFeed.length">
+        <div class="fallback-coomponent" *ngIf="isErrorFromServer">
             <h1> Seems like there's some issue!</h1>
             <p> Please check your internet connect! </p>
             <p>If the issue still persist, this could be a technical issue, please reach to us at this email id: contact@blog.com</p>
