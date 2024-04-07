@@ -60,7 +60,8 @@ router.post("/login", (req, res, next) => {
         token: token,
         expiresIn: 3600,
         isAdmin: userData.isAdmin,
-        email: userData.email
+        email: userData.email,
+        firstName: userData.firstName
       });
     })
     .catch((err) => {
