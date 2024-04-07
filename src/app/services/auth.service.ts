@@ -125,6 +125,10 @@ export class AuthService {
     }
   }
 
+  onSubscribe(subscriptionData: any) {
+    return this.httpClient.post("http://localhost:3000/api/subscribe", subscriptionData)
+  }
+
   private saveAuthData(token: string, expirationDate: Date) {
     localStorage.setItem('token', token)
     localStorage.setItem('expiration', expirationDate.toISOString());

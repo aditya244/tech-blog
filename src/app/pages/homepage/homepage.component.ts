@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Blog } from 'src/app/components/blog/blog.interface';
 import { BlogService } from 'src/app/components/blog/blog.service';
 import { catchError, map, throwError } from 'rxjs';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-homepage',
@@ -13,8 +14,10 @@ export class HomepageComponent implements OnInit {
   blogForFeed: Blog[] = [];
   isLoading: boolean = true;
   isErrorFromServer:boolean = false;
+  subsErrorMsg: string = '';
+  subsFailed: boolean = false;
   
-  constructor(private blogService: BlogService) { }
+  constructor(private blogService: BlogService, private authService: AuthService) { }
 
   ngOnInit(): void {
     this.blogService
@@ -48,6 +51,21 @@ export class HomepageComponent implements OnInit {
 
   onAddToReadingList(blogId: string) {
     this.blogService.addToReadingList(blogId)
+  }
+
+  subscribe(email: string) {
+    const subscriptionDate = new Date();
+    const subscriptionData = {
+      email: email,
+      date: subscriptionDate
+    }
+    this.authService.onSubscribe(subscriptionData).subscribe(response => {
+    },
+    error => {
+      this.subsErrorMsg = error.error.message;
+      this.subsFailed = true;
+    }
+    )
   }
 
 }

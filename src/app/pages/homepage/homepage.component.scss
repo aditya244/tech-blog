@@ -103,5 +103,26 @@
 .subscribe-input {
     width: 200px;
     align-self: center;
-    //border-radius: 5px;
+    height: 20px;
+    border-radius: 3px;
+    font-family:'Times New Roman', Times, serif;
+    color: #26323D;
+    letter-spacing: 1px;
+    font-size: 14px;
+}
+
+.subscribe-btn {
+    height: 25px;
+    padding: 5px;
+    margin-top: 10px;
+    border-radius: 5px;
+    background-color: #fff;
+    color: #090b0d;
+    border: none;
+    box-shadow: 1px 1px 2px #C2C1C2;
+}
+
+.sub-failed {
+    font-size: 16px;
+    text-align: center;
 }

@@ -6,6 +6,7 @@ const app = express();
 const blogRoutes = require("./routes/blogs");
 const commentRoutes = require("./routes/comments");
 const userRoutes = require("./routes/user");
+const subscriptionRoutes = require("./routes/subscribe")
 
 mongoose.connect("mongodb+srv://aditya:V53bkdhA4QHBKB9U@cluster0.eciv35m.mongodb.net/blog?retryWrites=true&w=majority")
     .then(() => {
@@ -33,5 +34,6 @@ app.use((req, res, next) => {
 app.use("/api/blogs", blogRoutes);
 app.use("/api/comments", commentRoutes);
 app.use("/api/user", userRoutes)
+app.use("/api", subscriptionRoutes)
 
 module.exports = app;
