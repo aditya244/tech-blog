@@ -20,8 +20,6 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
     this.isUserAuthenticated = this.authService.getIsAuthenticated();
-    this.isAdmin = this.authService.isAdmin();
-    //this.userDetils = this.authService.getUserDetails();
     // the below subscription might take longer than expect, and we have a getter for the auth status
     this.authListenerSubs = this.authService.getAuthStatusListerner().subscribe(isAuthenticated =>{
       this.isUserAuthenticated = isAuthenticated
@@ -32,9 +30,7 @@ export class AppComponent implements OnInit {
       this.userDetils = userDetails
       sessionStorage.setItem('userDetails', JSON.stringify(userDetails));
     })
-
     this.userEmailId = sessionStorage.getItem('email')
-
     if(!this.userDetils) {
       const userDetailsStr = sessionStorage.getItem('userDetails')
       if(userDetailsStr) {
@@ -43,7 +39,7 @@ export class AppComponent implements OnInit {
     }    
     // Move the navigator to a separate component and thus the logic
     this.authService.autoAuthUser();
-    console.log(this.userDetils, 'USEERNAMW')
+    this.isAdmin = this.userDetils.isAdmin;
   }
 
   logout(){
