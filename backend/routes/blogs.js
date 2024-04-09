@@ -35,6 +35,21 @@ router.post(
   }
 );
 
+router.put("/edit-blog/:id", (req, res, next) => {
+  console.log(req.params, 'REQ_EDIT')
+  const blog = new Blog({
+    _id: req.params.id,
+    title: req.body.title,
+    content: req.body.content,
+    tags: req.body.tags
+  })
+  Blog.updateOne({_id: req.params.id}, blog)
+    .then((result) => {
+      console.log(result);
+      res.status(200).json({ message: "Blog Updated Successfully" })
+    })
+})
+
 router.get("", (req, res, next) => {
   Blog.find().then((documents) => {
     res.status(200).json({

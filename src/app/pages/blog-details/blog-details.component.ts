@@ -36,13 +36,16 @@ export class BlogDetailsComponent implements OnInit {
   ngOnInit(): void {
     this.id = this.route.snapshot.paramMap.get('id');
     this.blogService.getBlogDetails(this.id).subscribe(res => {
-      console.log(res, 'response_blogDetails')
       this.selectedBlog = res.blog;
     });
     this.authService.getIsAuthenticated();
-    this.isAdmin = this.authService.isAdmin();
+    const userDetailsStr: any = sessionStorage.getItem('userDetails');
+    const jsonUserDetails = JSON.parse(userDetailsStr);
+    this.isAdmin = jsonUserDetails.isAdmin
+
     this.isAuthenticated = this.authService.getIsAuthenticated();
     this.fetchComments();
+    console.log(this.isAdmin, this.isAuthenticated, 'DETAILS')
   }
 
   commentForm: FormGroup = this.fb.group({
@@ -76,6 +79,10 @@ export class BlogDetailsComponent implements OnInit {
       }
     })
   }
+
+  editBlog(blogId: string): void {
+    this.router.navigate(['/edit-blog', blogId]);
+  }  
 
   private convertDateFormat() {
     const currentDate = new Date();

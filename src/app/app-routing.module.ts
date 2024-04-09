@@ -17,6 +17,7 @@ const routes: Routes = [
   {path: 'sign-up', component: SignUpComponent},
   {path: 'blogs', component: BlogComponent},
   {path: 'blog-details/:id', component: BlogDetailsComponent},
+  {path: 'edit-blog/:id', component: PostBlogComponent},
   {path: 'about-author', component: AuthorComponent},
   {path: 'post-blog', component: PostBlogComponent, canActivate: [AuthGuard]},
   {path: 'my-reading-list', component: ReadingListComponent, canActivate: [AuthGuard]}

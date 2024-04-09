@@ -13,7 +13,6 @@ export class AuthService {
    private authStatusListener = new Subject<boolean>();
    private isAuthenticated = false;
    private tokenTimer: any;
-   private isAdminUser: boolean = false;
    private userEmailId: any;
    private userDetails: any;
    private userDetailsListerner = new Subject<any>();
@@ -28,10 +27,6 @@ export class AuthService {
 
   public getIsAuthenticated() {
     return this.isAuthenticated;
-  }
-
-  public isAdmin() {
-    return this.isAdminUser;
   }
 
   public getLoading() {
@@ -83,11 +78,11 @@ export class AuthService {
                 localStorage.setItem('email', response.email)
                 console.log(response, 'RES')
                 //this.userDetails = response.firstName
-                this.isAdminUser = response.isAdmin;
                 this.authStatusListener.next(true);
                 this.userDetailsListerner.next({
                   userEmailId: response.email,
-                  firstName: response.firstName
+                  firstName: response.firstName,
+                  isAdmin: response.isAdmin
                 })
                 this.isAuthenticated = true;
                 const currentTimeStamp = new Date();
