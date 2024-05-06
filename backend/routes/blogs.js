@@ -8,6 +8,7 @@ router.post(
   "",
   checkAuth,
   (req, res, next) => {
+    console.log(req.headers, 'REQ')
     const isAdmin = req.headers.isadmin.trim();
     if (isAdmin === "true") {
       const blogs = new Blog({

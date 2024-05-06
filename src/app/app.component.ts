@@ -27,9 +27,11 @@ export class AppComponent implements OnInit {
 
     this.userDetailsSubs = this.authService.getUserDetailsListener().subscribe(userDetails => {
       console.log(userDetails, 'USER_DET')
-      this.userDetils = userDetails
+      this.userDetils = userDetails;
+      this.isAdmin = userDetails.isAdmin;
       sessionStorage.setItem('userDetails', JSON.stringify(userDetails));
     })
+    //this.isAdmin = this.userDetils.isAdmin;
     this.userEmailId = sessionStorage.getItem('email')
     if(!this.userDetils) {
       const userDetailsStr = sessionStorage.getItem('userDetails')
@@ -39,7 +41,7 @@ export class AppComponent implements OnInit {
     }    
     // Move the navigator to a separate component and thus the logic
     this.authService.autoAuthUser();
-    this.isAdmin = this.userDetils.isAdmin;
+    console.log(this.isAdmin, this.isUserAuthenticated, 'DATA')
   }
 
   logout(){

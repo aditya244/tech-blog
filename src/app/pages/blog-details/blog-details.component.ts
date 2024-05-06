@@ -4,7 +4,7 @@ import { map, pipe } from 'rxjs';
 import { BlogService } from 'src/app/components/blog/blog.service';
 import {MatDialog, MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import { DialogComponent } from 'src/app/components/shared/dialog/dialog.component';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { AuthService } from 'src/app/services/auth.service';
 
@@ -27,7 +27,7 @@ export class BlogDetailsComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private blogService: BlogService,
-    private fb: FormBuilder,
+    private fb: UntypedFormBuilder,
     private http: HttpClient,
     private authService: AuthService,
     public dialog: MatDialog
@@ -48,8 +48,8 @@ export class BlogDetailsComponent implements OnInit {
     console.log(this.isAdmin, this.isAuthenticated, 'DETAILS')
   }
 
-  commentForm: FormGroup = this.fb.group({
-    blogComments: this.fb.array([new FormControl('')]),
+  commentForm: UntypedFormGroup = this.fb.group({
+    blogComments: this.fb.array([new UntypedFormControl('')]),
   })
 
   fetchComments() {

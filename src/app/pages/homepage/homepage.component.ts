@@ -3,6 +3,9 @@ import { Blog } from 'src/app/components/blog/blog.interface';
 import { BlogService } from 'src/app/components/blog/blog.service';
 import { catchError, map, throwError } from 'rxjs';
 import { AuthService } from 'src/app/services/auth.service';
+import { SocialAuthService } from "@abacritt/angularx-social-login";
+import { Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-homepage',
@@ -16,10 +19,20 @@ export class HomepageComponent implements OnInit {
   isErrorFromServer:boolean = false;
   subsErrorMsg: string = '';
   subsFailed: boolean = false;
+  user: any;
+  isUserAuthenticated: boolean = false;
   
-  constructor(private blogService: BlogService, private authService: AuthService) { }
+  constructor(private blogService: BlogService, 
+      private authService: AuthService, 
+      private socialAuthService: SocialAuthService,
+      private route: Router 
+    ) { }
 
   ngOnInit(): void {
+    this.authService.getAuthStatusListerner().subscribe(isAuthenticated =>{
+      this.isUserAuthenticated = isAuthenticated
+    });
+    console.log(this.user, 'init')
     this.blogService
       .getBlogsForHomeFeed()
       .pipe(
@@ -47,6 +60,12 @@ export class HomepageComponent implements OnInit {
         }
         this.blogForFeed = data;
       });
+
+        this.socialAuthService.authState.subscribe((user) => {
+          this.user = user;
+          console.log(this.user, 'USER_GOOGLE')
+          this.authService.onLoginWithGoogle(user)
+        });
   }
 
   onAddToReadingList(blogId: string) {
@@ -66,6 +85,14 @@ export class HomepageComponent implements OnInit {
       this.subsFailed = true;
     }
     )
+  }
+
+  navigateTo(path: string) {
+    if(path === 'login') {
+      this.route.navigateByUrl("/login")
+    } else {
+      this.route.navigateByUrl("/sign-up")
+    }
   }
 
 }

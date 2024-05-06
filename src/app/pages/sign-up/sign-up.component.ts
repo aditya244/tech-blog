@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Form, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Form, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
@@ -8,9 +8,9 @@ import { AuthService } from 'src/app/services/auth.service';
   styleUrls: ['./sign-up.component.scss']
 })
 export class SignUpComponent implements OnInit {
-  registerForm!: FormGroup;
+  registerForm!: UntypedFormGroup;
 
-  constructor( private formBuilder: FormBuilder, private authService: AuthService) { }
+  constructor( private formBuilder: UntypedFormBuilder, private authService: AuthService) { }
 
   ngOnInit(): void {
     this.registerForm = this.formBuilder.group({

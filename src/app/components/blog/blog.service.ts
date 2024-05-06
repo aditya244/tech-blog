@@ -46,6 +46,7 @@ export class BlogService {
   }
 
   getReadingListData(emailId: any) {
+    console.log(emailId, 'EMAIL_PARAM')
     return this.httpClient.get(`http://localhost:3000/api/user/reading-list/${emailId}`);
   }
 

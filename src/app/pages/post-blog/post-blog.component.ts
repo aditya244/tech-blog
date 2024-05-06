@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, FormArray, FormBuilder } from '@angular/forms';
+import { UntypedFormControl, FormGroup, FormArray, UntypedFormBuilder } from '@angular/forms';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { Blog } from 'src/app/components/blog/blog.interface';
@@ -28,7 +28,7 @@ export class PostBlogComponent implements OnInit {
   private blogId: any;
 
   constructor(
-    private fb: FormBuilder,
+    private fb: UntypedFormBuilder,
     private http: HttpClient,
     private authService: AuthService,
     private route: ActivatedRoute,
@@ -57,7 +57,7 @@ export class PostBlogComponent implements OnInit {
     console.log(this.isAdmin, 'ISADMIN');
   }
 
-  blogDetails = new FormControl();
+  blogDetails = new UntypedFormControl();
 
   addTagtoTagsArray() {
     this.blog.tags.push(this.tag);

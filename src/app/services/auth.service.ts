@@ -1,8 +1,11 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
+import { response } from 'express';
 import { Observable, Subject } from 'rxjs';
 import { AuthData } from '../pages/sign-up/auth-data.model';
+import { SocialAuthService } from "@abacritt/angularx-social-login";
+
 
 @Injectable({
   providedIn: 'root'
@@ -19,7 +22,8 @@ export class AuthService {
    private isLoading: boolean = true;
 
   constructor(private httpClient: HttpClient,
-    private router: Router) { }
+    private router: Router,
+    private socialAuthService: SocialAuthService) { }
 
   public getToken() {
     return this.token;
@@ -102,6 +106,8 @@ export class AuthService {
     this.isAuthenticated = false;
     clearTimeout(this.tokenTimer);
     this.navigateToLoginPage();
+    this.socialAuthService.signOut();
+
   }
 
   autoAuthUser() {
@@ -122,6 +128,40 @@ export class AuthService {
 
   onSubscribe(subscriptionData: any) {
     return this.httpClient.post("http://localhost:3000/api/subscribe", subscriptionData)
+  }
+
+  onLoginWithGoogle(loginData: any) {
+    const userData = {
+      firstName: loginData?.firstName,
+      lastName: loginData?.lastName,
+      email: loginData?.email
+    }
+    this.httpClient.post<{token: string, expiresIn: number, isAdmin: boolean, email: string, firstName: string}>("http://localhost:3000/api/user/login-with-google", userData).subscribe(response => {
+    console.log(response, 'RESPONSE, LOGIN WITH GOOOGLE')
+    const token = response.token;
+            this.userEmailId = response.email;
+            this.token = token;
+            if (token) {
+                this.isLoading = false;
+                const expiresInDuration = response.expiresIn;
+                this.setAuthTimer(expiresInDuration);
+                // to conver sec into miliseconds
+                localStorage.setItem('email', response.email)
+                console.log(response, 'RES')
+                //this.userDetails = response.firstName
+                this.authStatusListener.next(true);
+                this.userDetailsListerner.next({
+                  userEmailId: response.email,
+                  firstName: response.firstName,
+                  isAdmin: response.isAdmin
+                })
+                this.isAuthenticated = true;
+                const currentTimeStamp = new Date();
+                const expirationDate = new Date(currentTimeStamp.getTime() + expiresInDuration * 1000)
+                this.saveAuthData(token, expirationDate);
+                this.router.navigate(['/home'])
+            }
+  })
   }
 
   private saveAuthData(token: string, expirationDate: Date) {
