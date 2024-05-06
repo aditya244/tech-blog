@@ -18,14 +18,6 @@
         </div>
     </div>
     <div class="side-bar">
-        <div class="login-box">
-            <h2> Hey there, sign in with us! </h2> 
-            <p> Sign with with your email id or login with Google to get access to your reading list. </p>
-            <p> You can add or remove any of the blogs from the reading list. </p>
-            <button mat-flat-button class="sign-in-btn"> Sign In </button><br> 
-            <p class="space"> Or </p> 
-            <button mat-flat-button class="sign-in-btn">  Create Account </button>
-        </div>
         <div class="subscribe-box">
             <div *ngIf="!subsFailed">
                 <h1> Subscribe to our blogs! </h1>
@@ -40,9 +32,25 @@
                 <p>{{subsErrorMsg}}</p>
             </div>
         </div>
-        <div class="tag-conatiner">
-    
+        <div *ngIf="!isUserAuthenticated" class="login-box">
+            <h2> Hey there, sign in with us! </h2> 
+            <p> Sign with with your email id or login with Google to get access to your reading list. </p>
+            <p> You can add or remove any of the blogs from the reading list anytime. </p>
+            <button mat-flat-button class="sign-in-btn" (click)="navigateTo('login')"> Sign In </button><br> 
+            <p class="space"> Or </p> 
+            <button mat-flat-button class="sign-in-btn" (click)="navigateTo('sign-up')">  Create Account </button>
+            <div >
+                <p class="space"> Or </p> 
+                <asl-google-signin-button class="google-btn" type="standard" >Sign In With Google</asl-google-signin-button>
+            </div>
         </div>
+        <div class="tag-conatiner">
+            
+        </div>
+        <!-- <div *ngIf="isAuthenticated">
+            <span> {{user.name}} </span>
+            <span> {{user.email}} </span>
+        </div> -->
     </div>
     
 </div>

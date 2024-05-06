@@ -79,7 +79,7 @@
     padding: 20px;
     padding-top: 0px;
     margin-top: 30px;
-    height: 700px;
+    height: 800px;
     width: 30%;
     box-shadow: 2px 2px 5px #C2C1C2;
     position:sticky;
@@ -137,7 +137,7 @@
     padding: 30px;
     margin-top: 30px;
     width: auto;
-    height: auto;
+    height: 300px;
     font-weight: 500;
     font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     box-shadow: 2px 2px 5px #C2C1C2;
@@ -150,4 +150,14 @@
 
 .space {
     margin: 5px;
+}
+
+.google-btn {
+    // display: flex;
+    // text-align: center;
+    // align-items: center;
+    // margin: 0 auto;
+    position: absolute;       /* Position absolutely */
+  left: 50%;                /* Move to the center horizontally */
+  transform: translateX(-50%);
 }

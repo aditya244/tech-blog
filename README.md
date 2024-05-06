@@ -25,3 +25,14 @@ Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To u
 ## Further help
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+
+
+// npm i @abacritt/angularx-social-login@1.2.5
+// this version is added since this works with the application's angular version
+
+
+// NOTE: don't change the angular version as well as this package version
+
+// reference for login with google
+
+// https://www.youtube.com/watch?v=1hMvJsSDnvU

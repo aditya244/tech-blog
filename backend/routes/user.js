@@ -72,9 +72,68 @@ router.post("/login", (req, res, next) => {
     });
 });
 
+// check for all the error handling in this route
+router.post("/login-with-google", (req, res, next) => {
+  let userData;
+  console.log(req.body, 'REQ');
+  User.findOne({ email: req.body.email })
+    .then((user) => {
+      console.log(user, "USER");
+
+      // logic for sign up
+      if (!user) {
+        console.log('inside sign up');
+        // sign up the user
+        const newUser = new User({
+          firstName: req.body.firstName,
+          lastName: req.body.lastName,
+          email: req.body.email,
+          password: 'password_123'
+        });
+        newUser
+      .save()
+      .then((result) => {
+        res.status(201).json({
+          message: "User Created!",
+          result: result,
+        });
+      })
+      .catch((err) => {
+        res.status(500).json({
+          error: err,
+        });
+      });
+        //return newUser.save(); // return the promise chain
+      } else {
+        userData = user;
+        const token = jwt.sign(
+          { email: userData.email, userId: userData._id },
+          "RANDOM_SECRET_TEXT_CHAR_JBKJBKBKJBKJB_HJBHUVTYDRTCGVHVBJHBJHBJHB",
+          { expiresIn: "1h" }
+        );
+        console.log("user login");
+        return res.status(200).json({
+          token: token,
+          expiresIn: 3600,
+          isAdmin: userData.isAdmin,
+          email: userData.email,
+          firstName: userData.firstName
+        });
+      }
+    })
+    .catch((err) => { // handle errors in the entire promise chain
+      console.error(err);
+      return res.status(500).json({
+        mesaage: err, // return error message
+      });
+    });
+});
+
 router.post("/add-reading-list",  (req, res, next) => {
+  console.log(req.body.userEmailid, 'REQ')
   User.findOne({ email: req.body.userEmailid })
     .then((user) => {
+      console.log(user, 'USER')
       if (!user.readingList.includes(req.body.blogId)) {
         user.readingList.push(req.body.blogId)
         user.save()
@@ -101,6 +160,11 @@ router.get("/reading-list/:emailId", (req, res, next) => {
         return res.status(401).json({
           message: 'You are not signed in.'
         })
+      }
+      if (!user.readingList || user.readingList.length === 0) {
+        return res.status(200).json({
+          message: 'Reading List is empty'
+        });
       }
       return res.status(200).json({
         readingList: user.readingList,
