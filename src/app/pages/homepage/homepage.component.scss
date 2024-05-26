@@ -43,10 +43,24 @@
 .blog-feed-conteiner {
     padding: 20px;
     margin-top: 30px;
-    width: 400px;
+    width: 800px;
     height: 250px;
     box-shadow: 2px 2px 5px #C2C1C2;
 }
+
+.blog-content {
+    display: flex;
+    flex-direction: row;
+}
+
+.image-container {
+    display: flex;
+    margin-right: 20px;
+}
+
+// .content-container {
+//     display: flex;
+// }
 
 .read-more-btn {
     padding: 8px;

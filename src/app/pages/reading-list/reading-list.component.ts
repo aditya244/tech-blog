@@ -23,7 +23,7 @@ export class ReadingListComponent implements OnInit {
     })
   }
 
-  fetchReadingListBlogs(readingListRes: { readingList: string[]; }) {
+  fetchReadingListBlogs(readingListRes: { readingList: string[] }) {
     const readList = readingListRes.readingList;
     this.blogService.getReadingListBlogsData(readList).subscribe((response: any)  => {
       console.log(response)

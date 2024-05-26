@@ -2,7 +2,6 @@
   <ul>
     <li routerLink="/home" class="nav-item-logo" type="none"> DebugTek </li>
     <li routerLink="/about-author" class="nav-item" type="none"> Author </li>
-    <li routerLink="/blogs" class="nav-item" type="none"> Blogs </li>
     <li *ngIf="isUserAuthenticated && isAdmin" routerLink="/post-blog" class="nav-item" type="none"> Add New Blog </li>
     <li *ngIf="isUserAuthenticated" routerLink="/my-reading-list" class="nav-item" type="none"> My Reading List</li>
     <li *ngIf="!isUserAuthenticated" routerLink="/login" class="nav-item" type="none"> Login</li>

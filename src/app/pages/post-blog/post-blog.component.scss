@@ -8,6 +8,10 @@
     margin-top: 30px;
 }
 
+input[type="file"] {
+    visibility: hidden;
+} 
+
 .tag-content {
     width: 150px;
     background-color: #42586C;
@@ -16,4 +20,15 @@
     padding: 3px;
     padding-left: 7px;
     margin-top: 7px;
+}
+
+.banner-preview {
+    // height: 5rem;
+    // width: 1rem 0;
+}
+
+.banner-preview img {
+    //height: 100%;
+    height: 300px;
+    width: 450px;
 }

@@ -2,19 +2,45 @@ const express = require("express");
 const Blog = require("../models/blog");
 const router = express.Router();
 const checkAuth = require("../middleware/check-auth");
+const multer = require("multer");
+
+const MIME_TYPE_MAP = {
+  'image/png': 'png',
+  'image/jpeg': 'jpeg',
+  'image/jpg': 'jpg'
+}
+
+const storage = multer.diskStorage({
+  destination: (req, file, callBack) => {
+    const isValid = MIME_TYPE_MAP[file.mimetype];
+    let error  =  new Error("Invalid mime type")
+    if (isValid) {
+      error = null;
+    }
+    callBack(error, "backend/images");
+  },
+  filename: (req, file, callBack) => {
+    const name = file.originalname.toLowerCase().split('').join('-');
+    const ext = MIME_TYPE_MAP[file.mimetype];
+    callBack(null, name + '-' + Date.now() + '.' + ext);
+  }
+});
 
 // replicate the same logic for delete and edit button
 router.post(
   "",
   checkAuth,
+  multer({storage: storage}).single("image"),
   (req, res, next) => {
-    console.log(req.headers, 'REQ')
+    const url = req.protocol + '://' + req.get("host");
+    console.log(req.body, 'REQ')
     const isAdmin = req.headers.isadmin.trim();
     if (isAdmin === "true") {
       const blogs = new Blog({
         title: req.body.title,
         content: req.body.content,
         tags: req.body.tags,
+        imagePath: url + "/images/" + req.file.filename
       });
       blogs
         .save()

@@ -59,6 +59,7 @@ import {
     MatButtonModule,
     MatFormFieldModule,
     FormsModule,
+    ReactiveFormsModule,
     MatDialogModule,
     CKEditorModule,
     //MatLabel,
