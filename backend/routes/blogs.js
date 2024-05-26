@@ -62,20 +62,31 @@ router.post(
   }
 );
 
-router.put("/edit-blog/:id", (req, res, next) => {
-  console.log(req.params, 'REQ_EDIT')
-  const blog = new Blog({
-    _id: req.params.id,
-    title: req.body.title,
-    content: req.body.content,
-    tags: req.body.tags
-  })
-  Blog.updateOne({_id: req.params.id}, blog)
-    .then((result) => {
+router.put(
+  "/edit-blog/:id",
+  multer({ storage: storage }).single("image"),
+  (req, res, next) => {
+    console.log(req.file, "REQ_EDIT");
+    console.log(req.body, 'REQ_BODY')
+    let imagePath = req.body.imagePath;
+    if(req.file) {
+      const url = req.protocol + '://' + req.get("host");
+      imagePath = url + "/images/" + req.file.filename
+    }
+    console.log(imagePath, 'imagePath')
+    const blog = new Blog({
+      _id: req.params.id,
+      title: req.body.title,
+      content: req.body.content,
+      tags: req.body.tags,
+      imagePath: imagePath
+    });
+    Blog.updateOne({ _id: req.params.id }, blog).then((result) => {
       console.log(result);
-      res.status(200).json({ message: "Blog Updated Successfully" })
-    })
-})
+      res.status(200).json({ message: "Blog Updated Successfully" });
+    });
+  }
+);
 
 router.get("", (req, res, next) => {
   Blog.find().then((documents) => {

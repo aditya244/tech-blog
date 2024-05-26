@@ -1,5 +1,6 @@
 <nav class="navbar">
   <ul>
+    <li class="nav-item-logo-img" type="none"><img src="../assets/logo-no-background.svg" height="100px" width="120px"/></li>
     <li routerLink="/home" class="nav-item-logo" type="none"> DebugTek </li>
     <li routerLink="/about-author" class="nav-item" type="none"> Author </li>
     <li *ngIf="isUserAuthenticated && isAdmin" routerLink="/post-blog" class="nav-item" type="none"> Add New Blog </li>

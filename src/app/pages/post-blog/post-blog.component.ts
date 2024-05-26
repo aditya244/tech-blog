@@ -54,14 +54,16 @@ export class PostBlogComponent implements OnInit {
         this.mode = 'edit';
         this.blogId = paramMap.get('id');
         this.blogService.getBlogDetails(this.blogId).subscribe((res) => {
+          console.log(res, 'EDIT')
           this.blog = {...res.blog};
           this.form.setValue({
             title: this.blog.title,
             tag: this.tag,
             content: this.blog.content,
-            imagePath: null
+            image: this.blog.imagePath 
           })
         })
+        // if required can add preview in edit image
       } else {
         this.mode = 'create';
         this.blogId = null;
@@ -113,7 +115,11 @@ export class PostBlogComponent implements OnInit {
         headers
       );
     } else if (this.mode === 'edit') {
-      this.updateBlog(headers);
+      this.updateBlog(this.form.value.title,
+        this.form.value.content,
+        this.blog.tags,
+        this.form.value.image,
+        headers);
     }
   }
 
@@ -133,8 +139,25 @@ export class PostBlogComponent implements OnInit {
     });
   }
 
-  updateBlog(headers: HttpHeaders) {
-    this.http.put('http://localhost:3000/api/blogs/edit-blog/' + this.blogId, this.blog, {
+  updateBlog(title: string, content: any, tags: any, image: File | string, headers: HttpHeaders) {
+    let blogData;
+    console.log(image, 'IMAGE')
+    if (typeof(image) === 'object') {
+      console.log('gettinginside')
+      blogData = new FormData();
+      blogData.append("title", title);
+      blogData.append("content", content);
+      blogData.append("tags", tags);
+      blogData.append("image", image, title)
+    } else {
+      blogData = {
+        title: title,
+        content: content,
+        tags: tags,
+        imagePath: image
+      }
+    }
+    this.http.put('http://localhost:3000/api/blogs/edit-blog/' + this.blogId, blogData, {
       headers: headers
     }).subscribe((response) => {
       console.log(response)
@@ -142,7 +165,7 @@ export class PostBlogComponent implements OnInit {
   }
 
   onImageUpload(event: Event) {
-    // doesn't identify is a file input, thus using explicit type conversion
+    // doesn't identify is a file input, thus using explicit type co``nversion
     let file: any = null;
     const input = event.target as HTMLInputElement;
     if (input && input.files && input.files.length > 0) {
