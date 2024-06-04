@@ -36,3 +36,6 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 // reference for login with google
 
 // https://www.youtube.com/watch?v=1hMvJsSDnvU
+
+// bug, 
+// login, do some blog post or any operation(admin), logout and then without reloading login again

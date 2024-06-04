@@ -25,11 +25,20 @@ import { ReadingListComponent } from './pages/reading-list/reading-list.componen
 import { LoginComponent } from './pages/login/login.component';
 import { SignUpComponent } from './pages/sign-up/sign-up.component';
 import { AuthInterceptor } from './services/auth-interceptor';
-
+import { MatToolbarModule } from '@angular/material/toolbar';
 import { SocialLoginModule, SocialAuthServiceConfig } from '@abacritt/angularx-social-login';
+import { MatListModule } from '@angular/material/list';
+import {MatIconModule} from '@angular/material/icon';
+//import { FlexLayoutModule } from '@angular/flex-layout';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+
+
+
 import {
   GoogleLoginProvider 
 } from '@abacritt/angularx-social-login';
+import { MatSidenavModule } from '@angular/material/sidenav';
+
 
 
 @NgModule({
@@ -59,11 +68,18 @@ import {
     MatButtonModule,
     MatFormFieldModule,
     FormsModule,
+    ReactiveFormsModule,
     MatDialogModule,
     CKEditorModule,
+    MatToolbarModule,
     //MatLabel,
+    MatSidenavModule,
+    MatIconModule,
+    MatListModule,
     ReactiveFormsModule,
-    SocialLoginModule
+    SocialLoginModule,
+    FontAwesomeModule
+    
   ],
   providers: [{provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true}, {
     provide: 'SocialAuthServiceConfig',

@@ -2,19 +2,45 @@ const express = require("express");
 const Blog = require("../models/blog");
 const router = express.Router();
 const checkAuth = require("../middleware/check-auth");
+const multer = require("multer");
+
+const MIME_TYPE_MAP = {
+  'image/png': 'png',
+  'image/jpeg': 'jpeg',
+  'image/jpg': 'jpg'
+}
+
+const storage = multer.diskStorage({
+  destination: (req, file, callBack) => {
+    const isValid = MIME_TYPE_MAP[file.mimetype];
+    let error  =  new Error("Invalid mime type")
+    if (isValid) {
+      error = null;
+    }
+    callBack(error, "backend/images");
+  },
+  filename: (req, file, callBack) => {
+    const name = file.originalname.toLowerCase().split('').join('-');
+    const ext = MIME_TYPE_MAP[file.mimetype];
+    callBack(null, name + '-' + Date.now() + '.' + ext);
+  }
+});
 
 // replicate the same logic for delete and edit button
 router.post(
   "",
   checkAuth,
+  multer({storage: storage}).single("image"),
   (req, res, next) => {
-    console.log(req.headers, 'REQ')
+    const url = req.protocol + '://' + req.get("host");
+    console.log(req.body, 'REQ')
     const isAdmin = req.headers.isadmin.trim();
     if (isAdmin === "true") {
       const blogs = new Blog({
         title: req.body.title,
         content: req.body.content,
         tags: req.body.tags,
+        imagePath: url + "/images/" + req.file.filename
       });
       blogs
         .save()
@@ -36,20 +62,31 @@ router.post(
   }
 );
 
-router.put("/edit-blog/:id", (req, res, next) => {
-  console.log(req.params, 'REQ_EDIT')
-  const blog = new Blog({
-    _id: req.params.id,
-    title: req.body.title,
-    content: req.body.content,
-    tags: req.body.tags
-  })
-  Blog.updateOne({_id: req.params.id}, blog)
-    .then((result) => {
+router.put(
+  "/edit-blog/:id",
+  multer({ storage: storage }).single("image"),
+  (req, res, next) => {
+    console.log(req.file, "REQ_EDIT");
+    console.log(req.body, 'REQ_BODY')
+    let imagePath = req.body.imagePath;
+    if(req.file) {
+      const url = req.protocol + '://' + req.get("host");
+      imagePath = url + "/images/" + req.file.filename
+    }
+    console.log(imagePath, 'imagePath')
+    const blog = new Blog({
+      _id: req.params.id,
+      title: req.body.title,
+      content: req.body.content,
+      tags: req.body.tags,
+      imagePath: imagePath
+    });
+    Blog.updateOne({ _id: req.params.id }, blog).then((result) => {
       console.log(result);
-      res.status(200).json({ message: "Blog Updated Successfully" })
-    })
-})
+      res.status(200).json({ message: "Blog Updated Successfully" });
+    });
+  }
+);
 
 router.get("", (req, res, next) => {
   Blog.find().then((documents) => {

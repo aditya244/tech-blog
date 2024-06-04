@@ -18,6 +18,12 @@
                 Password must be at least 6 characters long.
             </div>
         </mat-form-field>
-        <button type="submit" [disabled]="loginForm.invalid">Login</button>
+        <button type="submit" class="login-button" [disabled]="loginForm.invalid">Login</button>
     </form>
+    <div *ngIf="errorMessage" class="error-message">
+        {{ errorMessage }}
+      </div>
+      <!-- <div *ngIf="successMessage" class="success-message">
+        {{ successMessage }}
+      </div> -->
 </mat-card>

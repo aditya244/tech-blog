@@ -2,6 +2,7 @@ export interface Blog {
     id: string;
     title: string;
     content: any;
-    tags: string[]
+    tags: string[];
+    imagePath: null;
     dateOfPublish: any;
 }

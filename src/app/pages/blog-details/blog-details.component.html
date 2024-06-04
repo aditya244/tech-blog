@@ -11,6 +11,7 @@
 <div class="blog-body">
     <div class="blog-content">
         <p class="blog-title">{{selectedBlog.title}}</p>
+        <p> <img [src]="selectedBlog.imagePath" class="banner-image" /></p>
         <span class="content-font" innerHTML={{selectedBlog.content}}></span>
     </div>
     <div class="tag-container">
@@ -20,7 +21,7 @@
     </div>
 </div>
 
-<div class="post-comment-card">
+<!-- <div class="post-comment-card">
     <mat-card >
             <mat-card-content>Comments</mat-card-content>
             <mat-form-field class="comment-text-area">
@@ -40,4 +41,4 @@
             <button mat-raised-button class="delete-comment-btn" (click)="onDeleteComment(comment._id)" type="button"> Delete</button>
         </div>
     </mat-card>
-</div>
+</div> -->

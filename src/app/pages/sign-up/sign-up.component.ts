@@ -9,6 +9,8 @@ import { AuthService } from 'src/app/services/auth.service';
 })
 export class SignUpComponent implements OnInit {
   registerForm!: UntypedFormGroup;
+  errorMessage: string = '';
+  successMessage: string = '';
 
   constructor( private formBuilder: UntypedFormBuilder, private authService: AuthService) { }
 
@@ -20,13 +22,24 @@ export class SignUpComponent implements OnInit {
       password: ['', Validators.required],
       //verifyPassword: ['', Validators.required]
     })
+    this.authService.getAuthResponseOnAuthentication().subscribe(
+      (authStatus) => {
+        if ( authStatus.authType === 'signUp') {
+          if (authStatus.error) {
+            this.errorMessage = authStatus.message;
+          } 
+          else {
+            this.successMessage = authStatus.message;
+          }
+        }
+      }
+    );
   }
 
-  onSignUp() {
+  async onSignUp() {
     //console.log(form);
     // should get form data
     this.authService.onSignUp(this.registerForm.value)
-    //console.log(this.registerForm.value, 'REGISTER_FORM')
     
 
   }

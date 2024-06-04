@@ -1,24 +1,29 @@
 
 <div >
-    <form (submit)="onSubmitBlog()">
+    <form [formGroup]="form" (submit)="onSubmitBlog()">
         <p>
             <mat-form-field >
                 <mat-label >Enter the Blog's title</mat-label>
-                <input matInput [(ngModel)]="blog.title" name="blog_title" >
+                <input matInput formControlName="title" >
+                <mat-error *ngIf="form.get('title')?.invalid"></mat-error>
             </mat-form-field>
         </p>
         
-
+        <button mat-raised-button color="" type="button" (click)="filepicker.click()">Pick banner image</button>
+        <input type="file" #filepicker (change)="onImageUpload($event)">
+        <div class="banner-preview" *ngIf="imagePreview !== '' && imagePreview && form.get('image')?.valid">
+            <img [src]="imagePreview" [alt]="form.value.title" />
+        </div>
         <ckeditor 
             [editor]="Editor"
-            [(ngModel)]="blog.content" 
             data="Write the blog!"
-            name="blog_content"
+            formControlName="content"
         ></ckeditor>
+        <mat-error *ngIf="form.get('content')?.invalid"></mat-error>
         <p>
             <mat-form-field >
                 <mat-label >Add a tag</mat-label>
-                <input matInput [(ngModel)]="tag" name="tag" >
+                <input matInput formControlName="tag" >
             </mat-form-field>
             <button type="button" (click)="addTagtoTagsArray()"> Add tag </button>
         </p>
