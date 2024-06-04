@@ -1,18 +1,28 @@
-<nav class="navbar">
-  <ul>
-    <li class="nav-item-logo-img" type="none"><img src="../assets/logo-no-background.svg" height="100px" width="120px"/></li>
-    <li routerLink="/home" class="nav-item-logo" type="none"> DebugTek </li>
-    <li routerLink="/about-author" class="nav-item" type="none"> Author </li>
-    <li *ngIf="isUserAuthenticated && isAdmin" routerLink="/post-blog" class="nav-item" type="none"> Add New Blog </li>
-    <li *ngIf="isUserAuthenticated" routerLink="/my-reading-list" class="nav-item" type="none"> My Reading List</li>
-    <li *ngIf="!isUserAuthenticated" routerLink="/login" class="nav-item" type="none"> Login</li>
-    <li *ngIf="!isUserAuthenticated" routerLink="/sign-up" class="nav-item" type="none"> Sign Up</li>
-    <li class="nav-item" type="none"> <input type="text" class="search-bar" placeholder="Search"></li>
-    <li *ngIf="isUserAuthenticated" class="nav-item" type="none"> <button mat-button (click)="logout()"> Logout </button> </li>
-    <li routerLink="/" class="nav-item-right" type="none"> {{userDetils?.firstName}}</li>
+<nav >
+  <ul class="navbar">
+    <span class="logo">
+      <li routerLink="/home" class="nav-item-logo-img" type="none"><img src="../assets/logo-no-background.svg" height="100px" width="120px"/></li>
+    </span>
+    <div class="nav-items" [ngClass]="{'navbar-mobileView': showNavBar}">
+      <!-- <li routerLink="/home" class="nav-item-logo" type="none"> DebugTek </li> -->
+      <li routerLink="/about-author" class="nav-item" type="none"> Author </li>
+      <li *ngIf="isUserAuthenticated && isAdmin" routerLink="/post-blog" class="nav-item" type="none"> Add New Blog </li>
+      <li *ngIf="isUserAuthenticated && !isAdmin" routerLink="/my-reading-list" class="nav-item" type="none"> My Reading List</li>
+      <li *ngIf="!isUserAuthenticated" routerLink="/login" class="nav-item" type="none"> Login</li>
+      <li *ngIf="!isUserAuthenticated" routerLink="/sign-up" class="nav-item" type="none"> Sign Up</li>
+      <!-- <li class="nav-item" type="none"> <input type="text" class="search-bar" placeholder="Search"></li> -->
+      <li routerLink="/" *ngIf="userDetils && isUserAuthenticated" class="nav-item-username" type="none"> Welcome {{userDetils?.firstName}} !</li>
+      <li *ngIf="isUserAuthenticated" class="nav-item" type="none"> <button mat-button class="unstyled-button" (click)="logout()"> Logout </button> </li>
+      <li class="space" type="none"> </li>
+    </div>
+    <button type="button" class="unstyled-button" *ngIf="screenWidth < 700"  (click)="toggleNavbarResponsive()">
+      <fa-icon class="checkbtn" [icon]="faBars"></fa-icon>
+    </button>
   </ul>
-</nav>
+</nav> 
 <div class="container">
   <router-outlet></router-outlet>
   <app-footer></app-footer>
 </div>
+
+```

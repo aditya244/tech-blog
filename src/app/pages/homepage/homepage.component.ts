@@ -10,29 +10,31 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-homepage',
   templateUrl: './homepage.component.html',
-  styleUrls: ['./homepage.component.scss']
+  styleUrls: ['./homepage.component.scss'],
 })
 export class HomepageComponent implements OnInit {
-
   blogForFeed: Blog[] = [];
   isLoading: boolean = true;
-  isErrorFromServer:boolean = false;
+  isErrorFromServer: boolean = false;
   subsErrorMsg: string = '';
   subsFailed: boolean = false;
   user: any;
   isUserAuthenticated: boolean = false;
-  
-  constructor(private blogService: BlogService, 
-      private authService: AuthService, 
-      private socialAuthService: SocialAuthService,
-      private route: Router 
-    ) { }
+  errorMessage: string = '';
+  successMessage: string = '';
+
+  constructor(
+    private blogService: BlogService,
+    private authService: AuthService,
+    private socialAuthService: SocialAuthService,
+    private route: Router
+  ) {}
 
   ngOnInit(): void {
-    this.authService.getAuthStatusListerner().subscribe(isAuthenticated =>{
-      this.isUserAuthenticated = isAuthenticated
+    this.authService.getAuthStatusListerner().subscribe((isAuthenticated) => {
+      this.isUserAuthenticated = isAuthenticated;
     });
-    console.log(this.user, 'init')
+    console.log(this.user, 'init');
     this.blogService
       .getBlogsForHomeFeed()
       .pipe(
@@ -44,15 +46,15 @@ export class HomepageComponent implements OnInit {
               title: blogData.title,
               id: blogData._id,
               content: blogData.content,
-              imagePath: blogData.imagePath
+              imagePath: blogData.imagePath,
             };
           });
         }),
         catchError((error) => {
           console.error('Error fetching blogs:', error);
           this.isErrorFromServer = true;
-          this.isLoading = false; 
-          return error; 
+          this.isLoading = false;
+          return error;
         })
       )
       .subscribe((data) => {
@@ -62,38 +64,53 @@ export class HomepageComponent implements OnInit {
         this.blogForFeed = data;
       });
 
-        this.socialAuthService.authState.subscribe((user) => {
-          this.user = user;
-          console.log(this.user, 'USER_GOOGLE')
-          this.authService.onLoginWithGoogle(user)
-        });
+    this.socialAuthService.authState.subscribe((user) => {
+      this.user = user;
+      console.log(this.user, 'USER_GOOGLE');
+      this.authService.onLoginWithGoogle(user);
+    });
+
+    this.blogService.getReadingListResSubscription().subscribe((resStatus) => {
+      if (resStatus.error) {
+        this.clearMessage('errorMessage');
+        this.errorMessage = resStatus.message;
+      } else {
+        this.clearMessage('successMessage');
+        this.successMessage = resStatus.message;
+      }
+    });
   }
 
   onAddToReadingList(blogId: string) {
-    this.blogService.addToReadingList(blogId)
+    this.blogService.addToReadingList(blogId);
   }
 
   subscribe(email: string) {
     const subscriptionDate = new Date();
     const subscriptionData = {
       email: email,
-      date: subscriptionDate
-    }
-    this.authService.onSubscribe(subscriptionData).subscribe(response => {
-    },
-    error => {
-      this.subsErrorMsg = error.error.message;
-      this.subsFailed = true;
-    }
-    )
+      date: subscriptionDate,
+    };
+    this.authService.onSubscribe(subscriptionData).subscribe(
+      (response) => {},
+      (error) => {
+        this.subsErrorMsg = error.error.message;
+        this.subsFailed = true;
+      }
+    );
   }
 
   navigateTo(path: string) {
-    if(path === 'login') {
-      this.route.navigateByUrl("/login")
+    if (path === 'login') {
+      this.route.navigateByUrl('/login');
     } else {
-      this.route.navigateByUrl("/sign-up")
+      this.route.navigateByUrl('/sign-up');
     }
   }
 
+  clearMessage(messageType: 'errorMessage' | 'successMessage') {
+    setTimeout(() => {
+      this[messageType] = '';
+    }, 3000); // Clear the message after 3 seconds
+  }
 }

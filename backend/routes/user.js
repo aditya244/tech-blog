@@ -7,31 +7,47 @@ const jwt = require("jsonwebtoken");
 router.post("/sign-up", (req, res, next) => {
   // add the logic to check if the userId already exist
   // emailId has to be unique
-  bcrypt.hash(req.body.password, 10).then((hash) => {
-    const user = new User({
-      firstName: req.body.email,
-      lastName: req.body.lastName,
-      email: req.body.email,
-      password: hash,
-    });
-    user
-      .save()
-      .then((result) => {
-        res.status(201).json({
-          message: "User Created!",
-          result: result,
+  User.findOne({email: req.body.email})
+    .then((user) => {
+      if(user) {
+        return res.status(401).json({
+          message: 'User id already exists. Please login!'
+        }) 
+      } else {
+        bcrypt.hash(req.body.password, 10).then((hash) => {
+          const user = new User({
+            firstName: req.body.firstName,
+            lastName: req.body.lastName,
+            email: req.body.email,
+            password: hash,
+          });
+          user
+            .save()
+            .then((result) => {
+              res.status(201).json({
+                message: "User Created!",
+                result: result,
+              });
+            })
+            .catch((err) => {
+              res.status(500).json({
+                error: err,
+              });
+            });
         });
-      })
-      .catch((err) => {
-        res.status(500).json({
-          error: err,
-        });
+      }
+    })
+    .catch((err) => {
+      res.status(500).json({
+        message: 'An error occurred while checking email existence.',
+        error: err
       });
-  });
+    });
 });
 
 router.post("/login", (req, res, next) => {
   // checks if the email exists or not
+  console.log(req.body, 'BODY')
   let userData;
   User.findOne({ email: req.body.email })
     .then((user) => {
@@ -50,7 +66,7 @@ router.post("/login", (req, res, next) => {
         return res.status(401).json({
           message: "Incorrect password!",
         });
-      }
+      }console.log(userData, 'USER_DAAT')
       const token = jwt.sign(
         { email: userData.email, userId: userData._id },
         "RANDOM_SECRET_TEXT_CHAR_JBKJBKBKJBKJB_HJBHUVTYDRTCGVHVBJHBJHBJHB",

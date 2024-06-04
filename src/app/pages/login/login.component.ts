@@ -9,6 +9,8 @@ import { AuthService } from 'src/app/services/auth.service';
 })
 export class LoginComponent implements OnInit {
   loginForm!: UntypedFormGroup;
+  errorMessage: string = '';
+  successMessage: string = '';
 
   constructor( private formBuilder: UntypedFormBuilder, private authService: AuthService) { }
 
@@ -24,6 +26,18 @@ export class LoginComponent implements OnInit {
       return;
     }
     this.authService.onLogin(this.loginForm.value);
+    this.authService.getAuthResponseOnAuthentication().subscribe(
+      (authStatus) => {
+        if ( authStatus.authType === 'login') {
+          if (authStatus.error) {
+            this.errorMessage = authStatus.message;
+          } 
+          // else {
+          //   this.successMessage = authStatus.message;
+          // }
+        }
+      }
+    );
     //console.log(this.loginForm.value, 'LOGIN_LOG')
   }
 

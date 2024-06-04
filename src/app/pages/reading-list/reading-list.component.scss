@@ -16,7 +16,8 @@
 .empty-list {
     margin-top: 70px;
     height: 200px;
-    width: 500px;
+    width: auto;
+    margin: 20px;
     display: flex;
     font-size: 20px;
     font-family:'Times New Roman', Times, serif;
@@ -44,6 +45,11 @@
     box-shadow: 2px 2px 5px #C2C1C2;
 }
 
+.banner-image {
+    height: 400px;
+    width: fit-content;
+}
+
 .read-more-btn {
     padding: 8px;
     border-radius: 2px;
@@ -57,4 +63,27 @@
     color: #26323D;
     letter-spacing: 1px;
     font-size: 14px;
+}
+
+
+@media (max-width: 900px) {
+
+    // .font-style {
+    //     margin-left: 12%;
+    //     margin-right: 12%;
+    //     display: flex;
+    //     flex-direction: column;
+    //     justify-content: center;
+    //     font-family: 'Times New Roman', serif;
+    //     font-size: 1.1rem; /* Slightly larger font size for better readability */
+    //     //line-height: 1.6; /* Increased line height for better readability */
+    //     color: #333; /* Darker color for better contrast */
+    //     text-align: justify; /* Justify text for a clean look */
+    //     letter-spacing: 0.5px; /* Slightly increased letter spacing */
+    // }
+
+    .banner-image {
+        height: 250px;
+        width: 300px;
+    }
 }

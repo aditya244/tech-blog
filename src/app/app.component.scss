@@ -11,34 +11,42 @@
     color: #FAFAFA;
     width: 100%;
     align-items: center;
+    justify-content: space-between;
+    margin: 0px;
+}
+
+.logo {
+    //align-items: flex-start;
+    justify-items: flex-start;
+}
+
+.nav-items {
+    display: flex;
+    //align-items: end;
+    //justify-content: flex-end;
 }
 
 .nav-item-logo {
-    float: left;
+    // float: left;
     font-size: 30px;
     margin: 50px 50px;
 }
 
 .nav-item-logo-img {
-    float: left;
+    // float: left;
     font-size: 30px;
     margin: 15px 50px;
 }
 
 .nav-item {
-    float: left;
+    //float: right;
     margin: 50px 50px;
     font-size: 20px;
 }
 
-.nav {
-    background-color:black;
-    width: 100%;
-    height: 100px;
-}
-
-ul {
-    display: flex;
+.space {
+    margin: 5px 50px;
+    font-size: 20px;
 }
 
 .search-bar {
@@ -49,9 +57,98 @@ ul {
     padding-left: 10px;
     width: 150px;
 }
+  .unstyled-button {
+        background: none;
+        border: none;
+        padding: 0;
+        margin: 0;
+        font: inherit;
+        color: inherit;
+        text-align: inherit;
+        outline: none;
+        box-shadow: none;
+        cursor: pointer;
+      }
+      
 
-.nav-item-right {
-    text-align: right;
-    margin: 25px 50px;
-    font-size: 20px;
+.checkbtn {
+    font-size: 30px;
+    color: #FAFAFA;
+    cursor: pointer;
+    display: none;
+    opacity: 1;
 }
+
+#check {
+    display: none;
+}
+
+@media (max-width: 900px) {
+
+    .container {
+        padding: 0;
+        margin: 0;
+        width: auto;
+        z-index: 0;
+    }
+    .checkbtn {
+        font-size: 35px;
+        color: #FAFAFA;
+        cursor: pointer;
+        display: block;
+        margin-right: 30px;
+
+    }
+
+    .navbar {
+        display: flex;
+        flex-direction: row;
+        background-color: #25303B;
+        color: #FAFAFA;
+        width: auto;
+        height: 150px;
+        margin: 0px;
+        justify-content: space-between;
+    }
+
+    .nav-items {
+        display:block;
+        color: #FAFAFA;
+        background-color: #476b8d;
+        width: 200px;
+        text-align: justify;
+        height: auto;
+        z-index: 1000;
+        transition: all .2s;
+        visibility: hidden;
+    }
+      
+
+    .nav-item {
+        font-size: 18px;
+        padding: 10px 20px;
+        margin: 20px 10px;
+    }
+
+    .nav-item-username {
+        padding: 10px;
+        width: fit-content;
+        //margin-left: 25px;
+        margin: 0 auto;
+        background-color: #FAFAFA;
+        color: #25303B;
+        border-radius: 5px;
+    }
+    .navbar-mobileView {
+        margin-top: auto;
+        visibility: visible;
+        opacity: 1;
+        transition: opacity 0.5s ease-in-out, visibility 0s linear 0.5s;
+    }
+
+    .nav-item-logo-img {
+        font-size: 30px;
+        margin: 10px 0px;
+    }
+    
+  }
