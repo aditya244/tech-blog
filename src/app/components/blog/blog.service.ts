@@ -18,7 +18,7 @@ export class BlogService {
   ) {}
 
   getBlogsForHomeFeed(): Observable<any> {
-    return this.httpClient.get('https://localhost:3000/api/blogs');
+    return this.httpClient.get('http://localhost:3000/api/blogs');
   }
 
   getBlogDetails(id: any): Observable<any> {
