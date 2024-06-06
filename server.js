@@ -1,13 +1,6 @@
 const app = require("./backend/app");
 const debug = require("debug")("node-angular");
 const http = require("http");
-const cors = require('cors');
-// Allow all origins
-app.use(cors());
-// Allow specific origin(s)
-app.use(cors({
-  origin: 'https://debugtek.vercel.app/home'
-}));
 
 const normalizePort = val => {
   var port = parseInt(val, 10);
