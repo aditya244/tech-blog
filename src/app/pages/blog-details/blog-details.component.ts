@@ -19,8 +19,10 @@ export class BlogDetailsComponent implements OnInit {
   comments:any[] = [];
   comment: string = '';
   id: any;
+  enableRemoveReadingListBtn: boolean = false;
   public isAdmin: boolean = false;
   public isAuthenticated: boolean = false;
+  public showAddToReadingList: boolean = false;
 
   constructor(
     private cdr: ChangeDetectorRef,
@@ -30,21 +32,26 @@ export class BlogDetailsComponent implements OnInit {
     private fb: UntypedFormBuilder,
     private http: HttpClient,
     private authService: AuthService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
   ) { }
 
   ngOnInit(): void {
-    this.id = this.route.snapshot.paramMap.get('id');
-    this.blogService.getBlogDetails(this.id).subscribe(res => {
+    this.id = this.route.paramMap.subscribe(params => {
+      this.id = params.get('id');
+      const id = params.get('id')
+      console.log(this.id)
+      this.blogService.getBlogDetails(id).subscribe(res => {
       this.selectedBlog = res.blog;
+      this.toggleReadingListBtn(res.blog);
+      console.log(this.selectedBlog, 'blog_selected')
+    });
     });
     this.authService.getIsAuthenticated();
     const userDetailsStr: any = sessionStorage.getItem('userDetails');
     const jsonUserDetails = JSON.parse(userDetailsStr);
-    this.isAdmin = jsonUserDetails.isAdmin
-
+    this.isAdmin = jsonUserDetails?.isAdmin;
     this.isAuthenticated = this.authService.getIsAuthenticated();
-    this.fetchComments();
+    //this.fetchComments();
     console.log(this.isAdmin, this.isAuthenticated, 'DETAILS')
   }
 
@@ -52,14 +59,14 @@ export class BlogDetailsComponent implements OnInit {
     blogComments: this.fb.array([new UntypedFormControl('')]),
   })
 
-  fetchComments() {
-    this.blogService.getCommentsForBlog(this.id).subscribe(res => {
-      this.comments = res.comments;
-      // was having intermittent issues with comment rendering on submit, thus added this.
-      // check for this later as well
-      this.cdr.detectChanges();
-    })
-  }
+  // fetchComments() {
+  //   this.blogService.getCommentsForBlog(this.id).subscribe(res => {
+  //     this.comments = res.comments;
+  //     // was having intermittent issues with comment rendering on submit, thus added this.
+  //     // check for this later as well
+  //     this.cdr.detectChanges();
+  //   })
+  // }
 
   onDeleteBlog(id:any) {
     this.blogService.deleteBlogPost(id)
@@ -94,30 +101,51 @@ export class BlogDetailsComponent implements OnInit {
     return formattedDate
   }
 
-  onCommentSubmit(comment: string){
-    const formattedDate = this.convertDateFormat();
-    const requestBody = {
-      comment: comment,
-      blogId: this.id,
-      dateOfPublish: formattedDate
-    }
-    this.http.post<{message: string}>("http://localhost:3000/api/comments", requestBody).subscribe((response) => {
-      console.log(response, 'COMMENTS');
-      if (response && response.message === 'Comment added successfully') {
-        console.log('inside the response')
-        this.fetchComments();
-      }
-    },
-    (error) => {
-      console.error('Error adding comment:', error);
-    })
-    this.comment = '';
+  addToReadingList(blogId: string) {
+    this.blogService.addToReadingList(blogId);
   }
 
-  onDeleteComment(commentId: string) {
-    this.blogService.deleteComment(commentId).subscribe(res => {
-      this.fetchComments();
+  removeFromReadingList(blogId: string) {
+    const userEmailid: any = localStorage.getItem('email')
+    this.blogService.removeFromReadingList(userEmailid, blogId)
+  }
+
+  // onCommentSubmit(comment: string){
+  //   const formattedDate = this.convertDateFormat();
+  //   const requestBody = {
+  //     comment: comment,
+  //     blogId: this.id,
+  //     dateOfPublish: formattedDate
+  //   }
+  //   this.http.post<{message: string}>("http://localhost:3000/api/comments", requestBody).subscribe((response) => {
+  //     console.log(response, 'COMMENTS');
+  //     if (response && response.message === 'Comment added successfully') {
+  //       console.log('inside the response')
+  //       this.fetchComments();
+  //     }
+  //   },
+  //   (error) => {
+  //     console.error('Error adding comment:', error);
+  //   })
+  //   this.comment = '';
+  // }
+
+  // onDeleteComment(commentId: string) {
+  //   this.blogService.deleteComment(commentId).subscribe(res => {
+  //     this.fetchComments();
+  //   })
+  // }
+
+  private toggleReadingListBtn(selectedBlog: { _id: String; }) {
+    this.blogService.readingList$.subscribe(currentReadingList => {
+      console.log(currentReadingList, 'currReadingList_blogDetails')
+      if (currentReadingList.indexOf(selectedBlog._id) === -1) {
+        this.showAddToReadingList = true;
+      } else {
+        this.showAddToReadingList = false;
+      }
     })
+
   }
 }
 

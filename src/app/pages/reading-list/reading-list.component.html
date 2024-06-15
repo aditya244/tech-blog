@@ -1,20 +1,34 @@
 <div class="container">
     <div class="page-heading">My Reading List</div>
-    <div class="reading-list">
+    <!-- <div class="blog-container"> -->
+        <div class="empty-list" *ngIf="!readingList.length"> Seems like your reading list is empty. Please add some blogs to reading list to view here! </div>
+        <div class="blog-container" *ngFor="let blog of readingList">
+            <div class="blog-feed-container" >
+                <h1 class="heading">{{blog.title}}</h1>
+                <div class="blog-content">
+                    <div class="image-container" *ngIf="blog.imagePath" >
+                        <img [src]="blog.imagePath" [alt]="blog.title" class="banner-image" />
+                    </div>
+                    <div class="content-container">
+                        <div class="font-style" [innerHTML]='blog.content.slice(0,200)'></div>
+                        <a [routerLink]="['/blog-details/', blog.id, {relaiveTo: null}]"><button type="button" class="read-more-btn">Read More</button></a>
+                        <!-- <button type="button" class="reading-list-btn" (click)="onAddToReadingList(blog.id, blog.title)"> Add to Reading List </button> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- <div class="reading-list">
         <div class="empty-list" *ngIf="!readingList.length"> Seems like your reading list is empty. Please add some blogs to reading list to view here! </div>
         <div class="blog-feed-conteiner" *ngFor="let blog of readingList">
             <h1>{{blog.title}}</h1>
 
-            <!-- check this in full mode, need some changes, might need the layout changes
-            responsive mode seems fine, but still neeeds changes -->
-
-
-            <!-- <div class="image-container" *ngIf="blog.imagePath" >
+            <div class="image-container" *ngIf="blog.imagePath" >
                 <img [src]="blog.imagePath" [alt]="blog.title" class="banner-image" />
-            </div> -->
+            </div>
             <div class="font-style" [innerHTML]='blog.content.slice(0,200)'></div>
             <a [routerLink]="['/blog-details/', blog.id, {relaiveTo: null}]"><button type="button" class="read-more-btn">Read More</button></a>
         </div>
-    </div>
+    </div> -->
 
-</div>
+<!-- </div> -->

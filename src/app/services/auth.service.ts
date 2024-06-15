@@ -17,7 +17,7 @@ export class AuthService {
   private tokenTimer: any;
   private userEmailId: any;
   private userDetails: any;
-  private userDetailsListerner = new Subject<any>();
+  public userDetailsListerner = new Subject<any>();
   private isLoading: boolean = true;
   private authResponseOnAuthentication = new Subject<{
     message: string;
@@ -28,7 +28,7 @@ export class AuthService {
   constructor(
     private httpClient: HttpClient,
     private router: Router,
-    private socialAuthService: SocialAuthService
+    private socialAuthService: SocialAuthService,
   ) {}
 
   public getToken() {
@@ -109,11 +109,10 @@ export class AuthService {
     };
 
     const observer = {
-      next: (response: { token: string; expiresIn: number; isAdmin: boolean; email: string; firstName: string }) => {
+      next: (response: { token: string; expiresIn: number; isAdmin: boolean; email: string; firstName: string, readingList: [] }) => {
         const token = response.token;
         this.userEmailId = response.email;
         this.token = token;
-        console.log(response, 'RESPONSE')
         if (token) {
           this.isLoading = false;
           const expiresInDuration = response.expiresIn;
@@ -129,6 +128,7 @@ export class AuthService {
             userEmailId: response.email,
             firstName: response.firstName,
             isAdmin: response.isAdmin,
+            readingList: response.readingList
           });
           this.isAuthenticated = true;
           const currentTimeStamp = new Date();
@@ -148,7 +148,7 @@ export class AuthService {
       },
     };
 
-    this.httpClient.post<{ token: string; expiresIn: number; isAdmin: boolean; email: string; firstName: string }>(
+    this.httpClient.post<{ token: string; expiresIn: number; isAdmin: boolean; email: string; firstName: string, readingList: [] }>(
       'http://localhost:3000/api/user/login',
       userData
     ).subscribe(observer);

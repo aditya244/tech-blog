@@ -3,6 +3,7 @@ import { Subscription } from 'rxjs';
 import { AuthService } from './services/auth.service';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
 import { BreakpointObserver, BreakpointState } from '@angular/cdk/layout';
+import { BlogService } from './components/blog/blog.service';
 
 
 
@@ -23,7 +24,7 @@ export class AppComponent implements OnInit {
   public screenHeight: any
   showNavBar = false;
 
-  constructor( private authService: AuthService, private breakpointObserver: BreakpointObserver,) {
+  constructor( private authService: AuthService, private breakpointObserver: BreakpointObserver, private blogService: BlogService) {
     
   }
 
@@ -63,6 +64,7 @@ export class AppComponent implements OnInit {
 
   logout(){
     this.authService.onLogout();
+    this.blogService.readingList$.next([])
   }
 
   @HostListener('window:resize', ['$event'])  

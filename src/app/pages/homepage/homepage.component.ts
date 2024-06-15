@@ -22,6 +22,7 @@ export class HomepageComponent implements OnInit {
   isUserAuthenticated: boolean = false;
   errorMessage: string = '';
   successMessage: string = '';
+  selectedBlogTitle: any;
 
   constructor(
     private blogService: BlogService,
@@ -70,6 +71,11 @@ export class HomepageComponent implements OnInit {
       this.authService.onLoginWithGoogle(user);
     });
 
+    this.authService.userDetailsListerner.subscribe(userDetails => {
+      this.blogService.readingList$.next(userDetails.readingList)
+      console.log(userDetails.readingList, 'readingList_Homepage')
+    })
+
     this.blogService.getReadingListResSubscription().subscribe((resStatus) => {
       if (resStatus.error) {
         this.clearMessage('errorMessage');
@@ -81,7 +87,8 @@ export class HomepageComponent implements OnInit {
     });
   }
 
-  onAddToReadingList(blogId: string) {
+  onAddToReadingList(blogId: string, title: string) {
+    this.selectedBlogTitle = title;
     this.blogService.addToReadingList(blogId);
   }
 

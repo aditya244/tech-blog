@@ -117,7 +117,9 @@ router.delete("/:id", checkAuth, (req, res, next) => {
 
 router.get('/readingListBlogs/:ids', (req, res, next) => {
   // tried sending ids by query params but it is not helping
-  const blogIds = req.params.ids.split(','); 
+  const blogIds = req.params.ids.split(',');
+  console.log(req.params.ids, 'PARAMS');
+  console.log(blogIds, 'BLOGIDS') 
   Blog.find({ _id: { $in: blogIds } })
     .then((blogs) => {
       if (blogs.length) {

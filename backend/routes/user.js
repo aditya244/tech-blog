@@ -77,7 +77,8 @@ router.post("/login", (req, res, next) => {
         expiresIn: 3600,
         isAdmin: userData.isAdmin,
         email: userData.email,
-        firstName: userData.firstName
+        firstName: userData.firstName,
+        readingList: userData.readingList
       });
     })
     .catch((err) => {
@@ -133,7 +134,8 @@ router.post("/login-with-google", (req, res, next) => {
           expiresIn: 3600,
           isAdmin: userData.isAdmin,
           email: userData.email,
-          firstName: userData.firstName
+          firstName: userData.firstName,
+          readingList: userData.readingList
         });
       }
     })
@@ -166,7 +168,6 @@ router.post("/add-reading-list",  (req, res, next) => {
         message: 'Add to reading list failed'
       })
     })
-  
 })
 
 router.get("/reading-list/:emailId", (req, res, next) => {
@@ -188,5 +189,34 @@ router.get("/reading-list/:emailId", (req, res, next) => {
       })
     })
 })
+
+router.post("/remove-from-reading-list",  (req, res, next) => {
+  const { userEmailId, blogId } = req.body;
+
+  User.findOneAndUpdate(
+    { email: userEmailId },
+    { $pull: { readingList: blogId } },
+    { new: true } // to return the updated document
+  )
+  .then((user) => {
+    if (user) {
+      return res.status(200).json({
+        message: 'Successfully removed from reading list',
+        updatedReadingList: user.readingList // optional: return updated reading list
+      });
+    } else {
+      return res.status(401).json({
+        message: 'This blog does not exist in the reading list'
+      });
+    }
+  })
+  .catch((err) => {
+    console.error('Remove from the reading list failed', err);
+    return res.status(500).json({
+      message: 'Remove from the reading list failed'
+    });
+  });
+});
+
 
 module.exports = router;
