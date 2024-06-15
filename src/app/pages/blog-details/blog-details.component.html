@@ -22,10 +22,10 @@
 </div>
 
 <div class="footer-reading-list">
-    <button *ngIf="showAddToReadingList" mat-raised-button color="basic" (click)="addToReadingList(selectedBlog._id)">
+    <button *ngIf="showAddToReadingList" class="add-btn" mat-raised-button color="basic" (click)="addToReadingList(selectedBlog._id)">
         Add to Reading List
     </button>
-    <button *ngIf="!showAddToReadingList" mat-raised-button color="warn" (click)="removeFromReadingList(selectedBlog._id)">
+    <button *ngIf="!showAddToReadingList" class="remove-btn" mat-raised-button color="warn" (click)="removeFromReadingList(selectedBlog._id)">
         Remove from Reading List
     </button>
 </div>

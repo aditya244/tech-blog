@@ -60,6 +60,18 @@
     background-color: white;
     box-shadow: 2px 2px 5px #C2C1C2;
     border: none;
+    cursor: pointer;
+}
+
+.remove-btn {
+    padding: 8px;
+    border-radius: 2px;
+    margin-left: 10px;
+    color: white;
+    background-color: #f44336;
+    box-shadow: 2px 2px 5px #C2C1C2;
+    border: none;
+    cursor: pointer;
 }
 
 .font-style {
