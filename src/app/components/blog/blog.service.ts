@@ -1,7 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { catchError, Observable, of, Subject } from 'rxjs';
-import { AuthService } from 'src/app/services/auth.service';
+import { Router } from '@angular/router';
+import { BehaviorSubject, catchError, Observable, of, Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -12,9 +12,11 @@ export class BlogService {
     error: boolean;
   }>();
 
+  public readingList$ = new BehaviorSubject<String[]>([]);
+
   constructor(
     private httpClient: HttpClient,
-    private authService: AuthService
+    private router: Router
   ) {}
 
   getBlogsForHomeFeed(): Observable<any> {
@@ -59,8 +61,12 @@ export class BlogService {
       .pipe(
         catchError((error: any) => {
           console.error('Error adding to reading list', error);
-          this.readingListResSubscription.next({message: 'Could not add it to reading list, check if it already exists or try again!', error: true } )
-          return of(null); 
+          this.readingListResSubscription.next({
+            message:
+              'Could not add it to reading list, check if it already exists or try again!',
+            error: true,
+          });
+          return of(null);
         })
       )
       .subscribe((response) => {
@@ -70,6 +76,7 @@ export class BlogService {
             message: 'Successfully added to reading list',
             error: false,
           });
+          this.addToReadingList$(blogId)
         } else {
           console.log('An error occurred, the reading list was not updated.');
         }
@@ -88,4 +95,44 @@ export class BlogService {
     const url = 'http://localhost:3000/api/blogs/readingListBlogs/' + stringId;
     return this.httpClient.get(url);
   }
+
+  removeFromReadingList(userEmailId: string, blogId: string) {
+    console.log(blogId, userEmailId, 'paramss');
+    const url = 'http://localhost:3000/api/user/remove-from-reading-list/';
+    this.httpClient
+      .post(url, { blogId, userEmailId })
+      .pipe(
+        catchError((error: any) => {
+          console.error('Removing from reading list failed', error);
+          return of(null);
+        })
+      )
+      .subscribe((response) => {
+        this.router.navigate(['/my-reading-list']);
+        if (response) {
+          this.removeFromReadingList$(blogId)
+          console.log(response, 'READING_LIST_RES');
+        } else {
+          console.log('An error occurred, the reading list was not updated.');
+        }
+      });
+  }
+
+  public addToReadingList$(blogId: string) {
+    const currentReadingList = this.readingList$.getValue();
+    console.log(currentReadingList, 'currentReadingList');
+    const updatedReadingList = [...currentReadingList, blogId];
+    this.readingList$.next(updatedReadingList);
+  }
+
+public removeFromReadingList$(blogId: string) {
+    const currentReadingList = this.readingList$.getValue();
+    console.log(currentReadingList, 'currentReadingList');
+    const updatedReadingList = currentReadingList.filter(id => {
+        return id !== blogId
+    })
+    this.readingList$.next(updatedReadingList);
+}
+
+  
 }

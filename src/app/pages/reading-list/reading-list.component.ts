@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { catchError, map } from 'rxjs';
 import { Blog } from 'src/app/components/blog/blog.interface';
 import { BlogService } from 'src/app/components/blog/blog.service';
 
@@ -17,21 +18,47 @@ export class ReadingListComponent implements OnInit {
 
   ngOnInit(): void {
     const emailId = localStorage.getItem('email');
-    this.blogService.getReadingListData(emailId).subscribe((response) => {
+    this.blogService.getReadingListData(emailId).subscribe((response: any) => {
       this.readingListRes = response;
-      this.fetchReadingListBlogs(this.readingListRes)
+      this.fetchReadingListBlogs(this.readingListRes);
+      console.log(response, 'reading-list-comp')
+      this.blogService.readingList$.next(response.readingList)
     })
   }
 
   fetchReadingListBlogs(readingListRes: { readingList: string[] }) {
     const readList = readingListRes.readingList;
-    this.blogService.getReadingListBlogsData(readList).subscribe((response: any)  => {
-      console.log(response)
-      const blogs = response.blogs
-      if(response) {
-        this.readingList = response.blogs;
-      }
-    })
+
+    this.blogService
+      .getReadingListBlogsData(readList)
+      .pipe(
+        map((data: any) => {
+          // added this pipe and map to convert each data _id to id to map with frontends
+          console.log(data, 'FETCHED_BLOGS');
+          return data.blogs.map((blogData: any) => {
+            return {
+              title: blogData.title,
+              id: blogData._id,
+              content: blogData.content,
+              imagePath: blogData.imagePath,
+            };
+          });
+        }),
+        catchError((error) => {
+          console.error('Error fetching blogs:', error);
+          // handle error and loader later
+          // this.isErrorFromServer = true;
+          // this.isLoading = false;
+          return error;
+        })
+      )
+      .subscribe((data) => {
+        if (data) {
+          console.log(data, 'data')
+          //this.isLoading = false;
+          this.readingList = data;
+        }
+      });
   }
 
 }

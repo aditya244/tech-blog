@@ -32,9 +32,10 @@ export class LoginComponent implements OnInit {
           if (authStatus.error) {
             this.errorMessage = authStatus.message;
           } 
-          // else {
-          //   this.successMessage = authStatus.message;
-          // }
+          else {
+            this.successMessage = authStatus.message;
+            console.log(authStatus.message)
+          }
         }
       }
     );

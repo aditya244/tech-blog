@@ -8,24 +8,24 @@
             <p> Please check your internet connect! </p>
             <p>If the issue still persist, this could be a technical issue, please reach to us at this email id: contact@blog.com</p>
         </div>
-        <div *ngIf="errorMessage" class="error-message">
-            {{ errorMessage }}
-          </div>
-          <div *ngIf="successMessage" class="success-message">
-            {{ successMessage }}
-          </div>
-        <div class="blog-feed-container" *ngFor="let blog of blogForFeed">
-            <h1 class="heading">{{blog.title}}</h1>
-            <div class="blog-content">
-                <div class="image-container" *ngIf="blog.imagePath" >
-                    <img [src]="blog.imagePath" [alt]="blog.title" class="banner-image" />
-                </div>
-                <div class="content-container">
-                    <div class="font-style" [innerHTML]='blog.content.slice(0,200)'></div>
-                    <a [routerLink]="['/blog-details/', blog.id, {relaiveTo: null}]"><button type="button" class="read-more-btn">Read More</button></a>
-                    <!-- without / in blog-details url, the router was taking the current url as relative
-                    and was navigating to home/blog-details -->
-                    <button type="button" class="reading-list-btn" (click)="onAddToReadingList(blog.id)"> Add to Reading List </button>
+        <div class="container2" *ngFor="let blog of blogForFeed">
+            <div class="blog-feed-container" >
+                <div *ngIf="errorMessage && selectedBlogTitle === blog.title" class="error-message">
+                    {{ errorMessage }}
+                  </div>
+                  <div *ngIf="successMessage && selectedBlogTitle === blog.title" class="success-message">
+                    {{ successMessage }}
+                  </div>
+                <h1 class="heading">{{blog.title}}</h1>
+                <div class="blog-content">
+                    <div class="image-container" *ngIf="blog.imagePath" >
+                        <img [src]="blog.imagePath" [alt]="blog.title" class="banner-image" />
+                    </div>
+                    <div class="content-container">
+                        <div class="font-style" [innerHTML]='blog.content.slice(0,200)'></div>
+                        <a [routerLink]="['/blog-details/', blog.id, {relaiveTo: null}]"><button type="button" class="read-more-btn">Read More</button></a>
+                        <button type="button" class="reading-list-btn" (click)="onAddToReadingList(blog.id, blog.title)"> Add to Reading List </button>
+                    </div>
                 </div>
             </div>
         </div>
