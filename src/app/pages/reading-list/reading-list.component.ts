@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Route, Router } from '@angular/router';
 import { catchError, map } from 'rxjs';
 import { Blog } from 'src/app/components/blog/blog.interface';
 import { BlogService } from 'src/app/components/blog/blog.service';
@@ -14,7 +14,7 @@ export class ReadingListComponent implements OnInit {
   public readingList: Blog[] = [];
   public readingListRes: any = []
 
-  constructor(private route: ActivatedRoute, private blogService: BlogService) { }
+  constructor(private route: ActivatedRoute, private blogService: BlogService, private router: Router ) { }
 
   ngOnInit(): void {
     const emailId = localStorage.getItem('email');
@@ -59,6 +59,13 @@ export class ReadingListComponent implements OnInit {
           this.readingList = data;
         }
       });
+  }
+
+  removeFromReadingList(blogId: string) {
+    const userEmailid: any = localStorage.getItem('email')
+    this.blogService.removeFromReadingList(userEmailid, blogId)
+    // lol wierd but this is updating the reading list page
+    this.router.navigate(['/home']);
   }
 
 }

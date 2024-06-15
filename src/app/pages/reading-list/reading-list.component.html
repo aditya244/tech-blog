@@ -12,7 +12,9 @@
                     <div class="content-container">
                         <div class="font-style" [innerHTML]='blog.content.slice(0,200)'></div>
                         <a [routerLink]="['/blog-details/', blog.id, {relaiveTo: null}]"><button type="button" class="read-more-btn">Read More</button></a>
-                        <!-- <button type="button" class="reading-list-btn" (click)="onAddToReadingList(blog.id, blog.title)"> Add to Reading List </button> -->
+                        <button   class="remove-btn" (click)="removeFromReadingList(blog.id)">
+                            Remove from Reading List
+                        </button>
                     </div>
                 </div>
             </div>
