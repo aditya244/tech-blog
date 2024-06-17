@@ -24,6 +24,8 @@ export class HomepageComponent implements OnInit {
   successMessage: string = '';
   selectedBlogTitle: any;
   isASubscriber: boolean = false;
+  subscriptionSuccessful: boolean = false;
+  subscriptionSuccessfulRes: string = '';
 
   constructor(
     private blogService: BlogService,
@@ -105,7 +107,10 @@ export class HomepageComponent implements OnInit {
       date: subscriptionDate,
     };
     this.authService.onSubscribe(subscriptionData).subscribe(
-      (response) => {},
+      (response: any) => {
+        this.subscriptionSuccessful = true;
+        this.subscriptionSuccessfulRes = response.message
+      },
       (error) => {
         this.subsErrorMsg = error.error.message;
         this.subsFailed = true;

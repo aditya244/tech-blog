@@ -44,6 +44,9 @@
             <div *ngIf="subsFailed" class="sub-failed">
                 <p>{{subsErrorMsg}}</p>
             </div>
+            <div *ngIf="subscriptionSuccessful" class="sub-success">
+                <p>{{subscriptionSuccessfulRes}}</p>
+            </div>
         </div>
         <div *ngIf="!isUserAuthenticated" class="login-box">
             <h2> Hey there, sign in with us! </h2> 
