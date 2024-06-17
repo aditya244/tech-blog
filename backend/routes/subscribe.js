@@ -34,4 +34,27 @@ router.post("/subscribe", (req, res, next) => {
     });
 });
 
+router.get("/get-subscription-updates/:email", (req, res, next) => {
+  SubscriptionDataSchema.findOne({email: req.params.email})
+    .then((existingEmail) => {
+      if(existingEmail) {
+        return res.status(200).json({
+          message: 'Already subscribed',
+          subscriptionStatus: true
+        })
+      } else {
+        return res.status(200).json({
+          message: 'Not a subscriber',
+          subscriptionStatus: false
+        })
+      }
+    })
+    .catch(err => {
+      return res.status(500).json({
+        error: err.message
+      })
+    })
+})
+
+
 module.exports = router;

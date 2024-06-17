@@ -30,8 +30,8 @@
             </div>
         </div>
     </div>
-    <div class="side-bar">
-        <div class="subscribe-box">
+    <div class="side-bar" *ngIf="!isASubscriber || !isUserAuthenticated">
+        <div class="subscribe-box" *ngIf="!isASubscriber">
             <div *ngIf="!subsFailed">
                 <h1> Subscribe to our blogs! </h1>
             <p> Stay tuned with our every new post. You will get notified via email whenever we post new tech blogs</p>

@@ -23,6 +23,7 @@ export class HomepageComponent implements OnInit {
   errorMessage: string = '';
   successMessage: string = '';
   selectedBlogTitle: any;
+  isASubscriber: boolean = false;
 
   constructor(
     private blogService: BlogService,
@@ -32,9 +33,14 @@ export class HomepageComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    // can combine both the below behaviorSubject to send data together and will require only one subscription.
     this.authService.getAuthStatusListerner().subscribe((isAuthenticated) => {
       this.isUserAuthenticated = isAuthenticated;
+      console.log(isAuthenticated, 'isAuthenticated')
     });
+    this.authService.isSubscriber.subscribe(susbcriptionStatus =>  {
+      this.isASubscriber = susbcriptionStatus
+    })
     console.log(this.user, 'init');
     this.blogService
       .getBlogsForHomeFeed()

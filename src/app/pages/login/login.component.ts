@@ -25,7 +25,9 @@ export class LoginComponent implements OnInit {
     if(!this.loginForm) {
       return;
     }
+    const userEmailId = this.loginForm.value.email
     this.authService.onLogin(this.loginForm.value);
+    this.checkSubscriptionStatus(userEmailId);
     this.authService.getAuthResponseOnAuthentication().subscribe(
       (authStatus) => {
         if ( authStatus.authType === 'login') {
@@ -46,6 +48,22 @@ export class LoginComponent implements OnInit {
   get login() {
     return this.loginForm.controls;
   }
-  
 
+  checkSubscriptionStatus(email: string) {
+    this.authService.getSubscriptionStatus(email)
+      .subscribe(
+        (response) => {
+          if(response.subscriptionStatus) {
+            this.authService.isSubscriber.next(true)
+          }
+          console.log('Subscription Status:', response);
+          // Handle response as needed
+        },
+        (error) => {
+          console.error('Error:', error);
+          // Handle error appropriately
+        }
+      );
+  }
 }
+  
