@@ -5,4 +5,4 @@ const SubscriptionDataSchema = mongoose.Schema({
     subscriptionDate: {type: Date}
 })
 
-module.exports = mongoose.model('SubscriptionDataSchema', SubscriptionDataSchema);
+module.exports = mongoose.model('Subscribers', SubscriptionDataSchema);

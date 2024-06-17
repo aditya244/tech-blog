@@ -66,7 +66,7 @@ router.post("/login", (req, res, next) => {
         return res.status(401).json({
           message: "Incorrect password!",
         });
-      }console.log(userData, 'USER_DAAT')
+      }
       const token = jwt.sign(
         { email: userData.email, userId: userData._id },
         "RANDOM_SECRET_TEXT_CHAR_JBKJBKBKJBKJB_HJBHUVTYDRTCGVHVBJHBJHBJHB",
@@ -95,11 +95,8 @@ router.post("/login-with-google", (req, res, next) => {
   console.log(req.body, 'REQ');
   User.findOne({ email: req.body.email })
     .then((user) => {
-      console.log(user, "USER");
-
       // logic for sign up
       if (!user) {
-        console.log('inside sign up');
         // sign up the user
         const newUser = new User({
           firstName: req.body.firstName,
@@ -128,7 +125,6 @@ router.post("/login-with-google", (req, res, next) => {
           "RANDOM_SECRET_TEXT_CHAR_JBKJBKBKJBKJB_HJBHUVTYDRTCGVHVBJHBJHBJHB",
           { expiresIn: "1h" }
         );
-        console.log("user login");
         return res.status(200).json({
           token: token,
           expiresIn: 3600,
@@ -148,10 +144,8 @@ router.post("/login-with-google", (req, res, next) => {
 });
 
 router.post("/add-reading-list",  (req, res, next) => {
-  console.log(req.body.userEmailid, 'REQ')
   User.findOne({ email: req.body.userEmailid })
     .then((user) => {
-      console.log(user, 'USER')
       if (!user.readingList.includes(req.body.blogId)) {
         user.readingList.push(req.body.blogId)
         user.save()
@@ -211,7 +205,6 @@ router.post("/remove-from-reading-list",  (req, res, next) => {
     }
   })
   .catch((err) => {
-    console.error('Remove from the reading list failed', err);
     return res.status(500).json({
       message: 'Remove from the reading list failed'
     });

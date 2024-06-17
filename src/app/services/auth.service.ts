@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { response } from 'express';
-import { Observable, Subject } from 'rxjs';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { AuthData } from '../pages/sign-up/auth-data.model';
 import { SocialAuthService } from '@abacritt/angularx-social-login';
 
@@ -11,7 +11,7 @@ import { SocialAuthService } from '@abacritt/angularx-social-login';
 })
 export class AuthService {
   private token: any = '';
-  private authStatusListener = new Subject<boolean>();
+  private authStatusListener = new BehaviorSubject<boolean>(false);
   private isAdminStatusListener = new Subject<boolean>();
   private isAuthenticated = false;
   private tokenTimer: any;
@@ -24,6 +24,7 @@ export class AuthService {
     error: boolean;
     authType: string
   }>();
+  public isSubscriber = new BehaviorSubject<boolean>(false);
 
   constructor(
     private httpClient: HttpClient,
@@ -66,6 +67,11 @@ export class AuthService {
 
   public getUserDetails() {
     return this.userDetails;
+  }
+
+
+  getSubscriptionStatus(email: string): Observable<any> {
+    return this.httpClient.get<any>(`http://localhost:3000/api/get-subscription-updates/${email}`);
   }
 
   onSignUp(userData: AuthData) {
