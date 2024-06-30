@@ -40,7 +40,8 @@ router.post(
         title: req.body.title,
         content: req.body.content,
         tags: req.body.tags,
-        imagePath: url + "/images/" + req.file.filename
+        imagePath: url + "/images/" + req.file.filename,
+        datePublished: req.body.datePublished
       });
       blogs
         .save()
@@ -50,6 +51,7 @@ router.post(
           });
         })
         .catch((error) => {
+          console.log(error, 'Error on post blog')
           res.status(500).json({
             message: "An error occured while saving the blog post.",
           });

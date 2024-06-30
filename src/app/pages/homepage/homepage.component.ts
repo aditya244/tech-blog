@@ -56,6 +56,7 @@ export class HomepageComponent implements OnInit {
               id: blogData._id,
               content: blogData.content,
               imagePath: blogData.imagePath,
+              datePublished: blogData.datePublished
             };
           });
         }),

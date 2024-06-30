@@ -36,14 +36,12 @@ export class BlogDetailsComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.id = this.route.paramMap.subscribe(params => {
-      this.id = params.get('id');
+    this.route.paramMap.subscribe(params => {
       const id = params.get('id')
-      console.log(this.id)
+      this.id = id
       this.blogService.getBlogDetails(id).subscribe(res => {
       this.selectedBlog = res.blog;
       this.toggleReadingListBtn(res.blog);
-      console.log(this.selectedBlog, 'blog_selected')
     });
     });
     this.authService.getIsAuthenticated();
