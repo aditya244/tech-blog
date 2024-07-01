@@ -38,11 +38,11 @@ export class HomepageComponent implements OnInit {
     // can combine both the below behaviorSubject to send data together and will require only one subscription.
     this.authService.getAuthStatusListerner().subscribe((isAuthenticated) => {
       this.isUserAuthenticated = isAuthenticated;
-      console.log(isAuthenticated, 'isAuthenticated')
+      console.log(isAuthenticated, 'isAuthenticated');
     });
-    this.authService.isSubscriber.subscribe(susbcriptionStatus =>  {
-      this.isASubscriber = susbcriptionStatus
-    })
+    this.authService.isSubscriber.subscribe((susbcriptionStatus) => {
+      this.isASubscriber = susbcriptionStatus;
+    });
     console.log(this.user, 'init');
     this.blogService
       .getBlogsForHomeFeed()
@@ -56,7 +56,7 @@ export class HomepageComponent implements OnInit {
               id: blogData._id,
               content: blogData.content,
               imagePath: blogData.imagePath,
-              datePublished: blogData.datePublished
+              datePublished: blogData.datePublished,
             };
           });
         }),
@@ -71,7 +71,8 @@ export class HomepageComponent implements OnInit {
         if (data) {
           this.isLoading = false;
         }
-        this.blogForFeed = data;
+        this.blogForFeed = this.sortBlogsByPublishedDate(data);
+        //this.blogForFeed = data;
       });
 
     this.socialAuthService.authState.subscribe((user) => {
@@ -80,10 +81,10 @@ export class HomepageComponent implements OnInit {
       this.authService.onLoginWithGoogle(user);
     });
 
-    this.authService.userDetailsListerner.subscribe(userDetails => {
-      this.blogService.readingList$.next(userDetails.readingList)
-      console.log(userDetails.readingList, 'readingList_Homepage')
-    })
+    this.authService.userDetailsListerner.subscribe((userDetails) => {
+      this.blogService.readingList$.next(userDetails.readingList);
+      console.log(userDetails.readingList, 'readingList_Homepage');
+    });
 
     this.blogService.getReadingListResSubscription().subscribe((resStatus) => {
       if (resStatus.error) {
@@ -110,7 +111,7 @@ export class HomepageComponent implements OnInit {
     this.authService.onSubscribe(subscriptionData).subscribe(
       (response: any) => {
         this.subscriptionSuccessful = true;
-        this.subscriptionSuccessfulRes = response.message
+        this.subscriptionSuccessfulRes = response.message;
       },
       (error) => {
         this.subsErrorMsg = error.error.message;
@@ -131,5 +132,22 @@ export class HomepageComponent implements OnInit {
     setTimeout(() => {
       this[messageType] = '';
     }, 3000); // Clear the message after 3 seconds
+  }
+
+  sortBlogsByPublishedDate(blogsArray: any) {
+    let sortedBlogData: Blog[] = []
+    sortedBlogData = blogsArray.sort((a: any, b: any) => {
+      const dateA: any = this.convertToDateObject(a.datePublished);
+      const dateB: any = this.convertToDateObject(b.datePublished);
+      return dateB - dateA;
+    });
+    console.log(sortedBlogData, 'sortedBlogData')
+    return sortedBlogData
+  }
+
+  convertToDateObject(dateString: any) {
+    const parts = dateString.split('/');
+    const formattedDate = `${parts[2]}-${parts[1]}-${parts[0]}`;
+    return new Date(formattedDate);
   }
 }
