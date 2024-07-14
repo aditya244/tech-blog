@@ -7,7 +7,12 @@
     margin-left: 15%;
     margin-right: 15%;
 }
-
+.loader {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Set height to viewport height for vertical centering */
+}
 .blog-img {
     align-items: center;
     height: auto;

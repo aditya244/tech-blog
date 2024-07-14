@@ -137,13 +137,26 @@
     text-align: justify;
 }
 
+.publishedDate {
+    color: #090b0d;
+    font-size: 10px;
+    padding: 0px 10px;
+    border-radius: 2px;
+    margin-top: 20px;
+    color: #fff;
+    background-color: #7a7d7f;
+    border: none;
+    width:fit-content;
+}
+
 .side-bar {
     display: flex;
     flex-direction: column;
     padding: 20px;
     padding-top: 0px;
     margin-top: 30px;
-    height: 800px;
+    //height: 800px;
+    height: fit-content;
     width: 30%;
     box-shadow: 2px 2px 5px #C2C1C2;
     position:sticky;
@@ -157,7 +170,7 @@
     height: auto;
     box-shadow: 2px 2px 5px #C2C1C2;
     color: #fff;
-    font-size: 14px;
+    font-size: 12px;
     font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     //background-color: darkolivegreen;
     background-color: #1E441E; /* For browsers that do not support gradients */
@@ -174,7 +187,7 @@
     font-family:'Times New Roman', Times, serif;
     color: #26323D;
     letter-spacing: 1px;
-    font-size: 14px;
+    font-size: 12px;
 }
 
 .subscribe-btn {
@@ -186,10 +199,17 @@
     color: #090b0d;
     border: none;
     box-shadow: 1px 1px 2px #C2C1C2;
+    cursor: pointer;
 }
 
 .sub-failed {
     font-size: 16px;
+    text-align: center;
+}
+
+.sub-success {
+    font-size: 14px;
+    margin-top: 15px;
     text-align: center;
 }
 
@@ -201,12 +221,13 @@
     padding: 30px;
     margin-top: 30px;
     width: auto;
-    height: 300px;
+    height:fit-content;
+    padding-bottom: 50px;
     font-weight: 500;
     font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     box-shadow: 2px 2px 5px #C2C1C2;
     text-align: center;
-    font-size: 14px;
+    font-size: 12px;
     color: #fff;
     background-color: #1e89b0; /* For browsers that do not support gradients */
     background-image: linear-gradient(-90deg, #10607c, #82c7e4);

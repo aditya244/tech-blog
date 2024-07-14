@@ -17,12 +17,13 @@ import { mimeType } from './mime-type-validator';
 export class PostBlogComponent implements OnInit {
   public Editor: any = ClassicEditor;
 
-  public blog: { title: string; content: string; tags: string[]; imagePath: any } = {
+  public blog: { title: string; content: string; tags: string[]; imagePath: any, datePublished: any } = {
     // added this explicit type since was having issues with pushing tag in blog.tags in method addTagtoTagsArray
     title: '',
     content: '',
     tags: [],
-    imagePath: ''
+    imagePath: '',
+    datePublished: ''
   };
 
   public tag: string = '';
@@ -87,17 +88,21 @@ export class PostBlogComponent implements OnInit {
       this.blog.tags.push(tag);
       this.form.get('tag')?.setValue('');
     }
+    console.log(this.blog.tags, 'TAGS')
   }
 
   onSubmitBlog() {
     if (this.form.invalid) {
       return
     }
+    const date = new Date();
+    const datePublished = date.toLocaleDateString(); // Format depends on the user's locale
     this.blog = {
       title: this.form.get('title')?.value,
       content: this.form.get('content')?.value,
       tags: this.blog.tags,
-      imagePath: null
+      imagePath: null,
+      datePublished: datePublished
       // check why the new logic is not working
       // tags: this.tags
     };
@@ -112,23 +117,26 @@ export class PostBlogComponent implements OnInit {
         this.form.value.content,
         this.blog.tags,
         this.form.value.image,
-        headers
+        headers,
+        datePublished
       );
     } else if (this.mode === 'edit') {
       this.updateBlog(this.form.value.title,
         this.form.value.content,
         this.blog.tags,
         this.form.value.image,
+        this.blog.datePublished,
         headers);
     }
   }
 
-  submitBlog(title: string, content: any, tags: any, image: File, headers: HttpHeaders) {
+  submitBlog(title: string, content: any, tags: any, image: File, headers: HttpHeaders, datePublished: any) {
     const blogData = new FormData();
     blogData.append("title", title);
     blogData.append("content", content);
-    blogData.append("tags", tags);
-    blogData.append("image", image, title)
+    blogData.append("tags", JSON.stringify(tags));
+    blogData.append("image", image, title);
+    blogData.append("datePublished", datePublished)
 
     this.http
     .post<{ message: string }>('http://localhost:3000/api/blogs', blogData, {
@@ -139,7 +147,7 @@ export class PostBlogComponent implements OnInit {
     });
   }
 
-  updateBlog(title: string, content: any, tags: any, image: File | string, headers: HttpHeaders) {
+  updateBlog(title: string, content: any, tags: any, image: File | string, datePublished: any, headers: HttpHeaders) {
     let blogData;
     console.log(image, 'IMAGE')
     if (typeof(image) === 'object') {
@@ -147,14 +155,16 @@ export class PostBlogComponent implements OnInit {
       blogData = new FormData();
       blogData.append("title", title);
       blogData.append("content", content);
-      blogData.append("tags", tags);
+      blogData.append("tags", JSON.stringify(tags));
       blogData.append("image", image, title)
+      blogData.append("datePublished", datePublished)
     } else {
       blogData = {
         title: title,
         content: content,
-        tags: tags,
-        imagePath: image
+        tags: JSON.stringify(tags),
+        imagePath: image,
+        publishedDate: datePublished
       }
     }
     this.http.put('http://localhost:3000/api/blogs/edit-blog/' + this.blogId, blogData, {

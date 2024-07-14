@@ -125,14 +125,13 @@ export class BlogService {
     this.readingList$.next(updatedReadingList);
   }
 
-public removeFromReadingList$(blogId: string) {
-    const currentReadingList = this.readingList$.getValue();
-    console.log(currentReadingList, 'currentReadingList');
-    const updatedReadingList = currentReadingList.filter(id => {
-        return id !== blogId
-    })
-    this.readingList$.next(updatedReadingList);
-}
-
+  public removeFromReadingList$(blogId: string) {
+      const currentReadingList = this.readingList$.getValue();
+      console.log(currentReadingList, 'currentReadingList');
+      const updatedReadingList = currentReadingList.filter(id => {
+          return id !== blogId
+      })
+      this.readingList$.next(updatedReadingList);
+  }
   
 }

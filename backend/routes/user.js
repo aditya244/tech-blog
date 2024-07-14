@@ -67,23 +67,25 @@ router.post("/login", (req, res, next) => {
           message: "Incorrect password!",
         });
       }
-      const token = jwt.sign(
-        { email: userData.email, userId: userData._id },
-        "RANDOM_SECRET_TEXT_CHAR_JBKJBKBKJBKJB_HJBHUVTYDRTCGVHVBJHBJHBJHB",
-        { expiresIn: "1h" }
-      );
-      return res.status(200).json({
-        token: token,
-        expiresIn: 3600,
-        isAdmin: userData.isAdmin,
-        email: userData.email,
-        firstName: userData.firstName,
-        readingList: userData.readingList
-      });
+      if (userData) {
+        const token = jwt.sign(
+          { email: userData.email, userId: userData._id },
+          "RANDOM_SECRET_TEXT_CHAR_JBKJBKBKJBKJB_HJBHUVTYDRTCGVHVBJHBJHBJHB",
+          { expiresIn: "1h" }
+        );
+        return res.status(200).json({
+          token: token,
+          expiresIn: 3600,
+          isAdmin: userData.isAdmin,
+          email: userData.email,
+          firstName: userData.firstName,
+          readingList: userData.readingList
+        });
+      }
     })
     .catch((err) => {
       console.log(err, "ERROR");
-      return res.status(401).json({
+      return res.status(500).json({
         message: "Auth failed",
       });
     });

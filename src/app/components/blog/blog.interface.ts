@@ -4,5 +4,5 @@ export interface Blog {
     content: any;
     tags: string[];
     imagePath: null;
-    dateOfPublish: any;
+    datePublished: any;
 }

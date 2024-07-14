@@ -3,9 +3,8 @@ const router = express.Router();
 const SubscriptionDataSchema = require("../models/subscribe");
 
 router.post("/subscribe", (req, res, next) => {
-  console.log(req.body, "REQ, SUBS");
-
-  SubscriptionDataSchema.findOne({ email: req.body.email })
+  const email= req.body.email.toLowerCase();
+  SubscriptionDataSchema.findOne({ email: email })
     .then((existingEmail) => {
       if (existingEmail) {
         return res.status(401).json({
@@ -22,8 +21,8 @@ router.post("/subscribe", (req, res, next) => {
       subscriptionDetails.save();
     })
     .then((result) => {
-      res.status(201).json({
-        message: "Successfully Subscribed",
+      return res.status(200).json({
+        message: "Successfully Subscribed !",
         result: result,
       });
     })

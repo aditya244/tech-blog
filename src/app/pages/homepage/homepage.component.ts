@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Blog } from 'src/app/components/blog/blog.interface';
 import { BlogService } from 'src/app/components/blog/blog.service';
-import { catchError, map, throwError } from 'rxjs';
+import { catchError, map, Observable, throwError } from 'rxjs';
 import { AuthService } from 'src/app/services/auth.service';
 import { SocialAuthService } from "@abacritt/angularx-social-login";
 import { Router } from '@angular/router';
@@ -24,6 +24,8 @@ export class HomepageComponent implements OnInit {
   successMessage: string = '';
   selectedBlogTitle: any;
   isASubscriber: boolean = false;
+  subscriptionSuccessful: boolean = false;
+  subscriptionSuccessfulRes: string = '';
 
   constructor(
     private blogService: BlogService,
@@ -36,12 +38,15 @@ export class HomepageComponent implements OnInit {
     // can combine both the below behaviorSubject to send data together and will require only one subscription.
     this.authService.getAuthStatusListerner().subscribe((isAuthenticated) => {
       this.isUserAuthenticated = isAuthenticated;
-      console.log(isAuthenticated, 'isAuthenticated')
+      console.log(isAuthenticated, 'isAuthenticated');
     });
-    this.authService.isSubscriber.subscribe(susbcriptionStatus =>  {
-      this.isASubscriber = susbcriptionStatus
-    })
-    console.log(this.user, 'init');
+    this.authService.isSubscriber.subscribe((susbcriptionStatus) => {
+      this.isASubscriber = susbcriptionStatus;
+      if (!this.isASubscriber) {
+        const subsStatus = sessionStorage.getItem('subscriptionStatus');
+        this.isASubscriber = JSON.parse(subsStatus as string);
+      }
+    });
     this.blogService
       .getBlogsForHomeFeed()
       .pipe(
@@ -54,6 +59,7 @@ export class HomepageComponent implements OnInit {
               id: blogData._id,
               content: blogData.content,
               imagePath: blogData.imagePath,
+              datePublished: blogData.datePublished,
             };
           });
         }),
@@ -68,7 +74,8 @@ export class HomepageComponent implements OnInit {
         if (data) {
           this.isLoading = false;
         }
-        this.blogForFeed = data;
+        this.blogForFeed = this.sortBlogsByPublishedDate(data);
+        //this.blogForFeed = data;
       });
 
     this.socialAuthService.authState.subscribe((user) => {
@@ -77,10 +84,10 @@ export class HomepageComponent implements OnInit {
       this.authService.onLoginWithGoogle(user);
     });
 
-    this.authService.userDetailsListerner.subscribe(userDetails => {
-      this.blogService.readingList$.next(userDetails.readingList)
-      console.log(userDetails.readingList, 'readingList_Homepage')
-    })
+    this.authService.userDetailsListerner.subscribe((userDetails) => {
+      this.blogService.readingList$.next(userDetails.readingList);
+      console.log(userDetails.readingList, 'readingList_Homepage');
+    });
 
     this.blogService.getReadingListResSubscription().subscribe((resStatus) => {
       if (resStatus.error) {
@@ -94,7 +101,13 @@ export class HomepageComponent implements OnInit {
   }
 
   onAddToReadingList(blogId: string, title: string) {
+    console.log(this.isUserAuthenticated, 'isAuth');
     this.selectedBlogTitle = title;
+    if (!this.isUserAuthenticated) {
+      this.clearMessage('errorMessage');
+      this.errorMessage = 'Please login to add it to the reading list!';
+      return;
+    }
     this.blogService.addToReadingList(blogId);
   }
 
@@ -105,7 +118,10 @@ export class HomepageComponent implements OnInit {
       date: subscriptionDate,
     };
     this.authService.onSubscribe(subscriptionData).subscribe(
-      (response) => {},
+      (response: any) => {
+        this.subscriptionSuccessful = true;
+        this.subscriptionSuccessfulRes = response.message;
+      },
       (error) => {
         this.subsErrorMsg = error.error.message;
         this.subsFailed = true;
@@ -125,5 +141,22 @@ export class HomepageComponent implements OnInit {
     setTimeout(() => {
       this[messageType] = '';
     }, 3000); // Clear the message after 3 seconds
+  }
+
+  sortBlogsByPublishedDate(blogsArray: any) {
+    let sortedBlogData: Blog[] = [];
+    sortedBlogData = blogsArray.sort((a: any, b: any) => {
+      const dateA: any = this.convertToDateObject(a.datePublished);
+      const dateB: any = this.convertToDateObject(b.datePublished);
+      return dateB - dateA;
+    });
+    console.log(sortedBlogData, 'sortedBlogData');
+    return sortedBlogData;
+  }
+
+  convertToDateObject(dateString: any) {
+    const parts = dateString.split('/');
+    const formattedDate = `${parts[2]}-${parts[1]}-${parts[0]}`;
+    return new Date(formattedDate);
   }
 }

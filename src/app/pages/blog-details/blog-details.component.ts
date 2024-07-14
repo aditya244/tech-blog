@@ -1,6 +1,6 @@
 import { ChangeDetectorRef, Component, Inject, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { map, pipe } from 'rxjs';
+import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
+import { filter, map, pipe } from 'rxjs';
 import { BlogService } from 'src/app/components/blog/blog.service';
 import {MatDialog, MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import { DialogComponent } from 'src/app/components/shared/dialog/dialog.component';
@@ -11,15 +11,15 @@ import { AuthService } from 'src/app/services/auth.service';
 @Component({
   selector: 'app-blog-details',
   templateUrl: './blog-details.component.html',
-  styleUrls: ['./blog-details.component.scss']
+  styleUrls: ['./blog-details.component.scss'],
 })
 export class BlogDetailsComponent implements OnInit {
-
   selectedBlog: any = {};
-  comments:any[] = [];
+  comments: any[] = [];
   comment: string = '';
   id: any;
   enableRemoveReadingListBtn: boolean = false;
+  isLoading: boolean = true;
   public isAdmin: boolean = false;
   public isAuthenticated: boolean = false;
   public showAddToReadingList: boolean = false;
@@ -32,32 +32,37 @@ export class BlogDetailsComponent implements OnInit {
     private fb: UntypedFormBuilder,
     private http: HttpClient,
     private authService: AuthService,
-    public dialog: MatDialog,
-  ) { }
+    public dialog: MatDialog
+  ) {}
 
   ngOnInit(): void {
-    this.id = this.route.paramMap.subscribe(params => {
-      this.id = params.get('id');
-      const id = params.get('id')
-      console.log(this.id)
-      this.blogService.getBlogDetails(id).subscribe(res => {
-      this.selectedBlog = res.blog;
-      this.toggleReadingListBtn(res.blog);
-      console.log(this.selectedBlog, 'blog_selected')
+    this.router.events
+      .pipe(filter((event) => event instanceof NavigationEnd))
+      .subscribe(() => {
+        window.scrollTo(0, 0);
+      });
+    this.route.paramMap.subscribe((params) => {
+      const id = params.get('id');
+      this.id = id;
+      this.blogService.getBlogDetails(id).subscribe((res) => {
+        this.isLoading = false;
+        this.selectedBlog = res.blog;
+        this.toggleReadingListBtn(res.blog);
+      });
     });
-    });
+    // The below code is to handle scrollToTop after click on Homepage to Blog Details
     this.authService.getIsAuthenticated();
     const userDetailsStr: any = sessionStorage.getItem('userDetails');
     const jsonUserDetails = JSON.parse(userDetailsStr);
     this.isAdmin = jsonUserDetails?.isAdmin;
     this.isAuthenticated = this.authService.getIsAuthenticated();
     //this.fetchComments();
-    console.log(this.isAdmin, this.isAuthenticated, 'DETAILS')
+    console.log(this.isAdmin, this.isAuthenticated, 'DETAILS');
   }
 
   commentForm: UntypedFormGroup = this.fb.group({
     blogComments: this.fb.array([new UntypedFormControl('')]),
-  })
+  });
 
   // fetchComments() {
   //   this.blogService.getCommentsForBlog(this.id).subscribe(res => {
@@ -68,37 +73,36 @@ export class BlogDetailsComponent implements OnInit {
   //   })
   // }
 
-  onDeleteBlog(id:any) {
-    this.blogService.deleteBlogPost(id)
-    .subscribe(res => {
+  onDeleteBlog(id: any) {
+    this.blogService.deleteBlogPost(id).subscribe((res) => {
       this.router.navigate(['home']);
       this.dialog.closeAll();
-    })
+    });
   }
 
   openDialog(): void {
     let dialogRef = this.dialog.open(DialogComponent, {
       width: '250px',
     });
-    dialogRef.componentInstance.delete.subscribe(res => {
-      if(res) {
+    dialogRef.componentInstance.delete.subscribe((res) => {
+      if (res) {
         this.onDeleteBlog(this.selectedBlog._id);
       }
-    })
+    });
   }
 
   editBlog(blogId: string): void {
     this.router.navigate(['/edit-blog', blogId]);
-  }  
+  }
 
   private convertDateFormat() {
     const currentDate = new Date();
     const formattedDate = new Intl.DateTimeFormat('en-US', {
       day: 'numeric',
       month: 'short',
-      year: 'numeric'
+      year: 'numeric',
     }).format(currentDate);
-    return formattedDate
+    return formattedDate;
   }
 
   addToReadingList(blogId: string) {
@@ -106,8 +110,8 @@ export class BlogDetailsComponent implements OnInit {
   }
 
   removeFromReadingList(blogId: string) {
-    const userEmailid: any = localStorage.getItem('email')
-    this.blogService.removeFromReadingList(userEmailid, blogId)
+    const userEmailid: any = localStorage.getItem('email');
+    this.blogService.removeFromReadingList(userEmailid, blogId);
   }
 
   // onCommentSubmit(comment: string){
@@ -136,16 +140,14 @@ export class BlogDetailsComponent implements OnInit {
   //   })
   // }
 
-  private toggleReadingListBtn(selectedBlog: { _id: String; }) {
-    this.blogService.readingList$.subscribe(currentReadingList => {
-      console.log(currentReadingList, 'currReadingList_blogDetails')
+  private toggleReadingListBtn(selectedBlog: { _id: String }) {
+    this.blogService.readingList$.subscribe((currentReadingList) => {
       if (currentReadingList.indexOf(selectedBlog._id) === -1) {
         this.showAddToReadingList = true;
       } else {
         this.showAddToReadingList = false;
       }
-    })
-
+    });
   }
 }
 

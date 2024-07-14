@@ -16,7 +16,7 @@ export class LoginComponent implements OnInit {
 
   ngOnInit(): void {
     this.loginForm = this.formBuilder.group({
-      email: ['', Validators.required, Validators.email],
+      email: ['', [Validators.required, Validators.email]],
       password: ['', Validators.required]
     })
   }
@@ -55,6 +55,7 @@ export class LoginComponent implements OnInit {
         (response) => {
           if(response.subscriptionStatus) {
             this.authService.isSubscriber.next(true)
+            sessionStorage.setItem('subscriptionStatus', 'true')
           }
           console.log('Subscription Status:', response);
           // Handle response as needed

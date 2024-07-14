@@ -35,12 +35,14 @@ router.post(
     const url = req.protocol + '://' + req.get("host");
     console.log(req.body, 'REQ')
     const isAdmin = req.headers.isadmin.trim();
+    const tags = JSON.parse(req.body.tags)
     if (isAdmin === "true") {
       const blogs = new Blog({
         title: req.body.title,
         content: req.body.content,
-        tags: req.body.tags,
-        imagePath: url + "/images/" + req.file.filename
+        tags: tags,
+        imagePath: url + "/images/" + req.file.filename,
+        datePublished: req.body.datePublished
       });
       blogs
         .save()
@@ -50,6 +52,7 @@ router.post(
           });
         })
         .catch((error) => {
+          console.log(error, 'Error on post blog')
           res.status(500).json({
             message: "An error occured while saving the blog post.",
           });
@@ -69,6 +72,8 @@ router.put(
     console.log(req.file, "REQ_EDIT");
     console.log(req.body, 'REQ_BODY')
     let imagePath = req.body.imagePath;
+    const tags = JSON.parse(req.body.tags)
+    console.log(tags)
     if(req.file) {
       const url = req.protocol + '://' + req.get("host");
       imagePath = url + "/images/" + req.file.filename
@@ -78,7 +83,7 @@ router.put(
       _id: req.params.id,
       title: req.body.title,
       content: req.body.content,
-      tags: req.body.tags,
+      tags: tags,
       imagePath: imagePath
     });
     Blog.updateOne({ _id: req.params.id }, blog).then((result) => {
