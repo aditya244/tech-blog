@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Blog } from 'src/app/components/blog/blog.interface';
 import { BlogService } from 'src/app/components/blog/blog.service';
-import { catchError, map, throwError } from 'rxjs';
+import { catchError, map, Observable, throwError } from 'rxjs';
 import { AuthService } from 'src/app/services/auth.service';
 import { SocialAuthService } from "@abacritt/angularx-social-login";
 import { Router } from '@angular/router';
@@ -98,7 +98,13 @@ export class HomepageComponent implements OnInit {
   }
 
   onAddToReadingList(blogId: string, title: string) {
+    console.log(this.isUserAuthenticated, 'isAuth')
     this.selectedBlogTitle = title;
+    if(!this.isUserAuthenticated) {
+      this.clearMessage('errorMessage');
+      this.errorMessage = 'Please login to add it to the reading list!'
+      return
+    }
     this.blogService.addToReadingList(blogId);
   }
 

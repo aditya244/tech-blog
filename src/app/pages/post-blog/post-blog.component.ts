@@ -88,6 +88,7 @@ export class PostBlogComponent implements OnInit {
       this.blog.tags.push(tag);
       this.form.get('tag')?.setValue('');
     }
+    console.log(this.blog.tags, 'TAGS')
   }
 
   onSubmitBlog() {
@@ -133,7 +134,7 @@ export class PostBlogComponent implements OnInit {
     const blogData = new FormData();
     blogData.append("title", title);
     blogData.append("content", content);
-    blogData.append("tags", tags);
+    blogData.append("tags", JSON.stringify(tags));
     blogData.append("image", image, title);
     blogData.append("datePublished", datePublished)
 
@@ -154,14 +155,14 @@ export class PostBlogComponent implements OnInit {
       blogData = new FormData();
       blogData.append("title", title);
       blogData.append("content", content);
-      blogData.append("tags", tags);
+      blogData.append("tags", JSON.stringify(tags));
       blogData.append("image", image, title)
       blogData.append("datePublished", datePublished)
     } else {
       blogData = {
         title: title,
         content: content,
-        tags: tags,
+        tags: JSON.stringify(tags),
         imagePath: image,
         publishedDate: datePublished
       }
