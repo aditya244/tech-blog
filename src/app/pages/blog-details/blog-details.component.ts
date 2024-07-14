@@ -36,6 +36,11 @@ export class BlogDetailsComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.router.events
+      .pipe(filter((event) => event instanceof NavigationEnd))
+      .subscribe(() => {
+        window.scrollTo(0, 0);
+      });
     this.route.paramMap.subscribe((params) => {
       const id = params.get('id');
       this.id = id;
@@ -46,11 +51,6 @@ export class BlogDetailsComponent implements OnInit {
       });
     });
     // The below code is to handle scrollToTop after click on Homepage to Blog Details
-    this.router.events
-      .pipe(filter((event) => event instanceof NavigationEnd))
-      .subscribe(() => {
-        window.scrollTo(0, 0);
-      });
     this.authService.getIsAuthenticated();
     const userDetailsStr: any = sessionStorage.getItem('userDetails');
     const jsonUserDetails = JSON.parse(userDetailsStr);
