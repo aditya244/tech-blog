@@ -42,8 +42,11 @@ export class HomepageComponent implements OnInit {
     });
     this.authService.isSubscriber.subscribe((susbcriptionStatus) => {
       this.isASubscriber = susbcriptionStatus;
+      if (!this.isASubscriber) {
+        const subsStatus = sessionStorage.getItem('subscriptionStatus');
+        this.isASubscriber = JSON.parse(subsStatus as string);
+      }
     });
-    console.log(this.user, 'init');
     this.blogService
       .getBlogsForHomeFeed()
       .pipe(
@@ -98,12 +101,12 @@ export class HomepageComponent implements OnInit {
   }
 
   onAddToReadingList(blogId: string, title: string) {
-    console.log(this.isUserAuthenticated, 'isAuth')
+    console.log(this.isUserAuthenticated, 'isAuth');
     this.selectedBlogTitle = title;
-    if(!this.isUserAuthenticated) {
+    if (!this.isUserAuthenticated) {
       this.clearMessage('errorMessage');
-      this.errorMessage = 'Please login to add it to the reading list!'
-      return
+      this.errorMessage = 'Please login to add it to the reading list!';
+      return;
     }
     this.blogService.addToReadingList(blogId);
   }
@@ -141,14 +144,14 @@ export class HomepageComponent implements OnInit {
   }
 
   sortBlogsByPublishedDate(blogsArray: any) {
-    let sortedBlogData: Blog[] = []
+    let sortedBlogData: Blog[] = [];
     sortedBlogData = blogsArray.sort((a: any, b: any) => {
       const dateA: any = this.convertToDateObject(a.datePublished);
       const dateB: any = this.convertToDateObject(b.datePublished);
       return dateB - dateA;
     });
-    console.log(sortedBlogData, 'sortedBlogData')
-    return sortedBlogData
+    console.log(sortedBlogData, 'sortedBlogData');
+    return sortedBlogData;
   }
 
   convertToDateObject(dateString: any) {

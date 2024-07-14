@@ -167,6 +167,7 @@ export class AuthService {
     this.authStatusListener.next(false);
     this.userDetailsListerner.next({});
     this.isAuthenticated = false;
+    this.isSubscriber.next(false)
     clearTimeout(this.tokenTimer);
     this.navigateToLoginPage();
     this.socialAuthService.signOut();
@@ -250,6 +251,7 @@ export class AuthService {
     localStorage.removeItem('expiration');
     localStorage.removeItem('email');
     sessionStorage.removeItem('userDetails');
+    sessionStorage.removeItem('subscriptionStatus')
   }
 
   private setAuthTimer(duration: number) {
