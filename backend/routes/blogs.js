@@ -95,9 +95,10 @@ router.put(
 
 router.get("", (req, res, next) => {
   Blog.find().then((documents) => {
+    const sortedBlogs = sortBlogsByPublishedDate(documents);
     res.status(200).json({
       message: "Blogs fetched Successfully",
-      blogs: documents,
+      blogs: sortedBlogs,
     });
   });
 });
@@ -145,5 +146,19 @@ router.get('/readingListBlogs/:ids', (req, res, next) => {
       });
     });
 });
+
+function convertToDateObject(dateString) {
+  const parts = dateString.split('/');
+  const formattedDate = `${parts[2]}-${parts[1]}-${parts[0]}`;
+  return new Date(formattedDate);
+}
+
+function sortBlogsByPublishedDate(blogsArray) {
+  return blogsArray.sort((a, b) => {
+    const dateA = convertToDateObject(a.datePublished);
+    const dateB = convertToDateObject(b.datePublished);
+    return dateB - dateA;
+  });
+}
 
 module.exports = router;

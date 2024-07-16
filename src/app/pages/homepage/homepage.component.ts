@@ -74,8 +74,7 @@ export class HomepageComponent implements OnInit {
         if (data) {
           this.isLoading = false;
         }
-        this.blogForFeed = this.sortBlogsByPublishedDate(data);
-        //this.blogForFeed = data;
+        this.blogForFeed = data;
       });
 
     this.socialAuthService.authState.subscribe((user) => {
@@ -141,22 +140,5 @@ export class HomepageComponent implements OnInit {
     setTimeout(() => {
       this[messageType] = '';
     }, 3000); // Clear the message after 3 seconds
-  }
-
-  sortBlogsByPublishedDate(blogsArray: any) {
-    let sortedBlogData: Blog[] = [];
-    sortedBlogData = blogsArray.sort((a: any, b: any) => {
-      const dateA: any = this.convertToDateObject(a.datePublished);
-      const dateB: any = this.convertToDateObject(b.datePublished);
-      return dateB - dateA;
-    });
-    console.log(sortedBlogData, 'sortedBlogData');
-    return sortedBlogData;
-  }
-
-  convertToDateObject(dateString: any) {
-    const parts = dateString.split('/');
-    const formattedDate = `${parts[2]}-${parts[1]}-${parts[0]}`;
-    return new Date(formattedDate);
   }
 }
