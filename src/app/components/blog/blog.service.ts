@@ -3,6 +3,8 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { BehaviorSubject, catchError, Observable, of, Subject } from 'rxjs';
 
+const HOST = process.env['HOST'] || "http://localhost:3000"
+
 @Injectable({
   providedIn: 'root',
 })
@@ -12,6 +14,8 @@ export class BlogService {
     error: boolean;
   }>();
 
+
+
   public readingList$ = new BehaviorSubject<String[]>([]);
 
   constructor(
@@ -19,8 +23,10 @@ export class BlogService {
     private router: Router
   ) {}
 
+
+
   getBlogsForHomeFeed(): Observable<any> {
-    return this.httpClient.get('http://localhost:3000/api/blogs');
+    return this.httpClient.get(`${HOST}/api/blogs`);
   }
 
   getBlogDetails(id: any): Observable<any> {
