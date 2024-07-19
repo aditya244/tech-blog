@@ -2,19 +2,19 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { BehaviorSubject, catchError, Observable, of, Subject } from 'rxjs';
-
-const HOST = process.env['HOST'] || "http://localhost:3000"
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class BlogService {
+
+  private apiUrl = environment.apiUrl;
+
   private readingListResSubscription = new Subject<{
     message: string;
     error: boolean;
   }>();
-
-
 
   public readingList$ = new BehaviorSubject<String[]>([]);
 
@@ -26,7 +26,7 @@ export class BlogService {
 
 
   getBlogsForHomeFeed(): Observable<any> {
-    return this.httpClient.get(`${HOST}/api/blogs`);
+    return this.httpClient.get(`${this.apiUrl}/blogs`);
   }
 
   getBlogDetails(id: any): Observable<any> {
