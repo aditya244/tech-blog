@@ -5,10 +5,15 @@ import { response } from 'express';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { AuthData } from '../pages/sign-up/auth-data.model';
 import { SocialAuthService } from '@abacritt/angularx-social-login';
+import { environment } from 'src/environments/environment';
+
+const apiUrl = environment.apiUrl;
+
 
 @Injectable({
   providedIn: 'root',
 })
+
 export class AuthService {
   private token: any = '';
   private authStatusListener = new BehaviorSubject<boolean>(false);
@@ -25,6 +30,8 @@ export class AuthService {
     authType: string
   }>();
   public isSubscriber = new BehaviorSubject<boolean>(false);
+
+
 
   constructor(
     private httpClient: HttpClient,
@@ -155,7 +162,7 @@ export class AuthService {
     };
 
     this.httpClient.post<{ token: string; expiresIn: number; isAdmin: boolean; email: string; firstName: string, readingList: [] }>(
-      'http://localhost:3000/api/user/login',
+      `${apiUrl}/user/login`,
       userData
     ).subscribe(observer);
   }
