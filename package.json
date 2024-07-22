@@ -9,6 +9,9 @@
     "test": "ng test",
     "start:server": "nodemon ./api/server.js"
   },
+  "engines": {
+    "node": "20.x"
+  },
   "private": true,
   "dependencies": {
     "@abacritt/angularx-social-login": "^1.2.5",
