@@ -35,8 +35,6 @@ app.use((req, res, next) => {
     next();
 })
 
-export const maxDuration = 30;
-
 app.use("/api/blogs", blogRoutes);
 app.use("/api/comments", commentRoutes);
 app.use("/api/user", userRoutes)
