@@ -37,7 +37,6 @@ const MONGODB_URI = process.env.MONGODB_URI || "mongodb+srv://aditya:V53bkdhA4QH
           if (error.name === 'MongoNetworkError') {
             console.error('Network error. Ensure your IP whitelist includes 0.0.0.0/0.');
           } else if (error.name === 'MongoParseError') {
-            console.log(process.env.MONGODB_URI, 'process.env.MONGODB_URI')
             console.error('URI parse error. Check the format of your MongoDB URI.');
           } else {
             console.error('General error:', error);
