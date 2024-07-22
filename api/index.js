@@ -16,6 +16,7 @@ mongoose.connect(MONGODB_URI)
         console.log('Connected to database');
     })
     .catch(() => {
+        console.log(MONGODB_URI)
         console.log('Connection to database failed');
     })
 
