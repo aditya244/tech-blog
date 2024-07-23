@@ -56,7 +56,7 @@ const MONGODB_URI = process.env.MONGODB_URI || "mongodb+srv://aditya:V53bkdhA4QH
 
 
 app.use(bodyParser.json());
-app.use("/images", express.static(path.join("/images")));
+app.use("/images", express.static(path.join("api/images")));
 
 app.use((req, res, next) => {
     res.setHeader("Access-Control-Allow-Origin", "*");
