@@ -11,6 +11,10 @@
     ],
     "routes": [
       {
+        "src": "/api/images/(.*)",
+        "dest": "/api/images/$1"
+      },
+      {
         "src": "/(.*)",
         "dest": "/index.js"
       }
