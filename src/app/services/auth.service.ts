@@ -30,8 +30,7 @@ export class AuthService {
     authType: string
   }>();
   public isSubscriber = new BehaviorSubject<boolean>(false);
-
-
+  private apiUrl = environment.apiUrl;
 
   constructor(
     private httpClient: HttpClient,
@@ -78,7 +77,7 @@ export class AuthService {
 
 
   getSubscriptionStatus(email: string): Observable<any> {
-    return this.httpClient.get<any>(`http://localhost:3000/api/get-subscription-updates/${email}`);
+    return this.httpClient.get<any>(`${this.apiUrl}/get-subscription-updates/${email}`);
   }
 
   onSignUp(userData: AuthData) {
@@ -109,7 +108,7 @@ export class AuthService {
 
     this.httpClient
       .post<{ message: string }>(
-        'http://localhost:3000/api/user/sign-up',
+        `${this.apiUrl}/user/sign-up`,
         authData
       )
       .subscribe(observer);
@@ -199,7 +198,7 @@ export class AuthService {
 
   onSubscribe(subscriptionData: any) {
     return this.httpClient.post(
-      'http://localhost:3000/api/subscribe',
+      `${this.apiUrl}/subscribe`,
       subscriptionData
     );
   }
@@ -217,7 +216,7 @@ export class AuthService {
         isAdmin: boolean;
         email: string;
         firstName: string;
-      }>('http://localhost:3000/api/user/login-with-google', userData)
+      }>(`${this.apiUrl}/user/login-with-google`, userData)
       .subscribe((response) => {
         console.log(response, 'RESPONSE, LOGIN WITH GOOOGLE');
         const token = response.token;

@@ -30,15 +30,15 @@ export class BlogService {
   }
 
   getBlogDetails(id: any): Observable<any> {
-    return this.httpClient.get('http://localhost:3000/api/blogs/' + id);
+    return this.httpClient.get(`${this.apiUrl}/blogs/` + id);
   }
 
   deleteBlogPost(id: any): Observable<any> {
-    return this.httpClient.delete('http://localhost:3000/api/blogs/' + id);
+    return this.httpClient.delete(`${this.apiUrl}/blogs/` + id);
   }
 
   getCommentsForBlog(blogId: any): Observable<any> {
-    return this.httpClient.get('http://localhost:3000/api/comments/' + blogId);
+    return this.httpClient.get(`${this.apiUrl}/comments/` + blogId);
   }
 
   getReadingListResSubscription() {
@@ -47,7 +47,7 @@ export class BlogService {
 
   deleteComment(commentId: string): Observable<any> {
     return this.httpClient.delete(
-      'http://localhost:3000/api/comments/' + commentId
+      `${this.apiUrl}/comments/` + commentId
     );
   }
 
@@ -60,7 +60,7 @@ export class BlogService {
     //   return
     // }
     this.httpClient
-      .post('http://localhost:3000/api/user/add-reading-list', {
+      .post(`${this.apiUrl}/user/add-reading-list`, {
         blogId,
         userEmailid,
       })
@@ -92,19 +92,19 @@ export class BlogService {
   getReadingListData(emailId: any) {
     console.log(emailId, 'EMAIL_PARAM');
     return this.httpClient.get(
-      `http://localhost:3000/api/user/reading-list/${emailId}`
+      `${this.apiUrl}/user/reading-list/${emailId}`
     );
   }
 
   getReadingListBlogsData(ids: string[]) {
     const stringId = ids.join(',');
-    const url = 'http://localhost:3000/api/blogs/readingListBlogs/' + stringId;
+    const url = `${this.apiUrl}/blogs/readingListBlogs/` + stringId;
     return this.httpClient.get(url);
   }
 
   removeFromReadingList(userEmailId: string, blogId: string) {
     console.log(blogId, userEmailId, 'paramss');
-    const url = 'http://localhost:3000/api/user/remove-from-reading-list/';
+    const url = `${this.apiUrl}/user/remove-from-reading-list/`;
     this.httpClient
       .post(url, { blogId, userEmailId })
       .pipe(

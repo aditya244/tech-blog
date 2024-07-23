@@ -7,6 +7,7 @@ import { title } from 'process';
 import { Blog } from 'src/app/components/blog/blog.interface';
 import { BlogService } from 'src/app/components/blog/blog.service';
 import { AuthService } from 'src/app/services/auth.service';
+import { environment } from 'src/environments/environment';
 import { mimeType } from './mime-type-validator';
 
 @Component({
@@ -15,6 +16,8 @@ import { mimeType } from './mime-type-validator';
   styleUrls: ['./post-blog.component.scss'],
 })
 export class PostBlogComponent implements OnInit {
+
+  private apiUrl = environment.apiUrl;
   public Editor: any = ClassicEditor;
 
   public blog: { title: string; content: string; tags: string[]; imagePath: any, datePublished: any } = {
@@ -139,7 +142,7 @@ export class PostBlogComponent implements OnInit {
     blogData.append("datePublished", datePublished)
 
     this.http
-    .post<{ message: string }>('http://localhost:3000/api/blogs', blogData, {
+    .post<{ message: string }>(`${this.apiUrl}/blogs`, blogData, {
       headers: headers,
     })
     .subscribe((response) => {
@@ -167,7 +170,7 @@ export class PostBlogComponent implements OnInit {
         publishedDate: datePublished
       }
     }
-    this.http.put('http://localhost:3000/api/blogs/edit-blog/' + this.blogId, blogData, {
+    this.http.put(`${this.apiUrl}/blogs/edit-blog/` + this.blogId, blogData, {
       headers: headers
     }).subscribe((response) => {
       console.log(response)
