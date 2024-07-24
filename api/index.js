@@ -56,7 +56,11 @@ const MONGODB_URI = process.env.MONGODB_URI || "mongodb+srv://aditya:V53bkdhA4QH
 
 
 app.use(bodyParser.json());
-app.use("/images", express.static(path.join("api/images")));
+//app.use("/images", express.static(path.join("api/images")));
+const imagePath = path.join(__dirname, 'api', 'images');
+console.log('Serving images from path:', imagePath);
+app.use("/images", express.static(imagePath));
+
 console.log('loading image')
 //app.use('/images', express.static(path.join(__dirname, 'images')));
 
