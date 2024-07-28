@@ -23,9 +23,11 @@
                     </div>
                     <div class="content-container">
                         <div class="font-style" [innerHTML]='blog.content.slice(0,300)'></div>
-                        <a [routerLink]="['/blog-details/', blog.id, {relaiveTo: null}]"><button type="button" class="read-more-btn">Read More</button></a>
-                        <button type="button" class="reading-list-btn" (click)="onAddToReadingList(blog.id, blog.title)"> Add to Reading List </button>
-                        <p class="publishedDate">Published on: {{blog?.datePublished}}</p>
+                        <div class="button-container">
+                            <a [routerLink]="['/blog-details/', blog.id, {relaiveTo: null}]"><button type="button" class="read-more-btn">Read More</button></a>
+                            <button type="button" class="reading-list-btn" (click)="onAddToReadingList(blog.id, blog.title)"> Add to Reading List </button>
+                            <p class="publishedDate">Published on: {{blog?.datePublished}}</p>
+                        </div>
                     </div>
                 </div>
             </div>

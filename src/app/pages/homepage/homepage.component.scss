@@ -299,25 +299,32 @@
     .content-container {
         display: flex;
         flex-direction: column;
+        align-items: flex-start;
         //width: 300px;
     }
-    .read-more-btn {
+    .read-more-btn, .reading-list-btn {
         padding: 8px;
         border-radius: 2px;
         background-color: white;
         box-shadow: 2px 2px 5px #C2C1C2;
         border: none;
-        //width: 180px;
+        cursor: pointer;
     }
+
+    .buttons-container {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+    }
+
+    .read-more-btn {
+        flex: 1; /* Allows the button to take available space */
+        margin-right: 10px;
+    }
+    
     .reading-list-btn {
-        padding: 8px;
-        border-radius: 2px;
-        background-color: white;
-        box-shadow: 2px 2px 5px #C2C1C2;
-        border: none;
-        width: 180px;
-        //float: right;
-        //margin-left: 0px;
+        flex: 1; /* Allows the button to take available space */
+        margin-left: 10px;
     }
     .font-style {
         font-family:'Arial';
