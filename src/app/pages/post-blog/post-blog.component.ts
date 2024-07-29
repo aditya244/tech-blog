@@ -194,5 +194,6 @@ export class PostBlogComponent implements OnInit {
     }
     reader.readAsDataURL(file);
     console.log(this.form, 'FORM');
+    console.log(this.imagePreview, 'IMAGE_PREVIEW')
   }
 }

@@ -65,19 +65,20 @@
     padding-left: 10px;
     width: 150px;
 }
-  .unstyled-button {
-        background: none;
-        border: none;
-        padding: 0;
-        margin: 0;
-        font: inherit;
-        color: inherit;
-        text-align: inherit;
-        outline: none;
-        box-shadow: none;
-        cursor: pointer;
-      }
-      
+
+.unstyled-button {
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+    font: inherit;
+    color: inherit;
+    text-align: inherit;
+    outline: none;
+    box-shadow: none;
+    cursor: pointer;
+}
+
 
 .checkbtn {
     font-size: 30px;
@@ -91,7 +92,7 @@
     display: none;
 }
 
-@media (max-width: 900px) {
+@media (max-width: 600px) {
 
     .container {
         padding: 0;
@@ -99,6 +100,7 @@
         width: auto;
         z-index: 0;
     }
+
     .checkbtn {
         font-size: 35px;
         color: #FAFAFA;
@@ -120,7 +122,7 @@
     }
 
     .nav-items {
-        display:block;
+        display: block;
         color: #FAFAFA;
         background-color: #476b8d;
         width: 200px;
@@ -130,7 +132,7 @@
         transition: all .2s;
         visibility: hidden;
     }
-      
+
 
     .nav-item {
         font-size: 18px;
@@ -147,6 +149,7 @@
         color: #25303B;
         border-radius: 5px;
     }
+
     .navbar-mobileView {
         margin-top: auto;
         visibility: visible;
@@ -158,5 +161,101 @@
         font-size: 30px;
         margin: 10px 0px;
     }
-    
-  }
+
+}
+
+// added these for iPad views
+
+// @media (min-width: 601px) and (max-width: 1350px) {
+
+//     .navbar {
+//         display: flex;
+//         flex-direction: row;
+//         background-color: #25303B;
+//         color: #FAFAFA;
+//         width: 100%;
+//         align-items: center;
+//         justify-content: space-between;
+//         margin: 0px;
+//     }
+
+//     .logo {
+//         //align-items: flex-start;
+//         justify-items: flex-start;
+//     }
+
+//     .nav-items {
+//         display: flex;
+//         //align-items: end;
+//         //justify-content: flex-end;
+//     }
+
+//     .nav-item-logo {
+//         // float: left;
+//         font-size: 20px;
+//         margin: 30px 30px;
+//     }
+
+//     .nav-item-logo-img {
+//         // float: left;
+//         font-size: 20px;
+//         margin: 15px 30px;
+//         cursor: pointer;
+//     }
+
+//     .nav-item {
+//         //float: right;
+//         margin: 25px 25px;
+//         font-size: 15px;
+//         cursor: pointer;
+//     }
+
+//     .nav-item-username {
+//         margin: 25px 25px;
+//         font-size: 15px;
+//         cursor: pointer;
+//     }
+
+//     .space {
+//         margin: 5px 25px;
+//         font-size: 20px;
+//     }
+
+//     .search-bar {
+//         border-radius: 5px;
+//         height: 15px;
+//         font-size: 12px;
+//         font-weight: 500;
+//         padding-left: 10px;
+//         width: 150px;
+//     }
+
+//     .unstyled-button {
+//         background: none;
+//         border: none;
+//         padding: 0;
+//         margin: 0;
+//         font: inherit;
+//         color: inherit;
+//         text-align: inherit;
+//         outline: none;
+//         box-shadow: none;
+//         cursor: pointer;
+//     }
+
+//     .checkbtn {
+//         font-size: 30px;
+//         color: #FAFAFA;
+//         cursor: pointer;
+//         display: none;
+//         opacity: 1;
+//     }
+
+//     #check {
+//         display: none;
+//     }
+// }
+
+//   @media (min-width: 601px) and (max-width: 1024px) {
+
+//   }

@@ -361,6 +361,13 @@
         width: 40%;
     }
 
+    .content-container {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        width: 60%;
+    }
+
     .banner-image {
         height: 200px;
         width: 100%;
@@ -427,5 +434,17 @@
         width: auto;
         height: auto;
         box-shadow: 2px 2px 5px #C2C1C2;
+    }
+
+    .image-container {
+        margin-right: 20px;
+        width: 40%;
+    }
+
+    .content-container {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        width: 60%;
     }
 }
