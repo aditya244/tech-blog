@@ -31,7 +31,7 @@ const MONGODB_URI = process.env.MONGODB_URI || "mongodb+srv://aditya:V53bkdhA4QH
             connectTimeoutMS: 30000,  // 30 seconds
             socketTimeoutMS: 30000   // 30 seconds
           });
-          console.log('MongoDB connected successfully');
+          console.log('MongoDB connected successfully in prod');
         } catch (error) {
           console.error('MongoDB connection failed:', error.message);
           if (error.name === 'MongoNetworkError') {
@@ -69,7 +69,7 @@ app.use((req, res, next) => {
         "GET, POST, PATCH, DELETE, OPTIONS, PUT"
     );
     next();
-})
+}) 
 
 app.use("/api/blogs", blogRoutes);
 app.use("/api/comments", commentRoutes);
