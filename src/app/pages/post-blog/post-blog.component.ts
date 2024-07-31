@@ -152,7 +152,6 @@ export class PostBlogComponent implements OnInit {
 
   updateBlog(title: string, content: any, tags: any, image: File | string, datePublished: any, headers: HttpHeaders) {
     let blogData;
-    console.log(image, 'IMAGE')
     if (typeof(image) === 'object') {
       console.log('gettinginside')
       blogData = new FormData();
