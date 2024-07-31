@@ -7,12 +7,14 @@ const multer = require("multer");
 const { put, list } = require('@vercel/blob');
 
 async function uploadToVercelBlob(file) {
+  console.log('Uploading file:', file.originalname);
   try {
     const { url } = await put(file.originalname, file.buffer, {
       contentType: file.mimetype,
       access: 'public',
       token: process.env.BLOB_READ_WRITE_TOKEN || 'vercel_blob_rw_tc8570i2Vby9yroW_pncNVPQkA3Ojf9mRGYiCdfjfmfRqXS'
     });
+    console.log('Upload successful. URL:', url);
     return url;
   } catch (error) {
     console.error("Error uploading to Vercel Blob:", error);
@@ -122,6 +124,9 @@ router.post(
   checkAuth,
   multer({ storage: multer.memoryStorage() }).single("image"),
   async (req, res, next) => {
+    console.log('Received file:', req.file);
+    console.log('Environment:', process.env.NODE_ENV);
+    console.log('BLOB_READ_WRITE_TOKEN set:', !!process.env.BLOB_READ_WRITE_TOKEN)
     const isValid = MIME_TYPE_MAP[req.file.mimetype];
     if (!isValid) {
       return res.status(400).json({ message: "Invalid mime type" });
