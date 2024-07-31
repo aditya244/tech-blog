@@ -29,6 +29,7 @@
     "@ckeditor/ckeditor5-build-classic": "^37.0.1",
     "@fortawesome/angular-fontawesome": "^0.11.1",
     "@fortawesome/free-solid-svg-icons": "^6.5.2",
+    "@vercel/blob": "^0.23.4",
     "bcrypt": "^5.1.1",
     "body-parser": "^1.20.1",
     "express": "^4.18.2",
