@@ -65,6 +65,7 @@ export class AppComponent implements OnInit {
   logout(){
     this.authService.onLogout();
     this.blogService.readingList$.next([])
+    this.showNavBar = false;
   }
 
   @HostListener('window:resize', ['$event'])  
@@ -84,4 +85,9 @@ export class AppComponent implements OnInit {
       this.showNavBar = !this.showNavBar
     }
   }
+  
+  closeNavbar() {
+    this.showNavBar = false;
+  }
+  
 }
