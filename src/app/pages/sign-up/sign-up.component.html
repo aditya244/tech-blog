@@ -2,11 +2,7 @@
 
 <mat-card>
   <!-- check material documentation for email example, has validation as well -->
-  <form
-    class="register-form"
-    [formGroup]="registerForm"
-    (ngSubmit)="onSignUp()"
-  >
+  <form class="register-form" [formGroup]="registerForm" (ngSubmit)="onSignUp()">
     <mat-form-field class="form-input">
       <mat-label>First Name</mat-label>
       <input type="text" formControlName="firstName" matInput />
@@ -19,14 +15,27 @@
       <mat-label>Email id</mat-label>
       <input type="text" formControlName="email" matInput />
     </mat-form-field>
-    <mat-form-field class="form-input">
+    <!-- <mat-form-field class="form-input">
       <mat-label> Password </mat-label>
       <input type="password" formControlName="password" matInput />
     </mat-form-field>
-    <!-- <mat-form-field class="form-input">
-            <mat-label> Verify Password </mat-label>
-            <input type="password"  formControlName="verifyPassword" matInput>
-        </mat-form-field> -->
+    <mat-form-field class="form-input">
+      <mat-label> Verify Password </mat-label>
+      <input type="password" formControlName="verifyPassword" matInput>
+    </mat-form-field> -->
+    <mat-form-field class="form-input">
+      <mat-label>Password</mat-label>
+      <input type="password" formControlName="password" matInput />
+    </mat-form-field>
+    
+    <mat-form-field class="form-input">
+      <mat-label>Verify Password</mat-label>
+      <input type="password" formControlName="verifyPassword" matInput />
+      <mat-error *ngIf="registerForm.get('verifyPassword')?.hasError('passwordMismatch')">
+        Passwords do not match.
+      </mat-error>
+    </mat-form-field>
+    
     <button class="login-btn" mat-raised-button>Sign up</button>
   </form>
 
