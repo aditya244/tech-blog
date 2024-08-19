@@ -10,6 +10,11 @@
     align-items: center;
 }
 
+.container-card {
+    width: 60%;
+    margin: 0 auto;
+}
+
 .form-input {
     width: 400px;
 }
@@ -40,3 +45,6 @@
     text-align: center;
   }
   
+  .login-btn:hover {
+    cursor: pointer;
+  }

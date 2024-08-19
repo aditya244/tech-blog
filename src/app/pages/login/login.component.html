@@ -2,7 +2,7 @@
     Please Login using your credentials
 </h1>
 
-<mat-card>
+<mat-card class="container-card">
     <form class="login-form" [formGroup]="loginForm" (ngSubmit)="onLogin()">
         <mat-form-field>
             <input type="email" id="email" placeholder="Email" matInput formControlName="email">
@@ -26,4 +26,7 @@
       <!-- <div *ngIf="successMessage" class="success-message">
         {{ successMessage }}
       </div> -->
+      <div class="forgot-password">
+        <p routerLink="/forgot-password" class="nav-item" type="none"> Forgot password </p>
+      </div>
 </mat-card>

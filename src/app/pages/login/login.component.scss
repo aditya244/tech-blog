@@ -3,11 +3,18 @@
     text-align: center;
 }
 
+.container-card {
+    width: 60%;
+    margin: 0 auto;
+}
+
 .login-form {
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    //justify-content: center;
+    //align-items: center;
+    width: 50%;
+    margin: 0 auto;
 }
 
 .form-input {
@@ -26,6 +33,11 @@
     border: none;
     color: #000;
     width: 100px;
+    align-self: center;
+}
+
+.login-button:hover {
+    cursor: pointer;
 }
 
 .error-message {
@@ -48,4 +60,13 @@
     margin-top: 10px;
     font-size: 14px;
     text-align: center;
+  }
+
+  .forgot-password {
+    text-align: right;
+    text-decoration: underline;
+  }
+
+  .forgot-password:hover {
+      cursor: pointer;
   }
