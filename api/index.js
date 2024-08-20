@@ -63,7 +63,7 @@ app.use((req, res, next) => {
 });
 
 app.use("/api/blogs", blogRoutes);
-app.use("/api/comments", commentRoutes);
+//app.use("/api/comments", commentRoutes);
 app.use("/api/password", passwordRoutes)
 app.use("/api/user", userRoutes);
 app.use("/api", subscriptionRoutes);
