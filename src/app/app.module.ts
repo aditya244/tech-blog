@@ -38,6 +38,8 @@ import {
   GoogleLoginProvider 
 } from '@abacritt/angularx-social-login';
 import { MatSidenavModule } from '@angular/material/sidenav';
+import { ForgotPasswordComponent } from './pages/forgot-password/forgot-password.component';
+import { ResetPasswordComponent } from './pages/reset-password/reset-password.component';
 
 
 
@@ -54,7 +56,9 @@ import { MatSidenavModule } from '@angular/material/sidenav';
     DialogComponent,
     ReadingListComponent,
     LoginComponent,
-    SignUpComponent
+    SignUpComponent,
+    ForgotPasswordComponent,
+    ResetPasswordComponent
   ],
   imports: [
     BrowserModule,

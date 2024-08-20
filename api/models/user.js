@@ -7,7 +7,10 @@ const userSchema = mongoose.Schema({
     email: {type: String, required: true, unique: true},
     password: {type: String, required: true},
     isAdmin: { type: Boolean, default: false },
-    readingList: []
+    readingList: [],
+    resetToken: {type: String},
+    resetTokenExpiration: {type: Date},
+    authProvider: { type: String, default: 'local' },
 })
 
 userSchema.plugin(uniqueValidator);

@@ -247,6 +247,14 @@ export class AuthService {
       });
   }
 
+  forgotPassword(email: string) {
+    return this.httpClient.post<{ message: string }>(`${this.apiUrl}/password/forgot-password`, { email });
+  }
+  
+  resetPassword(token: string, password: string) {
+    return this.httpClient.post<{ message: string }>(`${this.apiUrl}/password/reset-password`, { token, password });
+  }  
+
   private saveAuthData(token: string, expirationDate: Date) {
     localStorage.setItem('token', token);
     localStorage.setItem('expiration', expirationDate.toISOString());
