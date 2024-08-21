@@ -1,4 +1,10 @@
 /* Styles for desktop view */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
 .container {
     display: flex;
     flex-direction: row;
@@ -339,6 +345,12 @@
         height: fit-content;
         box-shadow: 2px 2px 5px #C2C1C2;
         position: sticky;
+    }
+
+    // Added code for mobile view to remove whitespaces
+    .container, .blog-container {
+        width: 100%;
+        padding: 0;
     }
 
     .subscribe-input {

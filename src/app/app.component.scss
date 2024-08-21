@@ -1,3 +1,8 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
 .container {
     padding: 0px 0px;
     height: 100%;
@@ -13,6 +18,7 @@
     align-items: center;
     justify-content: space-between;
     margin: 0px;
+    overflow: hidden;
 }
 
 .logo {
@@ -162,6 +168,23 @@
     .nav-item-logo-img {
         font-size: 30px;
         margin: 10px 0px;
+    }
+
+    // Added code for mobile view to remove whitespaces
+
+    .container, .blog-container, .side-bar {
+        width: 100%; /* Ensure full width */
+        padding: 0 10px; /* Add padding instead of margin */
+        overflow-x: hidden; /* Prevent horizontal overflow */
+    }
+
+    .nav-items {
+        width: 100%; /* Allow nav items to fill width */
+        padding: 10px 0; /* Adjust padding */
+    }
+
+    .nav-item {
+        margin: 10px 0; /* Reduce margin to avoid overflow */
     }
 
 }
