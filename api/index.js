@@ -5,7 +5,7 @@ const app = express();
 const path = require("path");
 
 const blogRoutes = require("./routes/blogs");
-const commentRoutes = require("./routes/comments");
+//const commentRoutes = require("./routes/comments");
 const userRoutes = require("./routes/user");
 const subscriptionRoutes = require("./routes/subscribe");
 const passwordRoutes = require("./routes/password")
