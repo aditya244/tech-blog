@@ -21,10 +21,6 @@
     width: 400px;
 }
 
-.login-btn {
-    width: 120px;
-}
-
 .login-button {
     padding: 8px;
     border-radius: 2px;
@@ -69,4 +65,26 @@
 
   .forgot-password:hover {
       cursor: pointer;
+  }
+
+  @media (max-width: 600px) { 
+
+    .container-card {
+        width: 70%;
+        margin: 0 auto;
+    }
+
+    .form-input {
+        width: 100%;
+    }
+
+    .login-form {
+        width: 80%;
+        margin: 0 auto;
+    }
+
+    .forgot-password {
+        margin-top: 15px;
+      }
+
   }
