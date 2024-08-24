@@ -1,75 +1,115 @@
 <div class="loader" *ngIf="isLoading">
-    <img src="../../../assets/loader.gif"/>
+  <img src="../../../assets/loader.gif" />
 </div>
 <div class="container">
-    <div class="blog-container">
-        <div class="fallback-coomponent" *ngIf="isErrorFromServer">
-            <h1> Seems like there's some issue!</h1>
-            <p> Please check your internet connect! </p>
-            <p>If the issue still persist, this could be a technical issue, please reach to us at this email id: contact@blog.com</p>
+  <div class="fallback-coomponent" *ngIf="isErrorFromServer">
+    <h1>Seems like there's some issue!</h1>
+    <p>Please check your internet connect!</p>
+    <p>
+      If the issue still persist, this could be a technical issue, please reach
+      to us at this email id: contact@blog.com
+    </p>
+  </div>
+  <div>
+  <div  *ngFor="let blog of blogForFeed">
+    <div class="blog-feed-container">
+      <div
+        *ngIf="errorMessage && selectedBlogTitle === blog.title"
+        class="error-message"
+      >
+        {{ errorMessage }}
+      </div>
+      <div
+        *ngIf="successMessage && selectedBlogTitle === blog.title"
+        class="success-message"
+      >
+        {{ successMessage }}
+      </div>
+      <h1 class="heading">{{ blog.title }}</h1>
+      <div class="blog-content">
+        <div class="image-container" *ngIf="blog.imagePath">
+          <img [src]="blog.imagePath" [alt]="blog.title" class="banner-image" />
         </div>
-        <div class="container2" *ngFor="let blog of blogForFeed">
-            <div class="blog-feed-container" >
-                <div *ngIf="errorMessage && selectedBlogTitle === blog.title" class="error-message">
-                    {{ errorMessage }}
-                  </div>
-                  <div *ngIf="successMessage && selectedBlogTitle === blog.title" class="success-message">
-                    {{ successMessage }}
-                  </div>
-                <h1 class="heading">{{blog.title}}</h1>
-                <div class="blog-content">
-                    <div class="image-container" *ngIf="blog.imagePath" >
-                        <img [src]="blog.imagePath" [alt]="blog.title" class="banner-image" />
-                    </div>
-                    <div class="content-container">
-                        <div class="font-style" [innerHTML]='blog.content.slice(0,300)'></div>
-                        <div class="button-container">
-                            <a [routerLink]="['/blog-details/', blog.id, {relaiveTo: null}]"><button type="button" class="read-more-btn">Read More</button></a>
-                            <button type="button" class="reading-list-btn" (click)="onAddToReadingList(blog.id, blog.title)"> Add to Reading List </button>
-                            <p class="publishedDate">Published on: {{blog?.datePublished}}</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <div class="content-container">
+          <div
+            class="font-style"
+            [innerHTML]="blog.content.slice(0, 300)"
+          ></div>
+          <div class="button-container">
+            <a [routerLink]="['/blog-details/', blog.id, { relaiveTo: null }]"
+              ><button type="button" class="read-more-btn">Read More</button></a
+            >
+            <button
+              type="button"
+              class="reading-list-btn"
+              (click)="onAddToReadingList(blog.id, blog.title)"
+            >
+              Add to Reading List
+            </button>
+            <p class="publishedDate">Published on: {{ blog?.datePublished }}</p>
+          </div>
         </div>
+      </div>
     </div>
-    <div class="side-bar" *ngIf="!isASubscriber || !isUserAuthenticated">
-        <div class="subscribe-box" *ngIf="!isASubscriber">
-            <div *ngIf="!subsFailed">
-                <h1> Subscribe to our blogs! </h1>
-            <p> Stay tuned with our every new post. You will get notified via email whenever we post new tech blogs</p>
-            <h2> Please Enter your email ID! </h2>
-            <form>
-                <input type="text" name="email" class="subscribe-input" #emailInput/>
-            </form>
-            <button type="button" class="subscribe-btn" (click)="subscribe(emailInput.value)"> Subscribe </button>
-            </div>
-            <div *ngIf="subsFailed" class="sub-failed">
-                <p>{{subsErrorMsg}}</p>
-            </div>
-            <div *ngIf="subscriptionSuccessful" class="sub-success">
-                <p>{{subscriptionSuccessfulRes}}</p>
-            </div>
-        </div>
-        <div *ngIf="!isUserAuthenticated" class="login-box">
-            <h2> Hey there, sign in with us! </h2> 
-            <p> Sign with with your email id or login with Google to get access to your reading list. </p>
-            <p> You can add or remove any of the blogs from the reading list anytime. </p>
-            <button mat-flat-button class="sign-in-btn" (click)="navigateTo('login')"> Sign In </button><br> 
-            <p class="space"> Or </p> 
-            <button mat-flat-button class="sign-in-btn" (click)="navigateTo('sign-up')">  Create Account </button>
-            <div >
-                <p class="space"> Or </p> 
-                <asl-google-signin-button class="google-btn" type="standard" >Sign In With Google</asl-google-signin-button>
-            </div>
-        </div>
-        <!-- <div class="tag-conatiner">
+  </div>
+</div>
+  <div class="side-bar" *ngIf="!isASubscriber || !isUserAuthenticated">
+    <div class="subscribe-box" *ngIf="!isASubscriber">
+      <div *ngIf="!subsFailed">
+        <h1>Subscribe to our blogs!</h1>
+        <p>
+          Stay tuned with our every new post. You will get notified via email
+          whenever we post new tech blogs
+        </p>
+        <h2>Please Enter your email ID!</h2>
+        <form>
+          <input type="text" name="email" class="subscribe-input" #emailInput />
+        </form>
+        <button
+          type="button"
+          class="subscribe-btn"
+          (click)="subscribe(emailInput.value)"
+        >
+          Subscribe
+        </button>
+      </div>
+      <div *ngIf="subsFailed" class="sub-failed">
+        <p>{{ subsErrorMsg }}</p>
+      </div>
+      <div *ngIf="subscriptionSuccessful" class="sub-success">
+        <p>{{ subscriptionSuccessfulRes }}</p>
+      </div>
+    </div>
+    <div *ngIf="!isUserAuthenticated" class="login-box">
+      <h2>Hey there, sign in with us!</h2>
+      <p>
+        Sign with with your email id or login with Google to get access to your
+        reading list.
+      </p>
+      <p>
+        You can add or remove any of the blogs from the reading list anytime.
+      </p>
+      <button mat-flat-button class="sign-in-btn" (click)="navigateTo('login')">
+        Sign In</button
+      ><br />
+      <p class="space">Or</p>
+      <button
+        mat-flat-button
+        class="sign-in-btn"
+        (click)="navigateTo('sign-up')"
+      >
+        Create Account
+      </button>
+      <div>
+        <p class="space">Or</p>
+        <asl-google-signin-button class="google-btn" type="standard"
+          >Sign In With Google</asl-google-signin-button
+        >
+      </div>
+    </div>
+</div>  
+    <!-- <div class="tag-conatiner">
             
         </div> -->
-        <!-- <div *ngIf="isAuthenticated">
-            <span> {{user.name}} </span>
-            <span> {{user.email}} </span>
-        </div> -->
-    </div>
-    
+  
 </div>

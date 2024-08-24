@@ -1,4 +1,24 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
 .footer {
-    padding: 50px 100px;
+    //padding: 50px 100px;
+    margin: 0;
+    margin-top: 20px;
+    display: flex;
+    height: 100px;
     text-align: center;
+    background-color: #25303B;
+    color: #FAFAFA;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+}
+
+.contact-link {
+    cursor: pointer;
+    text-decoration: underline;
 }
