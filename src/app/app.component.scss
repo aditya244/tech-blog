@@ -7,8 +7,11 @@
     padding: 0px 0px;
     height: auto;
     margin: 0px 100px;
+    // below code was to make footer stick to bottom, but did not work for homesceeen feed
+    // flex: 1;
+    // height: 100%;
 }
-  
+
 .navbar {
     display: flex;
     flex-direction: row;
