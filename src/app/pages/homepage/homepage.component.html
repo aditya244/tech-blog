@@ -17,12 +17,14 @@
         *ngIf="errorMessage && selectedBlogTitle === blog.title"
         class="error-message"
       >
+      <mat-icon class="icon">info</mat-icon> 
         {{ errorMessage }}
       </div>
       <div
         *ngIf="successMessage && selectedBlogTitle === blog.title"
         class="success-message"
       >
+      <mat-icon class="icon">done_outline</mat-icon>
         {{ successMessage }}
       </div>
       <h1 class="heading">{{ blog.title }}</h1>

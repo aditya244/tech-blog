@@ -33,19 +33,26 @@
 }
 
 .error-message {
-    color: #f44336; 
-    background-color: #fdecea;
+    //color: #f44336; 
+    //background-color: #fdecea;
+    background-color: #f44336;
+    color: white;
     padding: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     width: auto;
     border: 1px solid #f44336;
     border-radius: 5px;
-    font-size: 12px;
+    font-size: 14px;
     text-align: center;
 }
 
 .success-message {
-    color: #4caf50; 
-    background-color: #e8f5e9; 
+    //color: #4caf50; 
+    //background-color: #e8f5e9; 
+    background-color: #4caf50;
+    color: white;
     padding: 5px;
     width: auto;
     border: 1px solid #4caf50;
@@ -63,6 +70,13 @@
     border-radius: 5px;
     font-size: 14px;
     text-align: center;
+}
+
+.icon {
+    font-size: 17px;
+    color: white;
+    margin-right: 5px;
+    margin-top: 3px;
 }
 
 .fallback-component {
