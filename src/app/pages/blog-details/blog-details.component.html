@@ -18,14 +18,14 @@
         <p> <img [src]="selectedBlog.imagePath" class="banner-image" /></p>
         <span class="content-font" innerHTML={{selectedBlog.content}}></span>
     </div>
-    <div class="tag-container">
+    <!-- <div class="tag-container">
         <div class="tag-content" *ngFor="let tag of selectedBlog.tags">
             {{tag}}
         </div>
-    </div>
+    </div> -->
 </div>
 
-<div class="footer-reading-list">
+<div class="footer-reading-list" *ngIf="isAuthenticated">
     <button *ngIf="showAddToReadingList" class="add-btn" mat-raised-button color="basic" (click)="addToReadingList(selectedBlog._id)">
         Add to Reading List
     </button>
