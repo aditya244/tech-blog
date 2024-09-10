@@ -21,6 +21,7 @@
 .blog-body {
     display: flex;
     flex-direction: row;
+    align-items: center;
 }
 .blog-content {
     margin-left: 12%;
@@ -35,6 +36,7 @@
     font-weight: 400;
     font-size: 32px;
     line-height: 1;
+    text-align: center;
 }
 .banner-image {
     height: 500px;

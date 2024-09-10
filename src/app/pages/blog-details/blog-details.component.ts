@@ -50,12 +50,14 @@ export class BlogDetailsComponent implements OnInit {
         this.toggleReadingListBtn(res.blog);
       });
     });
+    this.authService.getAuthStatusListerner().subscribe((isAuthenticated) => {
+      this.isAuthenticated = isAuthenticated;
+      console.log(isAuthenticated, 'isAuthenticated');
+    });
     // The below code is to handle scrollToTop after click on Homepage to Blog Details
-    this.authService.getIsAuthenticated();
     const userDetailsStr: any = sessionStorage.getItem('userDetails');
     const jsonUserDetails = JSON.parse(userDetailsStr);
     this.isAdmin = jsonUserDetails?.isAdmin;
-    this.isAuthenticated = this.authService.getIsAuthenticated();
     //this.fetchComments();
     console.log(this.isAdmin, this.isAuthenticated, 'DETAILS');
   }
