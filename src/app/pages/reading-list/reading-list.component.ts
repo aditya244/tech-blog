@@ -36,6 +36,7 @@ export class ReadingListComponent implements OnInit {
           // added this pipe and map to convert each data _id to id to map with frontends
           console.log(data, 'FETCHED_BLOGS');
           return data.blogs.map((blogData: any) => {
+            console.log(blogData, 'blogData_fetchReadingListBlogs')
             return {
               title: blogData.title,
               id: blogData._id,
@@ -61,7 +62,7 @@ export class ReadingListComponent implements OnInit {
       });
   }
 
-  removeFromReadingList(blogId: string) {
+  removeFromReadingList(blogId: any) {
     const userEmailid: any = localStorage.getItem('email')
     this.blogService.removeFromReadingList(userEmailid, blogId)
     // lol wierd but this is updating the reading list page

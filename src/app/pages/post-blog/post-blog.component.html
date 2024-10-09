@@ -2,7 +2,7 @@
 <div >
     <form [formGroup]="form" (submit)="onSubmitBlog()">
         <p>
-            <mat-form-field >
+            <mat-form-field class="title-field">
                 <mat-label >Enter the Blog's title</mat-label>
                 <input matInput formControlName="title" >
                 <mat-error *ngIf="form.get('title')?.invalid"></mat-error>
@@ -27,15 +27,52 @@
             </mat-form-field>
             <button type="button" (click)="addTagtoTagsArray()"> Add tag </button>
         </p>
+        
+        <p> Tags associated with the blogs </p>
+        <div class="tag-content" *ngFor="let tag of blog.tags">
+            {{tag}}
+        </div>
+
+        <p>
+            <mat-form-field class="custom-textarea">
+                <mat-label >Enter the meta description</mat-label>
+                <textarea matInput formControlName="metaDescription" ></textarea>
+                <mat-error *ngIf="form.get('metaDescription')?.invalid"></mat-error>
+            </mat-form-field>
+        </p>
+
+        <p>
+            <mat-form-field >
+                <mat-label >Add a keyword for SEO</mat-label>
+                <input matInput formControlName="keyword" >
+            </mat-form-field>
+            <button type="button" (click)="addKeywordsToArray()"> Add keyword </button>
+        </p>
+
+        <p> Keywords for SEO</p>
+        <div class="keyword-content" *ngFor="let keyword of blog.keywords">
+            {{keyword}}
+        </div>
+
+        <p>
+            <mat-form-field >
+                <mat-label >Enter the meta ogTitle</mat-label>
+                <input matInput formControlName="ogTitle" >
+                <mat-error *ngIf="form.get('ogTitle')?.invalid"></mat-error>
+            </mat-form-field>
+        </p>
+
+        <p>
+            <mat-form-field class="custom-textarea">
+                <mat-label >Enter the meta ogDescription</mat-label>
+                <textarea matInput formControlName="ogDescription" > </textarea>
+                <mat-error *ngIf="form.get('ogDescription')?.invalid"></mat-error>
+            </mat-form-field>
+        </p>
+
         <p>
             <button type="submit" mat-raised-button  class="post-blog-btn" color="primary" >Submit</button>
         </p>
     </form>
 </div>
-<div class="tag-content" *ngFor="let tag of blog.tags">
-{{tag}}
-</div>
-<!-- 
-{{blog | json}} -->
-
 
