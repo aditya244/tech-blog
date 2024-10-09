@@ -46,76 +46,6 @@ const MIME_TYPE_MAP = {
 //   }
 // });
 
-// router.post(
-//   "",
-//   checkAuth,
-//   multer({storage: storage}).single("image"),
-//   (req, res, next) => {
-//     const url = req.protocol + '://' + req.get("host");
-//     console.log(req.body, 'REQ')
-//     const isAdmin = req.headers.isadmin.trim();
-//     const tags = JSON.parse(req.body.tags)
-//     if (isAdmin === "true") {
-//       const blogs = new Blog({
-//         title: req.body.title,
-//         content: req.body.content,
-//         tags: tags,
-//         imagePath: url + "/images/" + req.file.filename,
-//         datePublished: req.body.datePublished
-//       });
-//       blogs
-//         .save()
-//         .then((result) => {
-//           res.status(201).json({
-//             message: "Post added successfully",
-//           });
-//         })
-//         .catch((error) => {
-//           console.log(error, 'Error on post blog')
-//           res.status(500).json({
-//             message: "An error occured while saving the blog post.",
-//           });
-//         });
-//     } else {
-//       return res.status(403).json({
-//         message: "You do not have rights to perform this action.",
-//       });
-//     }
-//   }
-// );
-
-// router.put(
-//   "/edit-blog/:id",
-//   multer({ storage: storage }).single("image"),
-//   (req, res, next) => {
-//     console.log(req.file, "REQ_EDIT");
-//     console.log(req.body, 'REQ_BODY')
-//     let imagePath = req.body.imagePath;
-//     const tags = JSON.parse(req.body.tags)
-//     console.log(tags)
-//     if(req.file) {
-//       const url = req.protocol + '://' + req.get("host");
-//       imagePath = url + "/images/" + req.file.filename
-//     }
-//     console.log(imagePath, 'imagePath')
-//     const blog = new Blog({
-//       _id: req.params.id,
-//       title: req.body.title,
-//       content: req.body.content,
-//       tags: tags,
-//       imagePath: imagePath
-//     });
-//     Blog.updateOne({ _id: req.params.id }, blog).then((result) => {
-//       console.log(result);
-//       res.status(200).json({ message: "Blog Updated Successfully" });
-//     });
-//   }
-// );
-
-//
-
-
-
 // new code from claude
 // replaced to use vercel blob
 
@@ -135,6 +65,7 @@ router.post(
       const imageUrl = await uploadToVercelBlob(req.file);
       const isAdmin = req.headers.isadmin.trim();
       const tags = JSON.parse(req.body.tags);
+      const keywords = JSON.parse(req.body.keywords)
       if (isAdmin === "true") {
         const blogs = new Blog({
           title: req.body.title,
@@ -142,6 +73,10 @@ router.post(
           tags: tags,
           imagePath: imageUrl,
           datePublished: req.body.datePublished,
+          keywords: keywords,
+          metaDescription: req.body.metaDescription,
+          ogTitle: req.body.ogTitle,
+          ogDescription: req.body.ogDescription
         });
         await blogs.save();
         res.status(201).json({
@@ -174,16 +109,11 @@ router.put(
 
       let imagePath = req.body.imagePath;
       const tags = JSON.parse(req.body.tags);
-      console.log(tags);
-
+      const keywords = JSON.parse(req.body.keywords)
       // If a new file is uploaded, store it in Vercel Blob
       if (req.file) {
-        const { url } = await put(req.file.originalname, req.file.buffer, {
-          contentType: req.file.mimetype,
-          access: 'public',
-        });
-        imagePath = url;
-
+        const imageUrl = await uploadToVercelBlob(req.file);
+        imagePath = imageUrl;
         // If there was an old image, you might want to delete it
         if (req.body.oldImagePath) {
           // Extract the pathname from the old image URL
@@ -191,14 +121,16 @@ router.put(
           await del(oldImagePathname);
         }
       }
-
       console.log(imagePath, 'imagePath');
-
       const updatedBlog = {
         title: req.body.title,
         content: req.body.content,
         tags: tags,
-        imagePath: imagePath
+        imagePath: imagePath,
+        keywords: keywords,
+        metaDescription: req.body.metaDescription,
+        ogTitle: req.body.ogTitle,
+        ogDescription: req.body.ogDescription
       };
 
       const result = await Blog.findByIdAndUpdate(req.params.id, updatedBlog, { new: true });

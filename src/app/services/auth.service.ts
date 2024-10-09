@@ -211,6 +211,7 @@ export class AuthService {
     };
     this.httpClient
       .post<{
+        readingList: any;
         token: string;
         expiresIn: number;
         isAdmin: boolean;
@@ -235,6 +236,7 @@ export class AuthService {
             userEmailId: response.email,
             firstName: response.firstName,
             isAdmin: response.isAdmin,
+            readingList: response.readingList
           });
           this.isAuthenticated = true;
           const currentTimeStamp = new Date();

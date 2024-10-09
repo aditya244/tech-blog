@@ -51,7 +51,11 @@ export class BlogService {
     );
   }
 
-  addToReadingList(blogId: string) {
+  addToReadingList(blogId: string | undefined) {
+    if (!blogId) {
+      console.error('Blog ID is missing!');
+      return;
+  }
     const userEmailid = localStorage.getItem('email');
     // const userEmailid = this.authService.getUserEmailid();
     console.log(userEmailid, 'userEmailId');

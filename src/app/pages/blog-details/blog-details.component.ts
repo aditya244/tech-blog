@@ -1,6 +1,6 @@
 import { ChangeDetectorRef, Component, Inject, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
-import { filter, map, pipe } from 'rxjs';
+import { EMPTY, filter, map, pipe, switchMap, take, tap } from 'rxjs';
 import { BlogService } from 'src/app/components/blog/blog.service';
 import {MatDialog, MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import { DialogComponent } from 'src/app/components/shared/dialog/dialog.component';
@@ -44,12 +44,17 @@ export class BlogDetailsComponent implements OnInit {
     this.route.paramMap.subscribe((params) => {
       const id = params.get('id');
       this.id = id;
-      this.blogService.getBlogDetails(id).subscribe((res) => {
+      this.blogService.getBlogDetails(id).pipe(
+        tap((res) => {
+          this.selectedBlog = res.blog;
+          this.toggleReadingListBtn(this.selectedBlog);
+        })
+      ).subscribe((res) => {
         this.isLoading = false;
-        this.selectedBlog = res.blog;
-        this.toggleReadingListBtn(res.blog);
       });
     });
+
+
     this.authService.getAuthStatusListerner().subscribe((isAuthenticated) => {
       this.isAuthenticated = isAuthenticated;
       console.log(isAuthenticated, 'isAuthenticated');
@@ -142,14 +147,13 @@ export class BlogDetailsComponent implements OnInit {
   //   })
   // }
 
-  private toggleReadingListBtn(selectedBlog: { _id: String }) {
-    this.blogService.readingList$.subscribe((currentReadingList) => {
-      if (currentReadingList.indexOf(selectedBlog._id) === -1) {
-        this.showAddToReadingList = true;
-      } else {
-        this.showAddToReadingList = false;
-      }
-    });
+  private toggleReadingListBtn(selectedBlog: { _id: string }) {
+    this.blogService.readingList$
+      .pipe(take(1))  // Unsubscribe after the first emission to prevent memory leaks
+      .subscribe((currentReadingList) => {
+        console.log(currentReadingList, 'currentReadingList')
+        this.showAddToReadingList = currentReadingList.indexOf(selectedBlog._id) === -1;
+      });
   }
 }
 

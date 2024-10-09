@@ -99,7 +99,12 @@ export class HomepageComponent implements OnInit {
     });
   }
 
-  onAddToReadingList(blogId: string, title: string) {
+  onAddToReadingList(blogId: string | undefined, title: string) {
+    // undefined is added with blogId as in interface we have made it as optional param.
+    if (!blogId) {
+      console.error('Blog ID is missing!');
+      return;
+    }
     console.log(this.isUserAuthenticated, 'isAuth');
     this.selectedBlogTitle = title;
     if (!this.isUserAuthenticated) {
