@@ -21,6 +21,8 @@
         </mat-form-field>
         <button type="submit" class="login-button" [disabled]="loginForm.invalid">Login</button>
     </form>
+    <p class="social-text"> Or you can use you socials to login!</p>
+    <app-social-login class="social-login"></app-social-login>
     <div *ngIf="errorMessage" class="error-message">
         {{ errorMessage }}
       </div>

@@ -20,7 +20,7 @@ router.post("/subscribe", (req, res, next) => {
         email: email,
         subscriptionDate: req.body.date,
       });
-
+      console.log(subscriptionDetails, 'subscriptionDetails')
       return subscriptionDetails.save(); // Return the promise to chain the next .then
     })
     .then((result) => {
@@ -33,7 +33,7 @@ router.post("/subscribe", (req, res, next) => {
         subject: 'Thank you for subscribing!',
         text: 'You have successfully subscribed to our blog. Stay tuned for updates!',
       };
-
+      console.log(email, 'email')
       return transporter.sendMail(mailOptions); // Return the sendMail promise to chain .then
     })
     .then((info) => {
@@ -50,38 +50,6 @@ router.post("/subscribe", (req, res, next) => {
       });
     });
 });
-
-
-// router.post("/subscribe", (req, res, next) => {
-//   const email= req.body.email.toLowerCase();
-//   SubscriptionDataSchema.findOne({ email: email })
-//     .then((existingEmail) => {
-//       if (existingEmail) {
-//         return res.status(401).json({
-//           message:
-//             "You are already a subscriber! If you are not receiving our emails, please contact us!",
-//           isHtml: true
-//         });
-//       }
-//       const subscriptionDetails = new SubscriptionDataSchema({
-//         email: req.body.email,
-//         subscriptionDate: req.body.date,
-//       });
-        
-//       subscriptionDetails.save();
-//     })
-//     .then((result) => {
-//       return res.status(200).json({
-//         message: "Successfully Subscribed !",
-//         result: result,
-//       });
-//     })
-//     .catch((error) => {
-//       res.status(500).json({
-//         error: error,
-//       });
-//     });
-// });
 
 router.get("/get-subscription-updates/:email", (req, res, next) => {
   SubscriptionDataSchema.findOne({email: req.params.email})

@@ -1,0 +1,13 @@
+.google-btn {
+    position: absolute; /* Position absolutely */
+    left: 50%; /* Move to the center horizontally */
+    transform: translateX(-50%);
+}
+
+@media (min-width: 601px) and (max-width: 1024px) {
+
+    .google-btn {
+        width: 180px;
+    }
+
+}
