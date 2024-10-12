@@ -9,7 +9,6 @@ import { environment } from 'src/environments/environment';
 
 const apiUrl = environment.apiUrl;
 
-
 @Injectable({
   providedIn: 'root',
 })

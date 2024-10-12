@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HomepageComponent } from './pages/homepage/homepage.component';
@@ -31,9 +30,6 @@ import { MatListModule } from '@angular/material/list';
 import {MatIconModule} from '@angular/material/icon';
 //import { FlexLayoutModule } from '@angular/flex-layout';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-
-
-
 import {
   GoogleLoginProvider 
 } from '@abacritt/angularx-social-login';
@@ -42,8 +38,7 @@ import { ForgotPasswordComponent } from './pages/forgot-password/forgot-password
 import { ResetPasswordComponent } from './pages/reset-password/reset-password.component';
 import { SubscribeComponent } from './components/shared/subscribe/subscribe.component';
 import { SocialLoginComponent } from './components/shared/login-social/social-login.component';
-
-
+import { SubscribeDialogComponent } from './components/shared/subscribe-dialog/subscribe-dialog.component';
 
 @NgModule({
   declarations: [
@@ -62,7 +57,8 @@ import { SocialLoginComponent } from './components/shared/login-social/social-lo
     ForgotPasswordComponent,
     ResetPasswordComponent,
     SubscribeComponent,
-    SocialLoginComponent
+    SocialLoginComponent,
+    SubscribeDialogComponent,
   ],
   imports: [
     BrowserModule,
