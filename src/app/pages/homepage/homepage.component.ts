@@ -16,16 +16,16 @@ export class HomepageComponent implements OnInit {
   blogForFeed: Blog[] = [];
   isLoading: boolean = true;
   isErrorFromServer: boolean = false;
-  subsErrorMsg: string = '';
-  subsFailed: boolean = false;
+  // subsErrorMsg: string = '';
+  // subsFailed: boolean = false;
   user: any;
   isUserAuthenticated: boolean = false;
   errorMessage: string = '';
   successMessage: string = '';
   selectedBlogTitle: any;
   isASubscriber: boolean = false;
-  subscriptionSuccessful: boolean = false;
-  subscriptionSuccessfulRes: string = '';
+  // subscriptionSuccessful: boolean = false;
+  // subscriptionSuccessfulRes: string = '';
 
   constructor(
     private blogService: BlogService,
@@ -115,23 +115,23 @@ export class HomepageComponent implements OnInit {
     this.blogService.addToReadingList(blogId);
   }
 
-  subscribe(email: string) {
-    const subscriptionDate = new Date();
-    const subscriptionData = {
-      email: email,
-      date: subscriptionDate,
-    };
-    this.authService.onSubscribe(subscriptionData).subscribe(
-      (response: any) => {
-        this.subscriptionSuccessful = true;
-        this.subscriptionSuccessfulRes = response.message;
-      },
-      (error) => {
-        this.subsErrorMsg = error.error.message;
-        this.subsFailed = true;
-      }
-    );
-  }
+  // subscribe(email: string) {
+  //   const subscriptionDate = new Date();
+  //   const subscriptionData = {
+  //     email: email,
+  //     date: subscriptionDate,
+  //   };
+  //   this.authService.onSubscribe(subscriptionData).subscribe(
+  //     (response: any) => {
+  //       this.subscriptionSuccessful = true;
+  //       this.subscriptionSuccessfulRes = response.message;
+  //     },
+  //     (error) => {
+  //       this.subsErrorMsg = error.error.message;
+  //       this.subsFailed = true;
+  //     }
+  //   );
+  // }
 
   navigateTo(path: string) {
     if (path === 'login') {

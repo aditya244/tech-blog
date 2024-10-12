@@ -1,0 +1,27 @@
+<div class="subscribe-box" >
+    <div *ngIf="!subsFailed">
+      <h1>Subscribe to our blogs!</h1>
+      <p>
+        Stay tuned with our every new post. You will get notified via email
+        whenever we post new tech blogs
+      </p>
+      <h2>Please Enter your email ID!</h2>
+      <form>
+        <input type="text" name="email" class="subscribe-input" #emailInput />
+      </form>
+      <button
+        type="button"
+        class="subscribe-btn"
+        (click)="subscribe(emailInput.value)"
+      >
+        Subscribe
+      </button>
+    </div>
+    <div *ngIf="subsFailed" class="sub-failed">
+      <p>{{ subsErrorMsg }}</p>
+    </div>
+    <div *ngIf="subscriptionSuccessful" class="sub-success">
+      <p>{{ subscriptionSuccessfulRes }}</p>
+    </div>
+  </div>
+  

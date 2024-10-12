@@ -7,7 +7,7 @@
     <p>Please check your internet connect!</p>
     <p>
       If the issue still persist, this could be a technical issue, please reach
-      to us at this email id: contact@blog.com
+      to us at this email id: contact&#64;blog.com
     </p>
   </div>
   <div>
@@ -56,32 +56,7 @@
   </div>
 </div>
   <div class="side-bar" *ngIf="!isASubscriber || !isUserAuthenticated">
-    <div class="subscribe-box" *ngIf="!isASubscriber">
-      <div *ngIf="!subsFailed">
-        <h1>Subscribe to our blogs!</h1>
-        <p>
-          Stay tuned with our every new post. You will get notified via email
-          whenever we post new tech blogs
-        </p>
-        <h2>Please Enter your email ID!</h2>
-        <form>
-          <input type="text" name="email" class="subscribe-input" #emailInput />
-        </form>
-        <button
-          type="button"
-          class="subscribe-btn"
-          (click)="subscribe(emailInput.value)"
-        >
-          Subscribe
-        </button>
-      </div>
-      <div *ngIf="subsFailed" class="sub-failed">
-        <p>{{ subsErrorMsg }}</p>
-      </div>
-      <div *ngIf="subscriptionSuccessful" class="sub-success">
-        <p>{{ subscriptionSuccessfulRes }}</p>
-      </div>
-    </div>
+    <app-subscribe *ngIf="!isASubscriber"></app-subscribe>
     <div *ngIf="!isUserAuthenticated" class="login-box">
       <h2>Hey there, sign in with us!</h2>
       <p>
@@ -102,12 +77,8 @@
       >
         Create Account
       </button>
-      <div>
-        <p class="space">Or</p>
-        <asl-google-signin-button class="google-btn" type="standard"
-          >Sign In With Google</asl-google-signin-button
-        >
-      </div>
+      <p class="space">Or</p>
+      <app-social-login></app-social-login>
     </div>
 </div>  
     <!-- <div class="tag-conatiner">
