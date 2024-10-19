@@ -3,18 +3,49 @@ const Blog = require("../models/blog");
 const router = express.Router();
 const checkAuth = require("../middleware/check-auth");
 const multer = require("multer");
-
+const sharp = require('sharp')
 const { put, list } = require('@vercel/blob');
 
 async function uploadToVercelBlob(file) {
-  console.log('Uploading file:', file.originalname);
+  console.log("Uploading file:", file.originalname);
   try {
-    const { url } = await put(file.originalname, file.buffer, {
+    let compressedImageBuffer;
+
+    if (file.mimetype === "image/png") {
+      compressedImageBuffer = await sharp(file.buffer)
+        .resize(800)
+        .png({ quality: 80, compressionLevel: 9 })
+        .toBuffer()
+        .then((data) => {
+          console.log("Image successfully compressed");
+          return data;
+        })
+        .catch((err) => {
+          console.error("Error during image compression", err);
+          throw err;
+        });
+    } else {
+      compressedImageBuffer = await sharp(file.buffer)
+        .resize(800)
+        .jpeg({ quality: 80 }) // convert to JPEG format with 80% quality
+        .toBuffer()
+        .then((data) => {
+          console.log("Image successfully compressed");
+          return data;
+        })
+        .catch((err) => {
+          console.error("Error during image compression", err);
+          throw err;
+        });
+    }
+    const { url } = await put(file.originalname, compressedImageBuffer, {
       contentType: file.mimetype,
-      access: 'public',
-      token: process.env.BLOB_READ_WRITE_TOKEN || 'vercel_blob_rw_tc8570i2Vby9yroW_pncNVPQkA3Ojf9mRGYiCdfjfmfRqXS'
+      access: "public",
+      token:
+        process.env.BLOB_READ_WRITE_TOKEN ||
+        "vercel_blob_rw_tc8570i2Vby9yroW_pncNVPQkA3Ojf9mRGYiCdfjfmfRqXS",
     });
-    console.log('Upload successful. URL:', url);
+    console.log("Upload successful. URL:", url);
     return url;
   } catch (error) {
     console.error("Error uploading to Vercel Blob:", error);
