@@ -182,13 +182,32 @@ router.put(
 );
 
 router.get("", (req, res, next) => {
-  Blog.find().then((documents) => {
-    const sortedBlogs = sortBlogsByPublishedDate(documents);
-    res.status(200).json({
-      message: "Blogs fetched Successfully",
-      blogs: sortedBlogs,
+  const pageSize = +req.query.pageSize || 5; // Default to 10 if not provided
+  const currentPage = +req.query.page || 1; // Default to 1 if not provided
+
+  // date is not in object format, so will need to convert it to date format so as to display in the correct format DD/MM/YYYY
+  // refer to commented method at the bottom for conversion
+  Blog.find()
+    .sort( {datePublished: -1})
+    .skip((currentPage - 1) * pageSize)
+    .limit(pageSize)
+    .then(blogs => {
+      // const sortedBlogs = sortBlogsByPublishedDate(documents);
+      return Blog.countDocuments().then(count => {
+        res.status(200).json({
+          message: "Blogs fetched Successfully",
+          blogs: blogs,
+          totalBlogs: count,
+          pageSize: pageSize,
+          currentPage: currentPage
+        });
+      });
+    })
+    .catch(error => {
+      res.status(500).json({
+        message: "Fetching blogs failed!"
+      });
     });
-  });
 });
 
 router.get("/:id", (req, res, next) => {
@@ -235,18 +254,11 @@ router.get('/readingListBlogs/:ids', (req, res, next) => {
     });
 });
 
+// might need to use this logic on frontend for converting to the correct format to display
 function convertToDateObject(dateString) {
   const parts = dateString.split('/');
   const formattedDate = `${parts[2]}-${parts[1]}-${parts[0]}`;
   return new Date(formattedDate);
-}
-
-function sortBlogsByPublishedDate(blogsArray) {
-  return blogsArray.sort((a, b) => {
-    const dateA = convertToDateObject(a.datePublished);
-    const dateB = convertToDateObject(b.datePublished);
-    return dateB - dateA;
-  });
 }
 
 module.exports = router;

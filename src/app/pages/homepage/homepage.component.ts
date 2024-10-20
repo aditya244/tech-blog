@@ -28,6 +28,10 @@ export class HomepageComponent implements OnInit {
   isASubscriber: boolean = false;
   screenWidth: number = 0;
   screenHeight: number = 0;
+  totalBlogs = 0;
+  pageSize = 5;
+  currentPage = 1;
+  totalPages = 1;
 
   constructor(
     private blogService: BlogService,
@@ -55,42 +59,7 @@ export class HomepageComponent implements OnInit {
         this.isASubscriber = JSON.parse(subsStatus as string);
       }
     });
-    this.blogService
-      .getBlogsForHomeFeed()
-      .pipe(
-        map((data) => {
-          // added this pipe and map to convert each data _id to id to map with frontends
-          console.log(data, 'FETCHED_BLOGS');
-          return data.blogs.map((blogData: any) => {
-            return {
-              title: blogData.title,
-              id: blogData._id,
-              content: blogData.content,
-              imagePath: blogData.imagePath,
-              datePublished: blogData.datePublished,
-            };
-          });
-        }),
-        catchError((error) => {
-          console.error('Error fetching blogs:', error);
-          this.isErrorFromServer = true;
-          this.isLoading = false;
-          return error;
-        })
-      )
-      .subscribe((data) => {
-        if (data) {
-          this.isLoading = false;
-          console.log(this.screenWidth, 'screenWidth')
-            setTimeout(() => {
-              if(this.screenWidth < 600) {
-              this.openSubscribeDialog();
-              }
-            }, 5000)
-        }
-        this.blogForFeed = data;
-      });
-
+    this.loadBlogs();
     this.socialAuthService.authState.subscribe((user) => {
       this.user = user;
       console.log(this.user, 'USER_GOOGLE');
@@ -111,6 +80,35 @@ export class HomepageComponent implements OnInit {
         this.successMessage = resStatus.message;
       }
     });
+  }
+
+  loadBlogs() {
+    this.isLoading = true;
+    this.blogService.getBlogsForHomeFeed(this.currentPage)
+      .pipe(
+        catchError((error) => {
+          console.error('Error fetching blogs:', error);
+          this.isErrorFromServer = true;
+          this.isLoading = false;
+          return throwError(error);
+        })
+      )
+      .subscribe((data) => {
+        if (data) {
+          this.isLoading = false;
+          this.blogForFeed = data.blogs;
+          this.totalBlogs = data.totalBlogs;
+          this.currentPage = data.currentPage;
+          this.totalPages = Math.ceil(this.totalBlogs / this.pageSize);
+  
+          console.log(this.screenWidth, 'screenWidth');
+          setTimeout(() => {
+            if (this.screenWidth < 600) {
+              this.openSubscribeDialog();
+            }
+          }, 5000);
+        }
+      });
   }
 
   onAddToReadingList(blogId: string | undefined, title: string) {
@@ -148,5 +146,35 @@ export class HomepageComponent implements OnInit {
     setTimeout(() => {
       this[messageType] = '';
     }, 3000); // Clear the message after 3 seconds
+  }
+
+  onPageChange(page: number): void {
+    if (page >= 1 && page <= this.totalPages && page !== this.currentPage) {
+      this.currentPage = page;
+      this.loadBlogs();
+      this.scrollToTop();
+    }
+  }
+
+  getPageNumbers(): number[] {
+    const pageNumbers: number[] = [];
+    const maxPagesToShow = 5; // Adjust this number to show more or fewer page numbers
+
+    let startPage = Math.max(1, this.currentPage - Math.floor(maxPagesToShow / 2));
+    let endPage = Math.min(this.totalPages, startPage + maxPagesToShow - 1);
+
+    if (endPage - startPage + 1 < maxPagesToShow) {
+      startPage = Math.max(1, endPage - maxPagesToShow + 1);
+    }
+
+    for (let i = startPage; i <= endPage; i++) {
+      pageNumbers.push(i);
+    }
+
+    return pageNumbers;
+  }
+
+  scrollToTop() {
+    window.scrollTo({ top: 0, behavior: 'smooth'})
   }
 }

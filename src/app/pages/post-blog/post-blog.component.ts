@@ -123,8 +123,8 @@ export class PostBlogComponent implements OnInit {
     if (this.form.invalid) {
       return;
     }
-    const date = new Date();
-    const datePublished = date.toLocaleDateString(); // Format depends on the user's locale
+    const datePublished = new Date();
+    //const datePublished = date.toLocaleDateString(); // Format depends on the user's locale
     this.blog = {
       title: this.form.get('title')?.value,
       content: this.form.get('content')?.value,
