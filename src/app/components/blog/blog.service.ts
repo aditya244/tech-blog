@@ -1,7 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { BehaviorSubject, catchError, Observable, of, Subject } from 'rxjs';
+import { BehaviorSubject, catchError, map, Observable, of, Subject } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
@@ -23,10 +23,21 @@ export class BlogService {
     private router: Router
   ) {}
 
-
-
-  getBlogsForHomeFeed(): Observable<any> {
-    return this.httpClient.get(`${this.apiUrl}/blogs`);
+  getBlogsForHomeFeed(page: number): Observable<any> {
+    const params = new HttpParams().set('page', page.toString());
+    return this.httpClient.get<any>(`${this.apiUrl}/blogs`, { params }).pipe(
+      map(response => ({
+        blogs: response.blogs.map((blogData: any) => ({
+          title: blogData.title,
+          id: blogData._id,
+          content: blogData.content,
+          imagePath: blogData.imagePath,
+          datePublished: blogData.datePublished,
+        })),
+        totalBlogs: response.totalBlogs,
+        currentPage: response.currentPage
+      }))
+    );
   }
 
   getBlogDetails(id: any): Observable<any> {

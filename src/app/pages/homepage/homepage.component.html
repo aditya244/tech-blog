@@ -11,50 +11,58 @@
     </p>
   </div>
   <div>
-  <div  *ngFor="let blog of blogForFeed">
-    <div class="blog-feed-container">
-      <div
-        *ngIf="errorMessage && selectedBlogTitle === blog.title"
-        class="error-message"
-      >
-      <mat-icon class="icon">info</mat-icon> 
-        {{ errorMessage }}
-      </div>
-      <div
-        *ngIf="successMessage && selectedBlogTitle === blog.title"
-        class="success-message"
-      >
-      <mat-icon class="icon">done_outline</mat-icon>
-        {{ successMessage }}
-      </div>
-      <div class="blog-content">
-        <div class="image-container" *ngIf="blog.imagePath">
-          <img [src]="blog.imagePath" [alt]="blog.title" class="banner-image" />
+    <div *ngFor="let blog of blogForFeed">
+      <div class="blog-feed-container">
+        <div
+          *ngIf="errorMessage && selectedBlogTitle === blog.title"
+          class="error-message"
+        >
+          <mat-icon class="icon">info</mat-icon>
+          {{ errorMessage }}
         </div>
-        <div class="content-container">
-          <h1 class="heading">{{ blog.title }}</h1>
-          <div
-            class="font-style"
-            [innerHTML]="blog.content.slice(0, 300)"
-          ></div>
-          <div class="button-container">
-            <a [routerLink]="['/blog-details/', blog.id, { relaiveTo: null }]"
-              ><button type="button" class="read-more-btn">Read More</button></a
-            >
-            <button
-              type="button"
-              class="reading-list-btn"
-              (click)="onAddToReadingList(blog.id, blog.title)"
-            >
-              Add to Reading List
-            </button>
-            <p class="publishedDate">Published on: {{ blog?.datePublished }}</p>
+        <div
+          *ngIf="successMessage && selectedBlogTitle === blog.title"
+          class="success-message"
+        >
+          <mat-icon class="icon">done_outline</mat-icon>
+          {{ successMessage }}
+        </div>
+        <div class="blog-content">
+          <div class="image-container" *ngIf="blog.imagePath">
+            <img
+              [src]="blog.imagePath"
+              [alt]="blog.title"
+              class="banner-image"
+            />
+          </div>
+          <div class="content-container">
+            <h1 class="heading">{{ blog.title }}</h1>
+            <div
+              class="font-style"
+              [innerHTML]="blog.content.slice(0, 300)"
+            ></div>
+            <div class="button-container">
+              <a [routerLink]="['/blog-details/', blog.id, { relaiveTo: null }]"
+                ><button type="button" class="read-more-btn">
+                  Read More
+                </button></a
+              >
+              <button
+                type="button"
+                class="reading-list-btn"
+                (click)="onAddToReadingList(blog.id, blog.title)"
+              >
+                Add to Reading List
+              </button>
+              <p class="publishedDate">
+                Published on: {{ blog?.datePublished }}
+              </p>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </div>
-</div>
   <div class="side-bar" *ngIf="!isASubscriber || !isUserAuthenticated">
     <app-subscribe *ngIf="!isASubscriber"></app-subscribe>
     <div *ngIf="!isUserAuthenticated" class="login-box">
@@ -80,9 +88,28 @@
       <p class="space">Or</p>
       <app-social-login></app-social-login>
     </div>
-</div>  
-    <!-- <div class="tag-conatiner">
+  </div>
+  <!-- <div class="tag-conatiner">
             
         </div> -->
-  
 </div>
+<nav *ngIf="totalPages > 1" aria-label="Blog pagination" class="nav-area">
+  <ul class="pagination">
+    <li [class.disabled]="currentPage === 1">
+      <a href="javascript:void(0)" (click)="onPageChange(currentPage - 1)"
+        >Previous</a
+      >
+    </li>
+    <li
+      *ngFor="let page of getPageNumbers()"
+      [class.active]="page === currentPage"
+    >
+      <a href="javascript:void(0)" (click)="onPageChange(page)">{{ page }}</a>
+    </li>
+    <li [class.disabled]="currentPage === totalPages">
+      <a href="javascript:void(0)" (click)="onPageChange(currentPage + 1)"
+        >Next</a
+      >
+    </li>
+  </ul>
+</nav>

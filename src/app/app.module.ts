@@ -39,6 +39,7 @@ import { ResetPasswordComponent } from './pages/reset-password/reset-password.co
 import { SubscribeComponent } from './components/shared/subscribe/subscribe.component';
 import { SocialLoginComponent } from './components/shared/login-social/social-login.component';
 import { SubscribeDialogComponent } from './components/shared/subscribe-dialog/subscribe-dialog.component';
+import { MatPaginatorModule } from '@angular/material/paginator';
 
 @NgModule({
   declarations: [
@@ -82,7 +83,8 @@ import { SubscribeDialogComponent } from './components/shared/subscribe-dialog/s
     MatListModule,
     ReactiveFormsModule,
     SocialLoginModule,
-    FontAwesomeModule
+    FontAwesomeModule,
+    MatPaginatorModule
     
   ],
   providers: [{provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true}, {
