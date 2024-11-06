@@ -12,7 +12,8 @@ import { BlogService } from 'src/app/components/blog/blog.service';
 export class ReadingListComponent implements OnInit {
 
   public readingList: Blog[] = [];
-  public readingListRes: any = []
+  public readingListRes: any = [];
+  isLoading: boolean = true;
 
   constructor(private route: ActivatedRoute, private blogService: BlogService, private router: Router ) { }
 
@@ -27,6 +28,7 @@ export class ReadingListComponent implements OnInit {
   }
 
   fetchReadingListBlogs(readingListRes: { readingList: string[] }) {
+    this.isLoading = true;
     const readList = readingListRes.readingList;
 
     this.blogService
@@ -49,14 +51,14 @@ export class ReadingListComponent implements OnInit {
           console.error('Error fetching blogs:', error);
           // handle error and loader later
           // this.isErrorFromServer = true;
-          // this.isLoading = false;
+          this.isLoading = false;
           return error;
         })
       )
       .subscribe((data) => {
         if (data) {
           console.log(data, 'data')
-          //this.isLoading = false;
+          this.isLoading = false;
           this.readingList = data;
         }
       });
