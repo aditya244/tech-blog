@@ -5,8 +5,6 @@ import { faBars } from '@fortawesome/free-solid-svg-icons';
 import { BreakpointObserver, BreakpointState } from '@angular/cdk/layout';
 import { BlogService } from './components/blog/blog.service';
 import { environment } from '../environments/environment';
-import { GoogleAnalyticsService } from './services/google-analytics-service';
-
 
 @Component({
   selector: 'app-root',
@@ -29,13 +27,9 @@ export class AppComponent implements OnInit {
     private authService: AuthService,
     private breakpointObserver: BreakpointObserver,
     private blogService: BlogService,
-   // private googleAnalyticsService: GoogleAnalyticsService
   ) {}
 
   ngOnInit(): void {
-    // if (environment.production && environment.googleAnalyticsId) {
-    //   this.googleAnalyticsService.initialize();
-    // }
     this.screenWidth = window.innerWidth;
     this.screenHeight = window.innerHeight;
     //this.isUserAuthenticated = this.authService.getIsAuthenticated();
