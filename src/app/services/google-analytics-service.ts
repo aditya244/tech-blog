@@ -10,22 +10,21 @@ declare let gtag: Function;
 export class GoogleAnalyticsService {
   constructor(private router: Router) {
     console.log('GoogleAnalyticsService initialized');
-    console.log(environment.production, 'env')
-    if (environment.production) {
+    console.log(environment, 'env')
+    //if (environment.production) {
         console.log('analytics calls being made from prod')
       this.router.events.subscribe((event) => {
         if (event instanceof NavigationEnd) {
           this.setPageView(event.urlAfterRedirects);
         }
       });
-    }
+    //}
   }
 
   setPageView(url: string) {
-    console.log(environment.production, 'env');
-    if (environment.production) {
+    //if (environment.production) {
         gtag('config', environment.googleAnalyticsId, { page_path: url });
-    }
+    //}
   }
 
   event(category: string, action: string, label: string, value: number) {
