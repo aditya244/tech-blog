@@ -5,6 +5,7 @@ import { faBars } from '@fortawesome/free-solid-svg-icons';
 import { BreakpointObserver, BreakpointState } from '@angular/cdk/layout';
 import { BlogService } from './components/blog/blog.service';
 import { environment } from '../environments/environment';
+import { GoogleAnalyticsService } from './services/google-analytics-service';
 
 @Component({
   selector: 'app-root',
@@ -27,23 +28,18 @@ export class AppComponent implements OnInit {
     private authService: AuthService,
     private breakpointObserver: BreakpointObserver,
     private blogService: BlogService,
+    private googleAnalyticsService: GoogleAnalyticsService
+    // This unused import is added here since the service was not being initialised.
   ) {}
 
   ngOnInit(): void {
     this.screenWidth = window.innerWidth;
     this.screenHeight = window.innerHeight;
-    //this.isUserAuthenticated = this.authService.getIsAuthenticated();
-    // the below subscription might take longer than expect, and we have a getter for the auth status
     this.authListenerSubs = this.authService
       .getAuthStatusListerner()
       .subscribe((isAuthenticated) => {
         this.isUserAuthenticated = isAuthenticated;
       });
-
-    // this.authListenerSubs = this.authService.getIsAdminStatusListerner().subscribe(adminStatus =>{
-    //   this.isAdmin = adminStatus
-    // });
-
     this.userDetailsSubs = this.authService
       .getUserDetailsListener()
       .subscribe((userDetails) => {
@@ -52,7 +48,6 @@ export class AppComponent implements OnInit {
         this.isAdmin = userDetails.isAdmin;
         sessionStorage.setItem('userDetails', JSON.stringify(userDetails));
       });
-    //this.isAdmin = this.userDetils.isAdmin;
     this.userEmailId = sessionStorage.getItem('email');
     if (!this.userDetils) {
       const userDetailsStr = sessionStorage.getItem('userDetails');
