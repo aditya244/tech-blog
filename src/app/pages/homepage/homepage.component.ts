@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, NgZone, OnInit } from '@angular/core';
 import { Blog } from 'src/app/components/blog/blog.interface';
 import { BlogService } from 'src/app/components/blog/blog.service';
 import { catchError, map, Observable, throwError } from 'rxjs';
@@ -39,7 +39,8 @@ export class HomepageComponent implements OnInit {
     private socialAuthService: SocialAuthService,
     private screenSizeService: ScreenSizeService,
     private route: Router,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private ngZone: NgZone
   ) {}
 
   ngOnInit(): void {
@@ -102,11 +103,15 @@ export class HomepageComponent implements OnInit {
           this.totalPages = Math.ceil(this.totalBlogs / this.pageSize);
   
           console.log(this.screenWidth, 'screenWidth');
-          setTimeout(() => {
-            if (this.screenWidth < 600) {
-              this.openSubscribeDialog();
-            }
-          }, 5000);
+          this.ngZone.runOutsideAngular(() => {
+            setTimeout(() => {
+              if (this.screenWidth < 600) {
+                this.ngZone.run(() => {
+                  this.openSubscribeDialog();
+                });
+              }
+            }, 5000);
+          });
         }
       });
   }
@@ -130,7 +135,8 @@ export class HomepageComponent implements OnInit {
   openSubscribeDialog(): void {
     this.dialog.open(SubscribeDialogComponent, {
       width: '500px',
-      height: 'auto'
+      height: 'auto',
+      autoFocus: false
     });
   }
 
