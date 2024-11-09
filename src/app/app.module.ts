@@ -40,6 +40,7 @@ import { SubscribeComponent } from './components/shared/subscribe/subscribe.comp
 import { SocialLoginComponent } from './components/shared/login-social/social-login.component';
 import { SubscribeDialogComponent } from './components/shared/subscribe-dialog/subscribe-dialog.component';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { DateFormatPipe } from './pipes/date-format.pipe';
 
 @NgModule({
   declarations: [
@@ -60,6 +61,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
     SubscribeComponent,
     SocialLoginComponent,
     SubscribeDialogComponent,
+    DateFormatPipe
   ],
   imports: [
     BrowserModule,
