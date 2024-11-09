@@ -339,7 +339,7 @@
 
 
 /* Mobile-specific optimizations */
-@media (max-width: 600px) {
+@media (max-width: 700px) {
     body {
         overflow-x: hidden; /* Prevent horizontal scroll */
         position: relative; /* Create new stacking context */
@@ -442,7 +442,7 @@
     }
 }
 
-@media (min-width: 601px) and (max-width: 1350px) {
+@media (min-width: 701px) and (max-width: 1350px) {
     .container {
         flex-direction: row;
     }
@@ -536,7 +536,7 @@
 }
 
 
-@media (min-width: 601px) and (max-width: 1024px) {
+@media (min-width: 701px) and (max-width: 1024px) {
 
     .container {
         flex-direction: row;
