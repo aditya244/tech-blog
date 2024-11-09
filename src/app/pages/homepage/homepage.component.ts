@@ -32,6 +32,7 @@ export class HomepageComponent implements OnInit {
   pageSize = 5;
   currentPage = 1;
   totalPages = 1;
+  hasDialogAppeared = false;
 
   constructor(
     private blogService: BlogService,
@@ -105,7 +106,7 @@ export class HomepageComponent implements OnInit {
           console.log(this.screenWidth, 'screenWidth');
           this.ngZone.runOutsideAngular(() => {
             setTimeout(() => {
-              if (this.screenWidth < 600) {
+              if (this.screenWidth < 700 && !this.hasDialogAppeared) {
                 this.ngZone.run(() => {
                   this.openSubscribeDialog();
                 });
@@ -138,6 +139,7 @@ export class HomepageComponent implements OnInit {
       height: 'auto',
       autoFocus: false
     });
+    this.hasDialogAppeared = true;
   }
 
   navigateTo(path: string) {
