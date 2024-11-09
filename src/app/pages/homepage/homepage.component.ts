@@ -103,15 +103,15 @@ export class HomepageComponent implements OnInit {
           this.totalPages = Math.ceil(this.totalBlogs / this.pageSize);
   
           console.log(this.screenWidth, 'screenWidth');
-          this.ngZone.runOutsideAngular(() => {
-            setTimeout(() => {
-              if (this.screenWidth < 600) {
-                this.ngZone.run(() => {
-                  this.openSubscribeDialog();
-                });
-              }
-            }, 5000);
-          });
+          // this.ngZone.runOutsideAngular(() => {
+          //   setTimeout(() => {
+          //     if (this.screenWidth < 600) {
+          //       this.ngZone.run(() => {
+          //         this.openSubscribeDialog();
+          //       });
+          //     }
+          //   }, 5000);
+          // });
         }
       });
   }
