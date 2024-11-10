@@ -41,6 +41,7 @@ import { SocialLoginComponent } from './components/shared/login-social/social-lo
 import { SubscribeDialogComponent } from './components/shared/subscribe-dialog/subscribe-dialog.component';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { DateFormatPipe } from './pipes/date-format.pipe';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 @NgModule({
   declarations: [
@@ -86,7 +87,8 @@ import { DateFormatPipe } from './pipes/date-format.pipe';
     ReactiveFormsModule,
     SocialLoginModule,
     FontAwesomeModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    MatSnackBarModule
     
   ],
   providers: [{provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true}, {

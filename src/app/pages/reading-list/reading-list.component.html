@@ -11,7 +11,7 @@
     </div>
     <div class="blog-container" *ngFor="let blog of readingList">
       <div class="blog-feed-container">
-        <h1 class="heading">{{ blog.title }}</h1>
+        <div class="heading">{{ blog.title }}</div>
         <div class="blog-content">
           <div class="image-container" *ngIf="blog.imagePath">
             <img
@@ -25,9 +25,7 @@
               class="font-style"
               [innerHTML]="blog.content.slice(0, 200)"
             ></div>
-            <a [routerLink]="['/blog-details/', blog.id, { relaiveTo: null }]"
-              ><button type="button" class="read-more-btn">Read More</button></a
-            >
+            <button type="button" class="read-more-btn" (click)="navigateToBlogDetailsPage(blog.id)">Read More</button>
             <button class="remove-btn" (click)="removeFromReadingList(blog.id)">
               Remove from Reading List
             </button>

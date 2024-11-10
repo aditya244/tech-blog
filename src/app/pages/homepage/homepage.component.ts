@@ -1,4 +1,4 @@
-import { Component, NgZone, OnInit } from '@angular/core';
+import { Component, inject, NgZone, OnInit } from '@angular/core';
 import { Blog } from 'src/app/components/blog/blog.interface';
 import { BlogService } from 'src/app/components/blog/blog.service';
 import { catchError, map, Observable, throwError } from 'rxjs';
@@ -9,7 +9,7 @@ import { ScreenSizeService } from 'src/app/services/screen-size.service';
 import { DialogComponent } from 'src/app/components/shared/dialog/dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { SubscribeDialogComponent } from 'src/app/components/shared/subscribe-dialog/subscribe-dialog.component';
-
+import {MatSnackBar, MatSnackBarConfig} from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-homepage',
@@ -33,6 +33,7 @@ export class HomepageComponent implements OnInit {
   currentPage = 1;
   totalPages = 1;
   hasDialogAppeared = false;
+  private _snackBar = inject(MatSnackBar);
 
   constructor(
     private blogService: BlogService,
@@ -75,11 +76,13 @@ export class HomepageComponent implements OnInit {
 
     this.blogService.getReadingListResSubscription().subscribe((resStatus) => {
       if (resStatus.error) {
-        this.clearMessage('errorMessage');
-        this.errorMessage = resStatus.message;
+        this.clearMessage('errorMessage',);
+        this.openSnackBar(resStatus.message, 'error')
+        //this.errorMessage = resStatus.message;
       } else {
         this.clearMessage('successMessage');
-        this.successMessage = resStatus.message;
+        this.openSnackBar(resStatus.message, 'success')
+        //this.successMessage = resStatus.message;
       }
     });
   }
@@ -128,6 +131,7 @@ export class HomepageComponent implements OnInit {
     if (!this.isUserAuthenticated) {
       this.clearMessage('errorMessage');
       this.errorMessage = 'Please login to add it to the reading list!';
+      this.openSnackBar(this.errorMessage, 'info')
       return;
     }
     this.blogService.addToReadingList(blogId);
@@ -185,4 +189,17 @@ export class HomepageComponent implements OnInit {
   scrollToTop() {
     window.scrollTo({ top: 0, behavior: 'smooth'})
   }
+
+  openSnackBar(message: string, type: 'success' | 'error' | 'info' = 'info') {
+    const panelClass = type === 'success' ? 'success-snackbar' : 
+                       type === 'error' ? 'error-snackbar' : 
+                       'info-snackbar';
+                       
+    this._snackBar.open(message, 'X', {
+      duration: 3000,
+      panelClass: panelClass
+    });
+  }
+  
+  
 }

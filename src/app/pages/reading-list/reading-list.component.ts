@@ -71,4 +71,10 @@ export class ReadingListComponent implements OnInit {
     this.router.navigate(['/home']);
   }
 
+  navigateToBlogDetailsPage(blogId: any) {
+    this.router.navigate(['/blog-details/', blogId,], {
+      relativeTo: null
+    })
+  }
+
 }
