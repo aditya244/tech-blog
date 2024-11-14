@@ -4,7 +4,7 @@
       <li routerLink="/home" class="nav-item-logo-img" type="none"><img src="../assets/logo-no-background.svg" height="100px" width="120px"/></li>
     </span>
     <div class="nav-items" [ngClass]="{'navbar-mobileView': showNavBar}">
-      <!-- <li routerLink="/home" class="nav-item-logo" type="none"> DebugTek </li> -->
+      <li routerLink="/home" class="nav-item-logo" class="nav-item" type="none"> Home </li>
       <li routerLink="/about-author" class="nav-item" type="none" (click)="closeNavbar()"> Author </li>
       <li *ngIf="isUserAuthenticated && isAdmin" routerLink="/post-blog" class="nav-item" type="none" (click)="closeNavbar()"> Add New Blog </li>
       <li *ngIf="isUserAuthenticated && !isAdmin" routerLink="/my-reading-list" class="nav-item" type="none" (click)="closeNavbar()"> My Reading List</li>

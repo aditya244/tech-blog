@@ -107,7 +107,8 @@ router.post(
           keywords: keywords,
           metaDescription: req.body.metaDescription,
           ogTitle: req.body.ogTitle,
-          ogDescription: req.body.ogDescription
+          ogDescription: req.body.ogDescription,
+          suggestedBlogIds: req.body.suggestedBlogIds
         });
         await blogs.save();
         res.status(201).json({
@@ -140,7 +141,8 @@ router.put(
 
       let imagePath = req.body.imagePath;
       const tags = JSON.parse(req.body.tags);
-      const keywords = JSON.parse(req.body.keywords)
+      const keywords = JSON.parse(req.body.keywords);
+      const suggestedBlogIds = JSON.parse(req.body.suggestedBlogIds)
       // If a new file is uploaded, store it in Vercel Blob
       if (req.file) {
         const imageUrl = await uploadToVercelBlob(req.file);
@@ -161,7 +163,8 @@ router.put(
         keywords: keywords,
         metaDescription: req.body.metaDescription,
         ogTitle: req.body.ogTitle,
-        ogDescription: req.body.ogDescription
+        ogDescription: req.body.ogDescription,
+        suggestedBlogIds: suggestedBlogIds
       };
 
       const result = await Blog.findByIdAndUpdate(req.params.id, updatedBlog, { new: true });
@@ -209,6 +212,28 @@ router.get("", (req, res, next) => {
       });
     });
 });
+
+router.get("/suggestedBlogs/:ids", (req, res, next) => {
+  console.log(req.params.ids, 'suggestedBlogIds')
+  const suggestedBlogIds = req.params.ids.split(',');
+  console.log(suggestedBlogIds, 'PARAMS');
+  Blog.find({
+    _id: { $in: suggestedBlogIds}
+  })
+  .then(blogs => {
+    console.log(blogs, 'BLOGS')
+    return res.status(200).json({
+      message: 'Recommended blogs fetched',
+      blogs: blogs
+    })
+  })
+  .catch(error => {
+    return res.status(500).json({
+      error: error,
+      message: 'Failed to fetch recommended blogs. Please visit the homepage to check more.'
+    })
+  })
+})
 
 router.get("/:id", (req, res, next) => {
   Blog.findById(req.params.id).then((document) => {

@@ -42,7 +42,60 @@
     height: 500px;
     width: 1000px;
 }
+.recommended-blog-header {
+    margin: 30px auto;
+    //box-shadow: 2px 2px 5px #C2C1C2;
+    box-shadow: 0 4px 2px -2px gray;
+    text-align: center;
+    width: 75%;
+    align-self: center;
+}
 
+.recommended-blog-header-text {
+    padding: 20px;
+    font-size: 36px;
+    font-weight: 300;
+}
+
+.recommended-blog-feed {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin-bottom: 50px;
+}
+
+.recommended-blog-card {
+    display: flex;
+    flex-direction: row;
+    padding: 20px;
+    margin-top: 30px;
+    width: 400px;
+    height: 250px;
+    box-shadow: 2px 2px 5px #C2C1C2;
+}
+
+.recommended-blog-content {
+    display: flex;
+    flex-direction: row;
+}
+
+.image-container {
+    display: flex;
+    margin-right: 20px;
+}
+
+.rec-banner-image {
+    height: 200px;
+    width: 200px;
+}
+.read-more-btn {
+    padding: 8px;
+    border-radius: 2px;
+    background-color: white;
+    box-shadow: 2px 2px 5px #C2C1C2;
+    border: none;
+    cursor: pointer;
+}
 .tag-container {
     margin-top: 10%;
     width: 25%;

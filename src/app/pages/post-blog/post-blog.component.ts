@@ -32,6 +32,7 @@ export class PostBlogComponent implements OnInit {
     metaDescription: '',
     ogTitle: '',
     ogDescription: '',
+    suggestedBlogIds: []
   };
 
   public tag: string = '';
@@ -41,6 +42,7 @@ export class PostBlogComponent implements OnInit {
   private blogId: any;
   form!: FormGroup;
   imagePreview: string | undefined;
+  private suggestedBlogId: string = '';
   //tags: string[] = [];
 
   constructor(
@@ -66,6 +68,7 @@ export class PostBlogComponent implements OnInit {
       metaDescription: new FormControl(null, { validators: [Validators.required, Validators.maxLength(150)]}),
       ogTitle: new FormControl(null),
       ogDescription: new FormControl(null),
+      suggestedBlogId: new FormControl(null)
     });
     this.route.paramMap.subscribe((paramMap: ParamMap) => {
       // add the texts to some constant file
@@ -84,6 +87,7 @@ export class PostBlogComponent implements OnInit {
             metaDescription: this.blog.metaDescription,
             ogTitle: this.blog.ogTitle,
             ogDescription: this.blog.ogDescription,
+            suggestedBlogId: this.suggestedBlogId
           });
         });
         // if required can add preview in edit image
@@ -135,6 +139,7 @@ export class PostBlogComponent implements OnInit {
       metaDescription: this.form.value.metaDescription,
       ogTitle: this.form.value.ogTitle,
       ogDescription: this.form.value.ogDescription,
+      suggestedBlogIds: this.blog.suggestedBlogIds
     };
 
     console.log(this.form.value, 'form_value')
@@ -187,10 +192,11 @@ export class PostBlogComponent implements OnInit {
         tags: JSON.stringify(blog.tags),
         imagePath: blog.imagePath,
         publishedDate: blog.datePublished,
-        keywords: blog.keywords,
+        keywords: JSON.stringify(blog.keywords),
         metaDescription: blog.metaDescription,
         ogTitle: blog.ogTitle,
         ogDescription: blog.ogDescription,
+        suggestedBlogIds: JSON.stringify(blog.suggestedBlogIds)
       };
     }
     this.http
@@ -231,6 +237,15 @@ export class PostBlogComponent implements OnInit {
     blogData.append('metaDescription', blog.metaDescription);
     blogData.append('ogTitle', blog.ogTitle),
     blogData.append('ogDescription', blog.ogDescription);
+    blogData.append('suggestedBlogIds', JSON.stringify(blog.suggestedBlogIds))
     return blogData;
+  }
+
+  addBlogIdToSuggestedList() {
+    const suggestedBlogId = this.form.get('suggestedBlogId')?.value;
+    if (suggestedBlogId) {
+      this.blog.suggestedBlogIds.push(suggestedBlogId);
+      this.form.get('suggestedBlogId')?.setValue('');
+    }
   }
 }

@@ -154,5 +154,11 @@ export class BlogService {
       })
       this.readingList$.next(updatedReadingList);
   }
+
+  public getSuggestedBlogs(suggestedBlogIds: string[]) {
+    console.log(suggestedBlogIds, 'suggestedBlogIds')
+    const stringId = suggestedBlogIds.join(',');
+    return this.httpClient.get(`${this.apiUrl}/blogs/suggestedBlogs/` + stringId);
+  }
   
 }

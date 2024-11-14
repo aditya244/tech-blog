@@ -71,6 +71,19 @@
         </p>
 
         <p>
+            <mat-form-field >
+                <mat-label >Enter the suggested blog ids</mat-label>
+                <input matInput formControlName="suggestedBlogId" >
+            </mat-form-field>
+            <button type="button" (click)="addBlogIdToSuggestedList()"> Add keyword </button>
+        </p>
+
+        <p> IDs </p>
+        <div class="keyword-content" *ngFor="let suggestedId of blog.suggestedBlogIds">
+            {{suggestedId}}
+        </div>
+
+        <p>
             <button type="submit" mat-raised-button  class="post-blog-btn" color="primary" >Submit</button>
         </p>
     </form>

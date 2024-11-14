@@ -1,6 +1,6 @@
 import { ChangeDetectorRef, Component, Inject, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
-import { EMPTY, filter, map, pipe, switchMap, take, tap } from 'rxjs';
+import { EMPTY, filter, forkJoin, map, pipe, switchMap, take, tap } from 'rxjs';
 import { BlogService } from 'src/app/components/blog/blog.service';
 import {MatDialog, MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import { DialogComponent } from 'src/app/components/shared/dialog/dialog.component';
@@ -20,6 +20,7 @@ export class BlogDetailsComponent implements OnInit {
   id: any;
   enableRemoveReadingListBtn: boolean = false;
   isLoading: boolean = true;
+  suggestedBlogs: any;
   public isAdmin: boolean = false;
   public isAuthenticated: boolean = false;
   public showAddToReadingList: boolean = false;
@@ -41,19 +42,31 @@ export class BlogDetailsComponent implements OnInit {
       .subscribe(() => {
         window.scrollTo(0, 0);
       });
-    this.route.paramMap.subscribe((params) => {
-      const id = params.get('id');
-      this.id = id;
-      this.blogService.getBlogDetails(id).pipe(
-        tap((res) => {
-          this.selectedBlog = res.blog;
-          this.toggleReadingListBtn(this.selectedBlog);
-        })
-      ).subscribe((res) => {
-        this.isLoading = false;
-      });
-    });
+      this.route.paramMap.subscribe((params) => {
+        const id = params.get('id');
+        this.id = id;
+        this.isLoading = true;
 
+        this.blogService.getBlogDetails(id).pipe(
+          tap((res) => {
+            this.selectedBlog = res.blog;
+            this.toggleReadingListBtn(this.selectedBlog);
+          }),
+          // Chain the second API call after the first one completes
+          switchMap(() => this.blogService.getSuggestedBlogs(this.selectedBlog.suggestedBlogIds)) // Replace with your second API method
+        ).subscribe({
+          next: (response) => {
+            this.isLoading = false;
+            this.suggestedBlogs = response
+            // Handle the second API response here
+            console.log('SuggestedBlog:', this.suggestedBlogs);
+          },
+          error: (error) => {
+            this.isLoading = false;
+            console.error(error);
+          }
+        });
+      })
 
     this.authService.getAuthStatusListerner().subscribe((isAuthenticated) => {
       this.isAuthenticated = isAuthenticated;

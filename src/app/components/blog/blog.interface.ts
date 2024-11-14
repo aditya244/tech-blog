@@ -9,4 +9,5 @@ export interface Blog {
     metaDescription: string;
     ogTitle: string;
     ogDescription: string;
+    suggestedBlogIds: any;
 }

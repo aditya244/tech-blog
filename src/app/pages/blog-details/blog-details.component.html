@@ -24,7 +24,6 @@
         </div>
     </div> -->
 </div>
-
 <div class="footer-reading-list" *ngIf="isAuthenticated">
     <button *ngIf="showAddToReadingList" class="add-btn" mat-raised-button color="basic" (click)="addToReadingList(selectedBlog._id)">
         Add to Reading List
@@ -33,6 +32,41 @@
         Remove from Reading List
     </button>
 </div>
+<div class="recommended-blog-header">
+    <p class="recommended-blog-header-text"> Here are some other blogs that you should checkout</p>
+</div>
+<div class="recommended-blog-feed" *ngIf="suggestedBlogs && suggestedBlogs.blogs.length > 0 ">
+    <div *ngFor="let blog of suggestedBlogs.blogs">
+        <div class="recommended-blog-card">
+            <div class="recommended-blog-content">
+                <div class="image-container" *ngIf="blog.imagePath">
+                <img
+                    [src]="blog.imagePath"
+                    [alt]="blog.title"
+                    class="rec-banner-image"
+                />
+                </div>
+                <div class="content-container">
+                <h1 class="heading">{{ blog.title }}</h1>
+                <div
+                    class="font-style"
+                    [innerHTML]="blog.content.slice(0, 100)"
+                ></div>
+                <div class="button-container">
+                    <a [routerLink]="['/blog-details/', blog.id, { relaiveTo: null }]"
+                    ><button type="button" class="read-more-btn">
+                        Read More
+                    </button></a
+                    >
+                </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
 
 
 <!-- <div class="post-comment-card">
