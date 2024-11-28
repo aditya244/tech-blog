@@ -16,8 +16,8 @@ const transporter = nodemailer.createTransport({
       rejectUnauthorized: false, // Ensure SSL certificate validation
       servername: 'smtpout.secureserver.net'
     },
-    connectionTimeout: 20000,
-    socketTimeout: 20000
+    connectionTimeout: 60000,
+    socketTimeout: 60000
   });
   
 

@@ -15,6 +15,15 @@ router.post("/subscribe", async (req, res) => {
       environment: process.env.NODE_ENV,
     });
 
+    transporter.verify((error, success) => {
+      if (error) {
+        console.error("SMTP Verification Error:", error);
+      } else {
+        console.log("SMTP Server is ready to send emails.");
+      }
+    });
+    
+
     // Check if the email already exists
     const existingEmail = await SubscriptionDataSchema.findOne({ email: email });
     if (existingEmail) {
