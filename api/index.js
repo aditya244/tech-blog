@@ -90,6 +90,9 @@ app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Methods", 
     "GET, POST, PATCH, DELETE, OPTIONS, PUT"
   );
+
+  console.log("Origin:", req.headers.origin); // Debug: Log incoming Origin
+  console.log("Headers:", req.headers);
   
   // Important for Safari: Handle preflight requests
   if (req.method === 'OPTIONS') {
