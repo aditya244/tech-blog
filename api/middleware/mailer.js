@@ -12,7 +12,7 @@ const transporter = nodemailer.createTransport({
         //pass: process.env.EMAIL_PASS,
     },
     tls: {
-      secureProtocol: "TLSv1_method",
+      //secureProtocol: "TLSv1_method",
       rejectUnauthorized: false, // Ensure SSL certificate validation
       servername: 'smtpout.secureserver.net'
     },

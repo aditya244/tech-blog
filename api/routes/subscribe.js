@@ -4,7 +4,7 @@ const SubscriptionDataSchema = require("../models/subscribe");
 const transporter = require('../middleware/mailer'); 
 
 router.post("/subscribe", async (req, res) => {
-  try {
+  //try {
     const email = req.body.email.toLowerCase();
 
     // Logging for transporter
@@ -36,6 +36,21 @@ router.post("/subscribe", async (req, res) => {
     if (!result) {
       return res.status(500).json({ message: "Failed to save subscription details." });
     }
+
+    await new Promise((resolve, reject) => {
+      // verify connection configuration
+      transporter.verify(function (error, success) {
+          if (error) {
+              console.log(error);
+              reject(error);
+          } else {
+              console.log("Server is ready to take our messages");
+              resolve(success);
+          }
+      });
+  });
+  
+
 
     // Send email after successful subscription
     const mailOptions = {
@@ -117,19 +132,67 @@ router.post("/subscribe", async (req, res) => {
       `,
     };
 
-    console.log(email, "email");
-    await transporter.sendMail(mailOptions);
+    try {
+      await new Promise((resolve, reject) => {
+        transporter.sendMail(mailOptions, (err, info) => {
+          if (err) {
+            console.error(err);
+            reject(err); // Reject the promise on error
+          } else {
+            console.log(info);
+            resolve(info); // Resolve the promise on success
+          }
+        });
+      });
+    
+      // Send success response after the email is sent
+      return res.status(200).json({
+        message: "Successfully Subscribed!",
+      });
+    } catch (error) {
+      // Handle errors (e.g., from sendMail or other parts)
+      console.error("Error occurred:", error);
+      return res.status(500).json({
+        error: error.message || "An unexpected error occurred",
+      });
+    }
+    
+
+  //   await new Promise((resolve, reject) => {
+  //     // send mail
+  //     transporter.sendMail(mailOptions, (err, info) => {
+  //         if (err) {
+  //             console.error(err);
+  //             reject((err) => {
+  //               console.error("Error occurred:", err);
+  //                 return res.status(500).json({
+  //                   error: error.message || "An unexpected error occurred",
+  //                 });
+  //             });
+  //         } else {
+  //             console.log(info);
+  //             resolve((info) => {
+  //               return res.status(200).json({
+  //                 message: "Successfully Subscribed!",
+  //               });
+  //             });
+  //         }
+  //     });
+  // });
+
+    // console.log(email, "email");
+    // await transporter.sendMail(mailOptions);
 
     // Respond to client
-    return res.status(200).json({
-      message: "Successfully Subscribed!",
-    });
-  } catch (error) {
-    console.error("Error occurred:", error);
-    return res.status(500).json({
-      error: error.message || "An unexpected error occurred",
-    });
-  }
+    // return res.status(200).json({
+    //   message: "Successfully Subscribed!",
+    // });
+  // } catch (error) {
+  //   // console.error("Error occurred:", error);
+  //   // return res.status(500).json({
+  //   //   error: error.message || "An unexpected error occurred",
+  //   // });
+  // }
 });
 
 
