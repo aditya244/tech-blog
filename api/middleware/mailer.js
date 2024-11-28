@@ -6,13 +6,10 @@ const transporter = nodemailer.createTransport({
     port: 465,
     secure: true,
     auth: {
-        user: 'info@debugtek.com',
-        pass: 'Aditya@2024dummy'
-        //user: process.env.EMAIL_USER, 
-        //pass: process.env.EMAIL_PASS,
+        user: process.env.EMAIL_USER, 
+        pass: process.env.EMAIL_PASS,
     },
     tls: {
-      //secureProtocol: "TLSv1_method",
       rejectUnauthorized: false, // Ensure SSL certificate validation
       servername: 'smtpout.secureserver.net'
     },

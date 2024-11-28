@@ -141,6 +141,7 @@ router.post("/subscribe", async (req, res) => {
       `,
     };
 
+    // async await and promise was added to handle issues on vercel deployment
     try {
       await new Promise((resolve, reject) => {
         transporter.sendMail(mailOptions, (err, info) => {
@@ -165,43 +166,6 @@ router.post("/subscribe", async (req, res) => {
         error: error.message || "An unexpected error occurred",
       });
     }
-    
-
-  //   await new Promise((resolve, reject) => {
-  //     // send mail
-  //     transporter.sendMail(mailOptions, (err, info) => {
-  //         if (err) {
-  //             console.error(err);
-  //             reject((err) => {
-  //               console.error("Error occurred:", err);
-  //                 return res.status(500).json({
-  //                   error: error.message || "An unexpected error occurred",
-  //                 });
-  //             });
-  //         } else {
-  //             console.log(info);
-  //             resolve((info) => {
-  //               return res.status(200).json({
-  //                 message: "Successfully Subscribed!",
-  //               });
-  //             });
-  //         }
-  //     });
-  // });
-
-    // console.log(email, "email");
-    // await transporter.sendMail(mailOptions);
-
-    // Respond to client
-    // return res.status(200).json({
-    //   message: "Successfully Subscribed!",
-    // });
-  // } catch (error) {
-  //   // console.error("Error occurred:", error);
-  //   // return res.status(500).json({
-  //   //   error: error.message || "An unexpected error occurred",
-  //   // });
-  // }
 });
 
 
