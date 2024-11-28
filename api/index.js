@@ -49,33 +49,55 @@ db.once("open", () => {
 app.use(bodyParser.json());
 //app.use("/images", express.static(path.join("api/images")));
 
+// app.use((req, res, next) => {
+//   const allowedOrigins = ["https://www.debugtek.com"];
+//   const origin = req.headers.origin;
+
+//   if (allowedOrigins.includes(origin)) {
+//     res.setHeader("Access-Control-Allow-Origin", origin); // Set the exact origin
+//     res.setHeader("Access-Control-Allow-Credentials", "true"); // Allow credentials if needed
+//   }
+
+//   res.setHeader(
+//     "Access-Control-Allow-Headers",
+//     "Origin, X-Requested-With, Content-Type, Accept, Authorization, isAdmin"
+//   );
+//   res.setHeader(
+//     "Access-Control-Allow-Methods",
+//     "GET, POST, PATCH, DELETE, OPTIONS, PUT"
+//   );
+
+//   // Handle preflight requests
+//   if (req.method === "OPTIONS") {
+//     res.status(200).end();
+//     return;
+//   }
+
+//   next();
+// });
+
+
 app.use((req, res, next) => {
-  const allowedOrigins = ["https://www.debugtek.com"];
-  const origin = req.headers.origin;
-
-  if (allowedOrigins.includes(origin)) {
-    res.setHeader("Access-Control-Allow-Origin", origin); // Set the exact origin
-    res.setHeader("Access-Control-Allow-Credentials", "true"); // Allow credentials if needed
-  }
-
-  res.setHeader(
-    "Access-Control-Allow-Headers",
+  // Be explicit about the origin instead of using "*"
+  res.setHeader("Access-Control-Allow-Origin", "https://www.debugtek.com");
+  
+  // Ensure all necessary headers are included
+  res.setHeader("Access-Control-Allow-Headers", 
     "Origin, X-Requested-With, Content-Type, Accept, Authorization, isAdmin"
   );
-  res.setHeader(
-    "Access-Control-Allow-Methods",
+  
+  // Include OPTIONS method explicitly
+  res.setHeader("Access-Control-Allow-Methods", 
     "GET, POST, PATCH, DELETE, OPTIONS, PUT"
   );
-
-  // Handle preflight requests
-  if (req.method === "OPTIONS") {
-    res.status(200).end();
-    return;
+  
+  // Important for Safari: Handle preflight requests
+  if (req.method === 'OPTIONS') {
+    return res.sendStatus(200);
   }
-
+  
   next();
 });
-
 
 // app.use((req, res, next) => {
 //   res.setHeader("Access-Control-Allow-Origin", "*");
