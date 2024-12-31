@@ -36,6 +36,15 @@
     cursor: pointer;
 }
 
+.subscribe-btn:disabled {
+    background-color: #f0f0f0; /* Light grey to indicate disabled */
+    color: #a0a0a0;           /* Dimmed text color */
+    cursor: not-allowed;      /* Show a 'not-allowed' cursor */
+    box-shadow: none;         /* Remove shadow to emphasize disabled state */
+    border: 1px solid #dcdcdc; /* Optional: Add a subtle border */
+}
+
+
 .sub-failed, .sub-success {
     font-size: 16px;
     text-align: center;

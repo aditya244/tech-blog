@@ -13,6 +13,7 @@ export class SubscribeComponent {
     subsFailed: boolean = false;
     subscriptionSuccessful: boolean = false;
     subscriptionSuccessfulRes: string = '';
+    subsBtnDisabled: boolean = false;
   
   constructor(
     private blogService: BlogService,
@@ -27,14 +28,17 @@ export class SubscribeComponent {
       email: email,
       date: subscriptionDate,
     };
+    this.subsBtnDisabled = true;
     this.authService.onSubscribe(subscriptionData).subscribe(
       (response: any) => {
+        this.subsBtnDisabled = false;
         this.subscriptionSuccessful = true;
         this.subscriptionSuccessfulRes = response.message;
       },
       (error) => {
         this.subsErrorMsg = error.error.message;
         this.subsFailed = true;
+        this.subsBtnDisabled = false;
       }
     );
   }
