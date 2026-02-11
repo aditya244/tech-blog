@@ -6,6 +6,7 @@ export const environment = {
   production: false,
   apiUrl: 'http://localhost:3000/api',
   googleAnalyticsId: '',
+  googleClientId: 'YOUR_GOOGLE_CLIENT_ID_DEV',
   environmentName: 'development'
 };
 

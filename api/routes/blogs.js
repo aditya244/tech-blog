@@ -41,9 +41,7 @@ async function uploadToVercelBlob(file) {
     const { url } = await put(file.originalname, compressedImageBuffer, {
       contentType: file.mimetype,
       access: "public",
-      token:
-        process.env.BLOB_READ_WRITE_TOKEN ||
-        "vercel_blob_rw_tc8570i2Vby9yroW_pncNVPQkA3Ojf9mRGYiCdfjfmfRqXS",
+      token: process.env.BLOB_READ_WRITE_TOKEN,
     });
     console.log("Upload successful. URL:", url);
     return url;

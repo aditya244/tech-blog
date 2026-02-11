@@ -70,7 +70,7 @@ router.post("/login", (req, res, next) => {
       if (userData) {
         const token = jwt.sign(
           { email: userData.email, userId: userData._id },
-          "RANDOM_SECRET_TEXT_CHAR_JBKJBKBKJBKJB_HJBHUVTYDRTCGVHVBJHBJHBJHB",
+          process.env.JWT_SECRET,
           { expiresIn: "1h" }
         );
         return res.status(200).json({
@@ -125,7 +125,7 @@ router.post("/login-with-google", (req, res, next) => {
         userData = user;
         const token = jwt.sign(
           { email: userData.email, userId: userData._id },
-          "RANDOM_SECRET_TEXT_CHAR_JBKJBKBKJBKJB_HJBHUVTYDRTCGVHVBJHBJHBJHB",
+          process.env.JWT_SECRET,
           { expiresIn: "1h" }
         );
         return res.status(200).json({

@@ -3,6 +3,7 @@ const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const app = express();
 const path = require("path");
+require('dotenv').config({ path: path.join(__dirname, '.env') });
 
 const blogRoutes = require("./routes/blogs");
 //const commentRoutes = require("./routes/comments");
@@ -10,9 +11,12 @@ const userRoutes = require("./routes/user");
 const subscriptionRoutes = require("./routes/subscribe");
 const passwordRoutes = require("./routes/password")
 
-const MONGODB_URI =
-  process.env.MONGODB_URI ||
-  "mongodb+srv://aditya:V53bkdhA4QHBKB9U@cluster0.eciv35m.mongodb.net/blog?retryWrites=true&w=majority";
+const MONGODB_URI = process.env.MONGODB_URI;
+
+if (!MONGODB_URI) {
+  console.error("MONGODB_URI environment variable is not set!");
+  process.exit(1);
+}
 
 const connectToDatabase = async () => {
   try {
@@ -51,7 +55,7 @@ app.use(bodyParser.json());
 
 app.use((req, res, next) => {
   // website domain was added as * doesn't work for Safari, it explicitly checks for CORS
-  res.setHeader("Access-Control-Allow-Origin", "https://www.debugtek.com");
+  res.setHeader("Access-Control-Allow-Origin", "*");
   
   // Ensure all necessary headers are included
   res.setHeader("Access-Control-Allow-Headers", 

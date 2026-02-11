@@ -42,6 +42,7 @@ import { SubscribeDialogComponent } from './components/shared/subscribe-dialog/s
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { DateFormatPipe } from './pipes/date-format.pipe';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { environment } from 'src/environments/environment';
 
 @NgModule({
   declarations: [
@@ -99,7 +100,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
         {
           id: GoogleLoginProvider.PROVIDER_ID,
           provider: new GoogleLoginProvider(
-            '894510956645-43med5k8uumdl5drtbf4pgvogfcoee85.apps.googleusercontent.com'
+            environment.googleClientId
           )
         }
       ],

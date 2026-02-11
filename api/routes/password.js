@@ -28,7 +28,7 @@ router.post("/forgot-password", async (req, res) => {
     // Generate a reset token and set expiration (e.g., 1 hour)
     const token = jwt.sign(
       { email },
-      "RANDOM_SECRET_TEXT_CHAR_JBKJBKBKJBKJB_HJBHUVTYDRTCGVHVBJHBJHBJHB",
+      process.env.JWT_SECRET,
       { expiresIn: "1h" }
     );
     user.resetToken = token;
@@ -64,7 +64,7 @@ router.post("/reset-password", async (req, res) => {
     // Verify the token using the same secret
     const decoded = jwt.verify(
       token,
-      "RANDOM_SECRET_TEXT_CHAR_JBKJBKBKJBKJB_HJBHUVTYDRTCGVHVBJHBJHBJHB"
+      process.env.JWT_SECRET
     );
     console.log("Decoded Token:", decoded);
     const user = await User.findOne({

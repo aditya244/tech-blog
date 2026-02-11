@@ -12,6 +12,7 @@ router.post("/subscribe", async (req, res) => {
       host: transporter.options.host,
       port: transporter.options.port,
       user: process.env.EMAIL_USER?.substring(0, 3) + "***", // Partial masking
+      //user: process.env.?.substring(0, 3) + "***", // Partial masking
       environment: process.env.NODE_ENV,
     });
 
