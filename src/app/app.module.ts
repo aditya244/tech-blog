@@ -5,7 +5,6 @@ import { AppComponent } from './app.component';
 import { HomepageComponent } from './pages/homepage/homepage.component';
 import { BlogComponent } from './components/blog/blog.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { BlogsComponent } from './pages/blogs/blogs.component';
 import { AuthorComponent } from './pages/author/author.component';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { MatCardModule } from '@angular/material/card';
@@ -49,7 +48,6 @@ import { environment } from 'src/environments/environment';
     AppComponent,
     HomepageComponent,
     BlogComponent,
-    BlogsComponent,
     AuthorComponent,
     FooterComponent,
     BlogDetailsComponent,
