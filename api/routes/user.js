@@ -1,6 +1,8 @@
 const express = require("express");
 const router = express.Router();
 const User = require("../models/user");
+const TokenBlacklist = require("../models/tokenBlacklist");
+const checkAuth = require("../middleware/check-auth");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
@@ -214,5 +216,57 @@ router.post("/remove-from-reading-list",  (req, res, next) => {
   });
 });
 
+// Logout endpoint - add token to blacklist so it can't be used again
+router.post("/logout", checkAuth, async (req, res) => {
+  try {
+    const token = req.headers.authorization.split(" ")[1];
+    
+    // Decode token to get expiration time
+    const decoded = jwt.decode(token);
+    const expiresAt = new Date(decoded.exp * 1000);
+    
+    // Add token to blacklist
+    const blacklistedToken = new TokenBlacklist({
+      token: token,
+      expiresAt: expiresAt,
+      userId: decoded.userId
+    });
+    
+    await blacklistedToken.save();
+    
+    res.status(200).json({ message: "Logged out successfully" });
+  } catch (error) {
+    console.error("Logout error:", error);
+    res.status(500).json({ message: "Logout failed", error: error.message });
+  }
+});
+
+// Session validation endpoint - verify user identity from token
+// This ensures the user details stored in sessionStorage match the authenticated token
+router.get("/validate-session", checkAuth, async (req, res) => {
+  try {
+    const token = req.headers.authorization.split(" ")[1];
+    const decoded = jwt.decode(token);
+    
+    // Find user to get current authorization info from database
+    const user = await User.findOne({ email: decoded.email });
+    
+    if (!user) {
+      return res.status(401).json({ message: "User not found" });
+    }
+    
+    // Return authoritative user data from server (not from sessionStorage)
+    res.status(200).json({
+      email: user.email,
+      firstName: user.firstName,
+      isAdmin: user.isAdmin,
+      readingList: user.readingList,
+      message: "Session valid"
+    });
+  } catch (error) {
+    console.error("Session validation error:", error);
+    res.status(401).json({ message: "Invalid session" });
+  }
+});
 
 module.exports = router;

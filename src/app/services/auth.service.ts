@@ -166,6 +166,25 @@ export class AuthService {
   }
 
   onLogout() {
+    // Call backend to blacklist the current token
+    if (this.token) {
+      this.httpClient.post(`${this.apiUrl}/user/logout`, {}).subscribe({
+        next: () => {
+          console.log('Token blacklisted on server');
+        },
+        error: (err) => {
+          console.error('Logout endpoint error:', err);
+        },
+        complete: () => {
+          this.completeLogout();
+        }
+      });
+    } else {
+      this.completeLogout();
+    }
+  }
+
+  private completeLogout() {
     this.clearAuthData();
     // Had to puss null but due to issues passing empty string, check later
     this.token = '';

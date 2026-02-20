@@ -5,6 +5,20 @@ const app = express();
 const path = require("path");
 require('dotenv').config({ path: path.join(__dirname, '.env') });
 
+// Parse allowed origins from environment variable
+const allowedOrigins = (process.env.ALLOWED_ORIGINS || '').split(',').map(origin => origin.trim());
+
+// HTTPS enforcement middleware (for production)
+const httpsEnforcement = (req, res, next) => {
+  if (process.env.NODE_ENV === 'production' && !req.secure && req.get('x-forwarded-proto') !== 'https') {
+    console.log(process.env.NODE_ENV, 'dev_environment')
+    return res.status(403).json({ message: 'HTTPS required' });
+  }
+  next();
+};
+
+app.use(httpsEnforcement);
+
 const blogRoutes = require("./routes/blogs");
 //const commentRoutes = require("./routes/comments");
 const userRoutes = require("./routes/user");
@@ -54,8 +68,12 @@ app.use(bodyParser.json());
 //app.use("/images", express.static(path.join("api/images")));
 
 app.use((req, res, next) => {
-  // website domain was added as * doesn't work for Safari, it explicitly checks for CORS
-  res.setHeader("Access-Control-Allow-Origin", "*");
+  // Check if origin is in the whitelist
+  const origin = req.headers.origin;
+  
+  if (allowedOrigins.includes(origin)) {
+    res.setHeader("Access-Control-Allow-Origin", origin);
+  }
   
   // Ensure all necessary headers are included
   res.setHeader("Access-Control-Allow-Headers", 
@@ -67,10 +85,10 @@ app.use((req, res, next) => {
     "GET, POST, PATCH, DELETE, OPTIONS, PUT"
   );
 
-  console.log("Origin:", req.headers.origin); // Debug: Log incoming Origin
-  console.log("Headers:", req.headers);
+  // Credentials support
+  res.setHeader("Access-Control-Allow-Credentials", "true");
   
-  // Important for Safari: Handle preflight requests
+  // Handle preflight requests
   if (req.method === 'OPTIONS') {
     return res.sendStatus(200);
   }

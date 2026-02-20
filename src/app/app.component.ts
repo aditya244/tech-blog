@@ -46,6 +46,8 @@ export class AppComponent implements OnInit {
         console.log(userDetails, 'USER_DET');
         this.userDetils = userDetails;
         this.isAdmin = userDetails.isAdmin;
+        // Store user details in sessionStorage for session convenience only
+        // NOTE: This is not a security measure - the actual authorization must be validated server-side
         sessionStorage.setItem('userDetails', JSON.stringify(userDetails));
       });
     this.userEmailId = sessionStorage.getItem('email');
@@ -56,8 +58,7 @@ export class AppComponent implements OnInit {
         this.isAdmin = this.userDetils.isAdmin;
       }
     }
-    //this.isAdmin = this.userDetils.isAdmin
-    // Move the navigator to a separate component and thus the logic
+    // Validate session on app init - ensures server agrees with stored user details
     this.authService.autoAuthUser();
     console.log(this.isAdmin, this.isUserAuthenticated, 'DATA');
   }
