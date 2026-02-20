@@ -44,6 +44,8 @@ export class PostBlogComponent implements OnInit {
   imagePreview: string | undefined;
   private suggestedBlogId: string = '';
   //tags: string[] = [];
+  public publishMessage: string | null = null;
+  public publishMessageType: 'success' | 'error' | null = null;
 
   constructor(
     private fb: UntypedFormBuilder,
@@ -170,8 +172,17 @@ export class PostBlogComponent implements OnInit {
       .post<{ message: string }>(`${this.apiUrl}/blogs`, blogData, {
         headers: headers,
       })
-      .subscribe((response) => {
-        console.log(response);
+      .subscribe({
+        next: (response) => {
+          console.log(response);
+          this.publishMessage = response?.message || 'Blog published successfully';
+          this.publishMessageType = 'success';
+        },
+        error: (err) => {
+          console.error(err);
+          this.publishMessage = err?.error?.message || 'Failed to publish blog';
+          this.publishMessageType = 'error';
+        }
       });
   }
 
@@ -203,8 +214,17 @@ export class PostBlogComponent implements OnInit {
       .put(`${this.apiUrl}/blogs/edit-blog/` + this.blogId, blogData, {
         headers: headers,
       })
-      .subscribe((response) => {
-        console.log(response);
+      .subscribe({
+        next: (response: any) => {
+          console.log(response);
+          this.publishMessage = response?.message || 'Blog updated successfully';
+          this.publishMessageType = 'success';
+        },
+        error: (err) => {
+          console.error(err);
+          this.publishMessage = err?.error?.message || 'Failed to update blog';
+          this.publishMessageType = 'error';
+        }
       });
   }
 

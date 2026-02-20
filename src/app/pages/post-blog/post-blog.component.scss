@@ -75,3 +75,31 @@ input[type="file"] {
     padding-left: 7px;
     margin-top: 7px;
 }
+
+.publish-message-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 16px;
+}
+
+.publish-message {
+    min-width: 300px;
+    max-width: 720px;
+    padding: 12px 18px;
+    border-radius: 8px;
+    text-align: center;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+    font-size: 14px;
+}
+
+.publish-message.success {
+    background-color: #e6f4ea;
+    color: #1b5e20;
+    border: 1px solid #b7e1c9;
+}
+
+.publish-message.error {
+    background-color: #fbe9e9;
+    color: #b00020;
+    border: 1px solid #f5c2c2;
+}

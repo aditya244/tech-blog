@@ -66,7 +66,9 @@ export class HomepageComponent implements OnInit {
     this.socialAuthService.authState.subscribe((user) => {
       this.user = user;
       console.log(this.user, 'USER_GOOGLE');
-      this.authService.onLoginWithGoogle(user);
+      if (user) {
+        this.authService.onLoginWithGoogle(user);
+      }
     });
     console.log(this.screenHeight, this.screenWidth, 'screenSize')
     this.authService.userDetailsListerner.subscribe((userDetails) => {

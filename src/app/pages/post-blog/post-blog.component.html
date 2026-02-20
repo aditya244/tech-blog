@@ -86,6 +86,11 @@
         <p>
             <button type="submit" mat-raised-button  class="post-blog-btn" color="primary" >Submit</button>
         </p>
+        <div class="publish-message-container" *ngIf="publishMessage">
+            <div class="publish-message" [ngClass]="publishMessageType">
+                {{ publishMessage }}
+            </div>
+        </div>
     </form>
 </div>
 
