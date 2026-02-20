@@ -10,7 +10,7 @@
     "start:server": "nodemon ./api/server.js"
   },
   "engines": {
-    "node": "20.x"
+    "node": "24.x"
   },
   "private": true,
   "dependencies": {
