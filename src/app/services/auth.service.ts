@@ -166,22 +166,8 @@ export class AuthService {
   }
 
   onLogout() {
-    // Call backend to blacklist the current token
-    if (this.token) {
-      this.httpClient.post(`${this.apiUrl}/user/logout`, {}).subscribe({
-        next: () => {
-          console.log('Token blacklisted on server');
-        },
-        error: (err) => {
-          console.error('Logout endpoint error:', err);
-        },
-        complete: () => {
-          this.completeLogout();
-        }
-      });
-    } else {
-      this.completeLogout();
-    }
+    // Perform local logout only (no server call) to avoid extra API usage on limited plans
+    this.completeLogout();
   }
 
   private completeLogout() {
