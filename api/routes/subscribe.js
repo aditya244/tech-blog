@@ -198,7 +198,7 @@ router.post("/subscribe", async (req, res) => {
     });
 
     // Send email in background
-    await resend.emails.send({
+    const response = await resend.emails.send({
       from: "Debugtek <info@debugtek.com>",
       to: email,
       subject: "Welcome to Debugtek!",
@@ -216,13 +216,6 @@ router.post("/subscribe", async (req, res) => {
           </div>
         </div>
       `,
-    });
-
-    const response = await resend.emails.send({
-      from: "Debugtek <info@debugtek.com>",
-      to: email,
-      subject: "Welcome to Debugtek!",
-      html: "<h1>Test</h1>"
     });
 
     console.log("Resend response:", response);
