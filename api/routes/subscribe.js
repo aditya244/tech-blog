@@ -170,8 +170,11 @@ const transporter = require('../middleware/mailer');
 // });
 
 
-const { Resend } = require("resend");
+//const { Resend } = require("resend");
+import { Resend } from 'resend';
 const resend = new Resend(process.env.RESEND_API_KEY);
+
+console.log(process.env.RESEND_API_KEY, 'api_key')
 
 router.post("/subscribe", async (req, res) => {
   try {
@@ -202,7 +205,7 @@ router.post("/subscribe", async (req, res) => {
       from: "Debugtek <info@debugtek.com>",
       to: email,
       subject: "Welcome to Debugtek!",
-      reply_to: "yourpersonal@gmail.com", // change this
+      reply_to: "sinha.aditya244@gmail.com", // change this
       html: `
         <div style="font-family: Arial; max-width:600px; margin:auto;">
           <h2 style="background:#25303B;color:white;padding:20px;">
@@ -223,7 +226,11 @@ router.post("/subscribe", async (req, res) => {
       console.log("RESEND SUCCESS:", response.data);
     }
 
-    //console.log("Resend response:", response);
+    if (error) {
+      return console.error({ error }, 'error');
+    }
+
+    console.log("Resend response:", response);
 
   } catch (error) {
     console.error("Subscription error:", error);
