@@ -217,8 +217,13 @@ router.post("/subscribe", async (req, res) => {
         </div>
       `,
     });
+    if (response.error) {
+      console.error("RESEND ERROR FULL:", response.error);
+    } else {
+      console.log("RESEND SUCCESS:", response.data);
+    }
 
-    console.log("Resend response:", response);
+    //console.log("Resend response:", response);
 
   } catch (error) {
     console.error("Subscription error:", error);
