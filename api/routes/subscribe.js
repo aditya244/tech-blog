@@ -218,6 +218,15 @@ router.post("/subscribe", async (req, res) => {
       `,
     });
 
+    const response = await resend.emails.send({
+      from: "Debugtek <info@debugtek.com>",
+      to: email,
+      subject: "Welcome to Debugtek!",
+      html: "<h1>Test</h1>"
+    });
+
+    console.log("Resend response:", response);
+
   } catch (error) {
     console.error("Subscription error:", error);
     return res.status(500).json({
