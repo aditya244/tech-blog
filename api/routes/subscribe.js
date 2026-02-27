@@ -195,42 +195,21 @@ router.post("/subscribe", async (req, res) => {
       subscriptionDate: req.body.date,
     });
 
-    // Respond immediately (important for Vercel)
-    res.status(200).json({
-      message: "Successfully Subscribed!",
-    });
-
-    // Send email in background
+    // ✅ Send email FIRST
     const response = await resend.emails.send({
       from: "Debugtek <info@debugtek.com>",
       to: email,
       subject: "Welcome to Debugtek!",
-      reply_to: "sinha.aditya244@gmail.com", // change this
-      html: `
-        <div style="font-family: Arial; max-width:600px; margin:auto;">
-          <h2 style="background:#25303B;color:white;padding:20px;">
-            Thank You for Subscribing!
-          </h2>
-          <div style="padding:20px;">
-            <p>Hi there,</p>
-            <p>We're excited to have you as part of the Debugtek community!</p>
-            <p>Stay tuned for the latest updates.</p>
-            <p>Cheers,<br/>Team Debugtek</p>
-          </div>
-        </div>
-      `,
+      reply_to: "sinha.aditya244@gmail.com",
+      html: "<h1>Welcome to Debugtek!</h1>",
     });
-    if (response.error) {
-      console.error("RESEND ERROR FULL:", response.error);
-    } else {
-      console.log("RESEND SUCCESS:", response.data);
-    }
-
-    if (error) {
-      return console.error({ error }, 'error');
-    }
 
     console.log("Resend response:", response);
+
+    // ✅ Then send response
+    return res.status(200).json({
+      message: "Successfully Subscribed!",
+    });
 
   } catch (error) {
     console.error("Subscription error:", error);
