@@ -29,7 +29,7 @@ router.post("/subscribe", async (req, res) => {
       from: "Debugtek <info@debugtek.com>",
       to: email,
       subject: "Welcome to Debugtek!",
-      reply_to: "sinha.aditya244@gmail.com",
+      replyTo: "sinha.aditya244@gmail.com",
       html: `
         <!DOCTYPE html>
         <html>
