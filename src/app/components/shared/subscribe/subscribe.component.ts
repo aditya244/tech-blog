@@ -14,6 +14,7 @@ export class SubscribeComponent {
     subscriptionSuccessful: boolean = false;
     subscriptionSuccessfulRes: string = '';
     subsBtnDisabled: boolean = false;
+    subscriptionStatus: 'idle' | 'success' | 'error' = 'idle';
   
   constructor(
     private blogService: BlogService,
@@ -34,9 +35,11 @@ export class SubscribeComponent {
         this.subsBtnDisabled = false;
         this.subscriptionSuccessful = true;
         this.subscriptionSuccessfulRes = response.message;
+        this.subscriptionStatus = 'success';
       },
       (error) => {
         this.subsErrorMsg = error.error.message;
+        this.subscriptionStatus = 'error';
         this.subsFailed = true;
         this.subsBtnDisabled = false;
       }

@@ -1,5 +1,5 @@
 <div class="subscribe-box" >
-    <div *ngIf="!subsFailed">
+    <div *ngIf="subscriptionStatus === 'idle'">
       <h1>Subscribe to our blogs!</h1>
       <p>
         Stay tuned with our every new post. You will get notified via email
@@ -18,10 +18,10 @@
         Subscribe
       </button>
     </div>
-    <div *ngIf="subsFailed" class="sub-failed">
+    <div *ngIf="subscriptionStatus === 'error'" class="sub-failed">
       <p>{{ subsErrorMsg }}</p>
     </div>
-    <div *ngIf="subscriptionSuccessful" class="sub-success">
+    <div *ngIf="subscriptionStatus === 'success'" class="sub-success">
       <p>{{ subscriptionSuccessfulRes }}</p>
     </div>
   </div>
