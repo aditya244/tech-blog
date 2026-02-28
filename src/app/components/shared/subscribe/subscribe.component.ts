@@ -33,14 +33,14 @@ export class SubscribeComponent {
     this.authService.onSubscribe(subscriptionData).subscribe(
       (response: any) => {
         this.subsBtnDisabled = false;
-        this.subscriptionSuccessful = true;
+        //this.subscriptionSuccessful = true;
         this.subscriptionSuccessfulRes = response.message;
         this.subscriptionStatus = 'success';
       },
       (error) => {
         this.subsErrorMsg = error.error.message;
         this.subscriptionStatus = 'error';
-        this.subsFailed = true;
+        //this.subsFailed = true;
         this.subsBtnDisabled = false;
       }
     );
