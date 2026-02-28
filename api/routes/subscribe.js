@@ -25,7 +25,7 @@ router.post("/subscribe", async (req, res) => {
     });
 
     // ✅ Send email FIRST
-    const response = await resend.emails.send({
+    const payload = {
       from: "Debugtek <info@debugtek.com>",
       to: email,
       subject: "Welcome to Debugtek!",
@@ -103,10 +103,11 @@ router.post("/subscribe", async (req, res) => {
           </body>
         </html>
       `,
-    });
+    };
+    console.log("EMAIL PAYLOAD:", payload);
+    const response = await resend.emails.send(payload);
 
-    console.log("Resend response:", response);
-
+    console.log("RESEND RESPONSE:", response);
     // ✅ Then send response
     return res.status(200).json({
       message: "Successfully Subscribed!",
