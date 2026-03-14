@@ -26,7 +26,7 @@ async function uploadToVercelBlob(file) {
         });
     } else {
       compressedImageBuffer = await sharp(file.buffer)
-        .resize(800)
+        .resize(1000)
         .jpeg({ quality: 80 }) // convert to JPEG format with 80% quality
         .toBuffer()
         .then((data) => {

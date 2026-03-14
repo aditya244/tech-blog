@@ -13,11 +13,6 @@
     align-items: center;
     height: 100vh; /* Set height to viewport height for vertical centering */
 }
-.blog-img {
-    align-items: center;
-    height: auto;
-    width: 100%;;
-}
 .blog-body {
     display: flex;
     flex-direction: row;
@@ -38,9 +33,14 @@
     line-height: 1;
     text-align: center;
 }
+// .banner-image {
+//     height: 500px;
+//     width: 1000px;
+// }
+
 .banner-image {
-    height: 500px;
-    width: 1000px;
+  width: 100%;
+  height: auto;
 }
 
 .recommended-blog-header {
