@@ -5,6 +5,24 @@ const app = express();
 const path = require("path");
 require('dotenv').config({ path: path.join(__dirname, '.env') });
 
+app.use((req, res, next) => {
+  if (req.method === "OPTIONS") {
+    res.setHeader("Access-Control-Allow-Origin", req.headers.origin || "*");
+    res.setHeader(
+      "Access-Control-Allow-Headers",
+      "Origin, X-Requested-With, Content-Type, Accept, Authorization, isAdmin"
+    );
+    res.setHeader(
+      "Access-Control-Allow-Methods",
+      "GET, POST, PATCH, DELETE, OPTIONS, PUT"
+    );
+    res.setHeader("Access-Control-Allow-Credentials", "true");
+
+    return res.sendStatus(200);  // 🔥 MUST EXIT HERE
+  }
+  next();
+});
+
 // Parse allowed origins from environment variable
 const allowedOrigins = (process.env.ALLOWED_ORIGINS || '').split(',').map(origin => origin.trim());
 
@@ -135,9 +153,6 @@ console.log("ALLOWED_ORIGINS ENV:", process.env.ALLOWED_ORIGINS);
 app.use((req, res, next) => {
   const origin = req.headers.origin;
 
-  console.log("Incoming Origin:", origin);
-
-  // 🔥 TEMP: allow everything (debug mode)
   if (origin) {
     res.setHeader("Access-Control-Allow-Origin", origin);
   }
@@ -153,10 +168,6 @@ app.use((req, res, next) => {
   );
 
   res.setHeader("Access-Control-Allow-Credentials", "true");
-
-  if (req.method === "OPTIONS") {
-    return res.sendStatus(200);
-  }
 
   next();
 });
