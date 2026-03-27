@@ -97,19 +97,49 @@ console.log("ALLOWED_ORIGINS ENV:", process.env.ALLOWED_ORIGINS);
 // });
 
 
+// app.use((req, res, next) => {
+//   const origin = req.headers.origin;
+//   console.log("Incoming Origin:", origin);
+
+//   if (
+//     !origin ||
+//     allowedOrigins.includes(origin) ||
+//     origin.includes("localhost") ||              // ✅ allow any localhost port
+//     origin.endsWith(".vercel.app")               // ✅ allow preview deployments
+//   ) {
+//     res.setHeader("Access-Control-Allow-Origin", origin || "*");
+//   } else {
+//     console.log("Blocked by CORS:", origin);
+//   }
+
+//   res.setHeader(
+//     "Access-Control-Allow-Headers",
+//     "Origin, X-Requested-With, Content-Type, Accept, Authorization, isAdmin"
+//   );
+
+//   res.setHeader(
+//     "Access-Control-Allow-Methods",
+//     "GET, POST, PATCH, DELETE, OPTIONS, PUT"
+//   );
+
+//   res.setHeader("Access-Control-Allow-Credentials", "true");
+
+//   if (req.method === "OPTIONS") {
+//     return res.sendStatus(200);
+//   }
+
+//   next();
+// });
+
+
 app.use((req, res, next) => {
   const origin = req.headers.origin;
+
   console.log("Incoming Origin:", origin);
 
-  if (
-    !origin ||
-    allowedOrigins.includes(origin) ||
-    origin.includes("localhost") ||              // ✅ allow any localhost port
-    origin.endsWith(".vercel.app")               // ✅ allow preview deployments
-  ) {
-    res.setHeader("Access-Control-Allow-Origin", origin || "*");
-  } else {
-    console.log("Blocked by CORS:", origin);
+  // 🔥 TEMP: allow everything (debug mode)
+  if (origin) {
+    res.setHeader("Access-Control-Allow-Origin", origin);
   }
 
   res.setHeader(
@@ -130,7 +160,6 @@ app.use((req, res, next) => {
 
   next();
 });
-
 
 app.use("/api/blogs", blogRoutes);
 //app.use("/api/comments", commentRoutes);
