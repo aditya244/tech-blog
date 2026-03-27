@@ -40,7 +40,7 @@ const connectToDatabase = async () => {
       connectTimeoutMS: 30000, // 30 seconds
       socketTimeoutMS: 30000, // 30 seconds
     });
-    console.log("MongoDB connected successfully in prod");
+    console.log("MongoDB connected successfully");
   } catch (error) {
     console.error("MongoDB connection failed:", error.message);
     if (error.name === "MongoNetworkError") {
@@ -66,35 +66,71 @@ db.once("open", () => {
 
 app.use(bodyParser.json());
 //app.use("/images", express.static(path.join("api/images")));
+console.log("ALLOWED_ORIGINS ENV:", process.env.ALLOWED_ORIGINS);
+// app.use((req, res, next) => {
+//   // Check if origin is in the whitelist
+//   const origin = req.headers.origin;
+//   console.log("Incoming Origin:", req.headers.origin);
+//   if (allowedOrigins.includes(origin)) {
+//     res.setHeader("Access-Control-Allow-Origin", origin);
+//   }
+  
+//   // Ensure all necessary headers are included
+//   res.setHeader("Access-Control-Allow-Headers", 
+//     "Origin, X-Requested-With, Content-Type, Accept, Authorization, isAdmin",
+//   );
+  
+//   // Include OPTIONS method explicitly
+//   res.setHeader("Access-Control-Allow-Methods", 
+//     "GET, POST, PATCH, DELETE, OPTIONS, PUT"
+//   );
+
+//   // Credentials support
+//   res.setHeader("Access-Control-Allow-Credentials", "true");
+  
+//   // Handle preflight requests
+//   if (req.method === 'OPTIONS') {
+//     return res.sendStatus(200);
+//   }
+  
+//   next();
+// });
+
 
 app.use((req, res, next) => {
-  // Check if origin is in the whitelist
   const origin = req.headers.origin;
-  
-  if (allowedOrigins.includes(origin)) {
-    res.setHeader("Access-Control-Allow-Origin", origin);
+  console.log("Incoming Origin:", origin);
+
+  if (
+    !origin ||
+    allowedOrigins.includes(origin) ||
+    origin.includes("localhost") ||              // ✅ allow any localhost port
+    origin.endsWith(".vercel.app")               // ✅ allow preview deployments
+  ) {
+    res.setHeader("Access-Control-Allow-Origin", origin || "*");
+  } else {
+    console.log("Blocked by CORS:", origin);
   }
-  
-  // Ensure all necessary headers are included
-  res.setHeader("Access-Control-Allow-Headers", 
+
+  res.setHeader(
+    "Access-Control-Allow-Headers",
     "Origin, X-Requested-With, Content-Type, Accept, Authorization, isAdmin"
   );
-  
-  // Include OPTIONS method explicitly
-  res.setHeader("Access-Control-Allow-Methods", 
+
+  res.setHeader(
+    "Access-Control-Allow-Methods",
     "GET, POST, PATCH, DELETE, OPTIONS, PUT"
   );
 
-  // Credentials support
   res.setHeader("Access-Control-Allow-Credentials", "true");
-  
-  // Handle preflight requests
-  if (req.method === 'OPTIONS') {
+
+  if (req.method === "OPTIONS") {
     return res.sendStatus(200);
   }
-  
+
   next();
 });
+
 
 app.use("/api/blogs", blogRoutes);
 //app.use("/api/comments", commentRoutes);
