@@ -42,6 +42,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { DateFormatPipe } from './pipes/date-format.pipe';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { environment } from 'src/environments/environment';
+import { GithubSuccessComponent } from './pages/github-success/github-success.component';
 
 @NgModule({
   declarations: [
@@ -61,7 +62,8 @@ import { environment } from 'src/environments/environment';
     SubscribeComponent,
     SocialLoginComponent,
     SubscribeDialogComponent,
-    DateFormatPipe
+    DateFormatPipe,
+    GithubSuccessComponent
   ],
   imports: [
     BrowserModule,

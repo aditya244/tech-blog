@@ -4,6 +4,27 @@ const User = require("../models/user");
 const checkAuth = require("../middleware/check-auth");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const axios = require("axios");
+
+const CLIENT_URL = process.env.CLIENT_URL;
+
+const generateAuthResponse = (user) => {
+  const token = jwt.sign(
+    { email: user.email, userId: user._id },
+    process.env.JWT_SECRET,
+    { expiresIn: "1h" }
+  );
+
+  return {
+    token,
+    expiresIn: 3600,
+    isAdmin: user.isAdmin,
+    email: user.email,
+    firstName: user.firstName,
+    readingList: user.readingList,
+    authProviders: user.authProviders
+  };
+};
 
 router.post("/sign-up", (req, res, next) => {
   // add the logic to check if the userId already exist
@@ -93,58 +114,152 @@ router.post("/login", (req, res, next) => {
 });
 
 // check for all the error handling in this route
-router.post("/login-with-google", (req, res, next) => {
-  let userData;
-  console.log(req.body, 'REQ');
-  User.findOne({ email: req.body.email })
-    .then((user) => {
-      // logic for sign up
-      if (!user) {
-        // sign up the user
-        const newUser = new User({
-          firstName: req.body.firstName,
-          lastName: req.body.lastName,
-          email: req.body.email,
-          password: 'password_123',
-          authProvider: 'google',
-        });
-        newUser
-      .save()
-      .then((result) => {
-        res.status(201).json({
-          message: "User Created!",
-          result: result,
-        });
-      })
-      .catch((err) => {
-        res.status(500).json({
-          error: err,
-        });
+router.post("/login-with-google", async (req, res) => {
+  try {
+    const { email, firstName, lastName, googleId } = req.body;
+    const provider = "google";
+
+    let user = await User.findOne({ email });
+
+    // 🧠 Case 1: New user
+    if (!user) {
+      user = new User({
+        firstName,
+        lastName,
+        email,
+        googleId,
+        authProviders: [provider],
       });
-        //return newUser.save(); // return the promise chain
-      } else {
-        userData = user;
-        const token = jwt.sign(
-          { email: userData.email, userId: userData._id },
-          process.env.JWT_SECRET,
-          { expiresIn: "1h" }
-        );
-        return res.status(200).json({
-          token: token,
-          expiresIn: 3600,
-          isAdmin: userData.isAdmin,
-          email: userData.email,
-          firstName: userData.firstName,
-          readingList: userData.readingList
-        });
+
+      await user.save();
+    } else {
+      // 🧠 Case 2: Existing user → link Google
+
+      if (!user.googleId) {
+        user.googleId = googleId;
       }
-    })
-    .catch((err) => { // handle errors in the entire promise chain
-      console.error(err);
-      return res.status(500).json({
-        mesaage: err, // return error message
-      });
+
+      if (!user.authProviders) {
+        user.authProviders = [];
+      }
+
+      if (!user.authProviders.includes(provider)) {
+        user.authProviders.push(provider);
+      }
+
+      await user.save();
+    }
+
+    return res.status(200).json(generateAuthResponse(user));
+
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({
+      message: "Google login failed",
     });
+  }
+});
+
+router.post("/login-with-github", async (req, res) => {
+
+  console.log(req.body, 'req body from login with git')
+  try {
+    const { email, firstName, lastName, githubId, avatar } = req.body;
+    const provider = "github";
+
+    let user = await User.findOne({ email });
+
+    // 🧠 Case 1: New user
+    if (!user) {
+      user = new User({
+        firstName,
+        lastName,
+        email,
+        githubId,
+        authProviders: [provider],
+      });
+
+      await user.save();
+    } else {
+      // 🧠 Case 2: Existing user → link GitHub
+
+      if (!user.githubId) {
+        user.githubId = githubId;
+      }
+
+      if (!user.authProviders) {
+        user.authProviders = [];
+      }
+
+      if (!user.authProviders.includes(provider)) {
+        user.authProviders.push(provider);
+      }
+
+      await user.save();
+    }
+
+    return res.status(200).json(generateAuthResponse(user));
+
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({
+      message: "GitHub login failed",
+    });
+  }
+});
+
+router.get("/github/callback", async (req, res) => {
+  const code = req.query.code;
+  console.log(code, 'code from callback')
+  console.log(process.env.GITHUB_CLIENT_ID, 'github client id')
+  try {
+    // Step 1: get access token
+    const tokenRes = await axios.post(
+      "https://github.com/login/oauth/access_token",
+      {
+        client_id: process.env.GITHUB_CLIENT_ID,
+        client_secret: process.env.GITHUB_CLIENT_SECRET,
+        code,
+      },
+      { headers: { Accept: "application/json" } }
+    );
+
+    const accessToken = tokenRes.data.access_token;
+
+    console.log(accessToken, 'accessToken')
+
+    // Step 2: get user profile
+    const userRes = await axios.get("https://api.github.com/user", {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+
+    const emailRes = await axios.get("https://api.github.com/user/emails", {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+
+    const primaryEmail = emailRes.data.find(e => e.primary)?.email;
+
+    const userData = {
+      email: primaryEmail,
+      firstName: userRes.data.name || userRes.data.login,
+      lastName: "",
+      githubId: userRes.data.id,
+      avatar: userRes.data.avatar_url,
+    };
+
+    // Step 3: redirect to frontend with data
+    res.redirect(
+      `http://localhost:4200/github-success?data=${encodeURIComponent(JSON.stringify(userData))}`
+    );
+
+  } catch (err) {
+    console.error(err);
+    res.redirect("http://localhost:4200/login");
+  }
 });
 
 router.post("/add-reading-list",  (req, res, next) => {

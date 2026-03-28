@@ -253,6 +253,41 @@ export class AuthService {
       });
   }
 
+  loginWithGithub(data: any) {
+  this.httpClient
+    .post(`${this.apiUrl}/user/login-with-github`, data)
+    .subscribe((response: any) => {
+        console.log(response, 'RESPONSE, LOGIN WITH GITHUB');
+        const token = response.token;
+        this.userEmailId = response.email;
+        this.token = token;
+        if (token) {
+          this.isLoading = false;
+          const expiresInDuration = response.expiresIn;
+          this.setAuthTimer(expiresInDuration);
+          // to conver sec into miliseconds
+          localStorage.setItem('email', response.email);
+          console.log(response, 'RES');
+          //this.userDetails = response.firstName
+          this.authStatusListener.next(true);
+          this.userDetailsListerner.next({
+            userEmailId: response.email,
+            firstName: response.firstName,
+            isAdmin: response.isAdmin,
+            readingList: response.readingList
+          });
+          this.isAuthenticated = true;
+          const currentTimeStamp = new Date();
+          const expirationDate = new Date(
+            currentTimeStamp.getTime() + expiresInDuration * 1000
+          );
+          this.saveAuthData(token, expirationDate);
+          this.router.navigate(['/home']);
+        }
+      });
+}
+
+
   forgotPassword(email: string) {
     return this.httpClient.post<{ message: string }>(`${this.apiUrl}/password/forgot-password`, { email });
   }

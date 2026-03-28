@@ -1,3 +1,6 @@
 .vercel
 node_modules
 backend
+.env
+.env.prod
+.env.staging

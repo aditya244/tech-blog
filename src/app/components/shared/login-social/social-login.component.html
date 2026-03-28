@@ -1,6 +1,40 @@
-<div>
-    <asl-google-signin-button class="google-btn" type="standard"
-      >Sign In With Google</asl-google-signin-button
-    >
-  </div>
-  
+<!-- <div class="social-container">
+  <asl-google-signin-button class="google-btn" type="standard">
+  </asl-google-signin-button>
+
+  <button class="github-btn" (click)="loginWithGithub()">
+    <img src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png" />
+    Continue with GitHub
+  </button>
+</div> -->
+
+<div class="social-container">
+
+  <!-- Google -->
+  <asl-google-signin-button
+    class="google-btn"
+    type="standard">
+  </asl-google-signin-button>
+
+  <!-- Divider -->
+  <!-- <div class="divider">or</div> -->
+
+  <!-- GitHub -->
+  <button 
+    class="github-btn" 
+    (click)="loginWithGithub()" 
+    [disabled]="isLoading">
+
+    <span *ngIf="!isLoading" class="btn-content">
+      <img src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png" />
+      Continue with GitHub
+    </span>
+
+    <span *ngIf="isLoading" class="loader"></span>
+  </button>
+
+</div>
+
+<!-- Error / Success -->
+<p class="auth-message error" *ngIf="errorMessage">{{ errorMessage }}</p>
+<p class="auth-message success" *ngIf="successMessage">{{ successMessage }}</p>

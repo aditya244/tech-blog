@@ -4,10 +4,9 @@
 </h1>
 
 <mat-card class="container-card">
-    <form class="login-form" [formGroup]="loginForm" (ngSubmit)="onLogin()">
+    <!-- <form class="login-form" [formGroup]="loginForm" (ngSubmit)="onLogin()">
         <mat-form-field>
             <input type="email" id="email" placeholder="Email" matInput formControlName="email">
-            <!-- <mat-error *ngIf="login['email'].hasError('email')"> Please enter a valid email!</mat-error> -->
             <div *ngIf="login['email'].hasError('email') && login['email'].hasError('required')">
                 Please enter a valid email address.
               </div>
@@ -20,16 +19,16 @@
             </div>
         </mat-form-field>
         <button type="submit" class="login-button" [disabled]="loginForm.invalid">Login</button>
-    </form>
-    <div *ngIf="errorMessage" class="error-message">
+    </form> -->
+    <!-- <div *ngIf="errorMessage" class="error-message">
         {{ errorMessage }}
-      </div>
+      </div> -->
       <!-- <div *ngIf="successMessage" class="success-message">
         {{ successMessage }}
       </div> -->
-      <div class="forgot-password">
+      <!-- <div class="forgot-password">
         <p routerLink="/forgot-password" class="nav-item" type="none"> Forgot password </p>
-      </div>
+      </div> -->
       <p class="social-text"> Or you can use you socials to login!</p>
     <app-social-login class="social-login"></app-social-login>
 </mat-card>

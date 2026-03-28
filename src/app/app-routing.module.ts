@@ -11,6 +11,7 @@ import { ReadingListComponent } from './pages/reading-list/reading-list.componen
 import { ResetPasswordComponent } from './pages/reset-password/reset-password.component';
 import { SignUpComponent } from './pages/sign-up/sign-up.component';
 import { AuthGuard } from './services/auth.guard';
+import { GithubSuccessComponent } from './pages/github-success/github-success.component';
 
 const routes: Routes = [
   {path: '', redirectTo: '/home', pathMatch: 'full'},
@@ -24,7 +25,8 @@ const routes: Routes = [
   {path: 'post-blog', component: PostBlogComponent, canActivate: [AuthGuard]},
   {path: 'my-reading-list', component: ReadingListComponent, canActivate: [AuthGuard]},
   {path: 'forgot-password', component: ForgotPasswordComponent },
-  {path: 'reset-password', component: ResetPasswordComponent }
+  {path: 'reset-password', component: ResetPasswordComponent },
+  {path: 'github-success', component: GithubSuccessComponent }
 ];
 
 @NgModule({
