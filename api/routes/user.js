@@ -253,12 +253,12 @@ router.get("/github/callback", async (req, res) => {
 
     // Step 3: redirect to frontend with data
     res.redirect(
-      `http://localhost:4200/github-success?data=${encodeURIComponent(JSON.stringify(userData))}`
+      `%${CLIENT_URL}/github-success?data=${encodeURIComponent(JSON.stringify(userData))}`
     );
 
   } catch (err) {
     console.error(err);
-    res.redirect("http://localhost:4200/login");
+    res.redirect(`${CLIENT_URL}/login`);
   }
 });
 
