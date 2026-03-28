@@ -253,7 +253,7 @@ router.get("/github/callback", async (req, res) => {
 
     // Step 3: redirect to frontend with data
     res.redirect(
-      `%${CLIENT_URL}/github-success?data=${encodeURIComponent(JSON.stringify(userData))}`
+      `${CLIENT_URL}/github-success?data=${encodeURIComponent(JSON.stringify(userData))}`
     );
 
   } catch (err) {
