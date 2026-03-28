@@ -5,7 +5,10 @@
 <div class="page">
   <div class="container">
     <div class="page-heading">My Reading List</div>
-    <div class="empty-list" *ngIf="!readingList.length">
+    <div
+      class="empty-list"
+      *ngIf="readingList && !readingList.length && !isLoading"
+    >
       Seems like your reading list is empty. Please add some blogs to reading
       list to view here!
     </div>
@@ -25,7 +28,13 @@
               class="font-style"
               [innerHTML]="blog.content.slice(0, 200)"
             ></div>
-            <button type="button" class="read-more-btn" (click)="navigateToBlogDetailsPage(blog.id)">Read More</button>
+            <button
+              type="button"
+              class="read-more-btn"
+              (click)="navigateToBlogDetailsPage(blog.id)"
+            >
+              Read More
+            </button>
             <button class="remove-btn" (click)="removeFromReadingList(blog.id)">
               Remove from Reading List
             </button>

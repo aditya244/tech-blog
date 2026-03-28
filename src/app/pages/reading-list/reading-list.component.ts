@@ -1,35 +1,38 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Route, Router } from '@angular/router';
-import { catchError, map } from 'rxjs';
+import { catchError, map, of } from 'rxjs';
 import { Blog } from 'src/app/components/blog/blog.interface';
 import { BlogService } from 'src/app/components/blog/blog.service';
 
 @Component({
   selector: 'app-reading-list',
   templateUrl: './reading-list.component.html',
-  styleUrls: ['./reading-list.component.scss']
+  styleUrls: ['./reading-list.component.scss'],
 })
 export class ReadingListComponent implements OnInit {
-
   public readingList: Blog[] = [];
   public readingListRes: any = [];
   isLoading: boolean = true;
 
-  constructor(private route: ActivatedRoute, private blogService: BlogService, private router: Router ) { }
+  constructor(
+    private route: ActivatedRoute,
+    private blogService: BlogService,
+    private router: Router,
+  ) {}
 
   ngOnInit(): void {
     const emailId = localStorage.getItem('email');
     this.blogService.getReadingListData(emailId).subscribe((response: any) => {
       this.readingListRes = response;
       this.fetchReadingListBlogs(this.readingListRes);
-      console.log(response, 'reading-list-comp')
-      this.blogService.readingList$.next(response.readingList)
-    })
+      console.log(response, 'reading-list-comp');
+      this.blogService.readingList$.next(response.readingList);
+    });
   }
 
   fetchReadingListBlogs(readingListRes: { readingList: string[] }) {
     this.isLoading = true;
-    const readList = readingListRes.readingList;
+    const readList = readingListRes?.readingList || [];
 
     this.blogService
       .getReadingListBlogsData(readList)
@@ -38,7 +41,7 @@ export class ReadingListComponent implements OnInit {
           // added this pipe and map to convert each data _id to id to map with frontends
           console.log(data, 'FETCHED_BLOGS');
           return data.blogs.map((blogData: any) => {
-            console.log(blogData, 'blogData_fetchReadingListBlogs')
+            console.log(blogData, 'blogData_fetchReadingListBlogs');
             return {
               title: blogData.title,
               id: blogData._id,
@@ -49,15 +52,13 @@ export class ReadingListComponent implements OnInit {
         }),
         catchError((error) => {
           console.error('Error fetching blogs:', error);
-          // handle error and loader later
-          // this.isErrorFromServer = true;
           this.isLoading = false;
-          return error;
-        })
+          return of({ blogs: [] }); // fallback safe response
+        }),
       )
       .subscribe((data) => {
         if (data) {
-          console.log(data, 'data')
+          console.log(data, 'data');
           this.isLoading = false;
           this.readingList = data;
         }
@@ -65,16 +66,15 @@ export class ReadingListComponent implements OnInit {
   }
 
   removeFromReadingList(blogId: any) {
-    const userEmailid: any = localStorage.getItem('email')
-    this.blogService.removeFromReadingList(userEmailid, blogId)
+    const userEmailid: any = localStorage.getItem('email');
+    this.blogService.removeFromReadingList(userEmailid, blogId);
     // lol wierd but this is updating the reading list page
     this.router.navigate(['/home']);
   }
 
   navigateToBlogDetailsPage(blogId: any) {
-    this.router.navigate(['/blog-details/', blogId,], {
-      relativeTo: null
-    })
+    this.router.navigate(['/blog-details/', blogId], {
+      relativeTo: null,
+    });
   }
-
 }

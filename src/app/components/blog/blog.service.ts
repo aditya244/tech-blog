@@ -112,6 +112,9 @@ export class BlogService {
   }
 
   getReadingListBlogsData(ids: string[]) {
+    if (!ids || !ids.length) {
+    return of({ blogs: [] }); // return empty observable
+  }
     const stringId = ids.join(',');
     const url = `${this.apiUrl}/blogs/readingListBlogs/` + stringId;
     return this.httpClient.get(url);
