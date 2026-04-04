@@ -49,11 +49,11 @@ export class BlogService {
   }
 
   getCommentsForBlog(blogId: any): Observable<any> {
-    return this.httpClient.get(`${this.apiUrl}/comments/` + blogId);
+    return this.httpClient.get(`${this.apiUrl}/blogs/comments/` + blogId);
   }
 
   addComment(commentData: any): Observable<any> {
-    return this.httpClient.post(`${this.apiUrl}/comments`, commentData);
+    return this.httpClient.post(`${this.apiUrl}/blogs/comments`, commentData);
   }
 
   getBlogLikes(blogId: any): Observable<any> {
@@ -74,7 +74,7 @@ export class BlogService {
 
   deleteComment(commentId: string): Observable<any> {
     return this.httpClient.delete(
-      `${this.apiUrl}/comments/` + commentId
+      `${this.apiUrl}/blogs/comments/` + commentId
     );
   }
 

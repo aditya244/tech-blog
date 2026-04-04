@@ -20,7 +20,6 @@ const httpsEnforcement = (req, res, next) => {
 app.use(httpsEnforcement);
 
 const blogRoutes = require("./routes/blogs");
-const commentRoutes = require("./routes/comments");
 const userRoutes = require("./routes/user");
 const subscriptionRoutes = require("./routes/subscribe");
 const passwordRoutes = require("./routes/password")
@@ -97,7 +96,6 @@ app.use((req, res, next) => {
 });
 
 app.use("/api/blogs", blogRoutes);
-app.use("/api/comments", commentRoutes);
 app.use("/api/password", passwordRoutes)
 app.use("/api/user", userRoutes);
 app.use("/api", subscriptionRoutes);
