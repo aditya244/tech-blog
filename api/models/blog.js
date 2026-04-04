@@ -11,6 +11,7 @@ const blogSchema = mongoose.Schema({
     ogTitle: {type: String},
     ogDescription: {type: String},
     suggestedBlogIds: {type: Array},
+    likedBy: {type: Array, default: []},
 })
 
 module.exports = mongoose.model('Blog', blogSchema);

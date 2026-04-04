@@ -52,6 +52,22 @@ export class BlogService {
     return this.httpClient.get(`${this.apiUrl}/comments/` + blogId);
   }
 
+  addComment(commentData: any): Observable<any> {
+    return this.httpClient.post(`${this.apiUrl}/comments`, commentData);
+  }
+
+  getBlogLikes(blogId: any): Observable<any> {
+    return this.httpClient.get(`${this.apiUrl}/blogs/likes/${blogId}`);
+  }
+
+  addBlogLike(blogId: string, userEmail: string): Observable<any> {
+    return this.httpClient.post(`${this.apiUrl}/blogs/likes/add`, { blogId, userEmail });
+  }
+
+  removeBlogLike(blogId: string, userEmail: string): Observable<any> {
+    return this.httpClient.post(`${this.apiUrl}/blogs/likes/remove`, { blogId, userEmail });
+  }
+
   getReadingListResSubscription() {
     return this.readingListResSubscription.asObservable();
   }

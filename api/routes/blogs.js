@@ -284,4 +284,101 @@ function convertToDateObject(dateString) {
   return new Date(formattedDate);
 }
 
+// Get likes count for a blog
+router.get('/likes/:blogId', (req, res, next) => {
+  try {
+    Blog.findById(req.params.blogId).then((blog) => {
+      if (!blog) {
+        return res.status(404).json({ message: 'Blog not found' });
+      }
+      const likedBy = blog.likedBy || [];
+      return res.status(200).json({
+        message: 'Likes fetched successfully',
+        likeCount: likedBy.length,
+        likedBy: likedBy
+      });
+    }).catch((error) => {
+      return res.status(500).json({ message: 'Failed to fetch likes', error: error.message });
+    });
+  } catch (error) {
+    console.error('Error fetching likes:', error);
+    return res.status(500).json({ message: 'Failed to fetch likes' });
+  }
+});
+
+// Add a like to a blog
+router.post('/likes/add', checkAuth, (req, res, next) => {
+  try {
+    const { blogId, userEmail } = req.body;
+
+    if (!blogId || !userEmail) {
+      return res.status(400).json({ message: 'Missing blogId or userEmail' });
+    }
+
+    Blog.findById(blogId).then((blog) => {
+      if (!blog) {
+        return res.status(404).json({ message: 'Blog not found' });
+      }
+
+      const likedBy = blog.likedBy || [];
+      if (likedBy.includes(userEmail)) {
+        return res.status(400).json({ message: 'User has already liked this blog' });
+      }
+
+      likedBy.push(userEmail);
+      blog.likedBy = likedBy;
+
+      return blog.save().then(() => {
+        return res.status(200).json({
+          message: 'Like added successfully',
+          likeCount: likedBy.length
+        });
+      });
+    }).catch((error) => {
+      return res.status(500).json({ message: 'Failed to add like', error: error.message });
+    });
+  } catch (error) {
+    console.error('Error adding like:', error);
+    return res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
+// Remove a like from a blog
+router.post('/likes/remove', checkAuth, (req, res, next) => {
+  try {
+    const { blogId, userEmail } = req.body;
+
+    if (!blogId || !userEmail) {
+      return res.status(400).json({ message: 'Missing blogId or userEmail' });
+    }
+
+    Blog.findById(blogId).then((blog) => {
+      if (!blog) {
+        return res.status(404).json({ message: 'Blog not found' });
+      }
+
+      const likedBy = blog.likedBy || [];
+      const index = likedBy.indexOf(userEmail);
+      if (index === -1) {
+        return res.status(400).json({ message: 'User has not liked this blog' });
+      }
+
+      likedBy.splice(index, 1);
+      blog.likedBy = likedBy;
+
+      return blog.save().then(() => {
+        return res.status(200).json({
+          message: 'Like removed successfully',
+          likeCount: likedBy.length
+        });
+      });
+    }).catch((error) => {
+      return res.status(500).json({ message: 'Failed to remove like', error: error.message });
+    });
+  } catch (error) {
+    console.error('Error removing like:', error);
+    return res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
 module.exports = router;

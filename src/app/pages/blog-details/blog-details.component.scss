@@ -180,6 +180,70 @@
     cursor: pointer;
 }
 
+.likes-section {
+    width: 70%;
+    margin: 10px auto;
+    display: flex;
+    justify-content: flex-start;
+}
+
+.likes-container {
+    display: flex;
+    align-items: center;
+    padding: 15px 20px;
+    //box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.likes-content {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.likes-count {
+    font-size: 16px;
+    font-weight: 500;
+    color: #26323D;
+}
+
+.likes-icon-active {
+    color: #1976d2;
+    font-size: 20px;
+}
+
+.likes-icon-inactive {
+    color: #999;
+    font-size: 20px;
+    transition: color 0.3s ease;
+}
+
+button[mat-icon-button].liked {
+    color: #1976d2;
+}
+
+button[mat-icon-button].not-liked:not(:disabled) {
+    color: #999;
+}
+
+button[mat-icon-button].not-liked:not(:disabled):hover {
+    color: #1976d2;
+}
+
+button[mat-icon-button].not-liked:not(:disabled):hover fa-icon,
+button[mat-icon-button].not-liked:not(:disabled):hover fa-icon.likes-icon-inactive {
+    color: #1976d2;
+}
+
+button[mat-icon-button].liked fa-icon,
+button[mat-icon-button].liked fa-icon.likes-icon-active {
+    color: #1976d2;
+}
+
+button[mat-icon-button]:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
 @media (max-width: 900px) {
 
     .blog-body {

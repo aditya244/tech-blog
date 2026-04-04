@@ -32,6 +32,79 @@
         Remove from Reading List
     </button>
 </div>
+
+<div class="likes-section">
+    <div class="likes-container">
+        <div class="likes-content">
+            <button mat-icon-button 
+                    [disabled]="!isAuthenticated || userHasLiked"
+                    [class.liked]="userHasLiked"
+                    [class.not-liked]="!userHasLiked"
+                    (click)="onThumbsUp()"
+                    [matTooltip]="!isAuthenticated ? 'Login to like this blog' : userHasLiked ? 'Already Liked' : 'Like'">
+                <fa-icon [icon]="faThumbsUp" 
+                         [class.likes-icon-active]="userHasLiked"
+                         [class.likes-icon-inactive]="!userHasLiked"></fa-icon>
+            </button>
+            <span class="likes-count">{{ blogLikes }} {{ blogLikes === 1 ? 'like' : 'likes' }}</span>
+        </div>
+    </div>
+</div>
+
+<div class="post-comment-card">
+    <mat-card>
+        <mat-card-content>Comments</mat-card-content>
+        <mat-form-field class="comment-text-area">
+            <mat-label>Leave a comment</mat-label>
+            <textarea rows="3" cols="300" matInput placeholder="Leave a comment..." [(ngModel)]="comment" name="comment" maxlength="500"></textarea>
+            <mat-hint align="end">{{comment.length}} / 500</mat-hint>
+        </mat-form-field>
+        <button mat-raised-button color="primary" (click)="onCommentSubmit(comment)" type="button">Submit Comment</button>
+    </mat-card>
+</div>
+
+<div class="comments-thread" *ngIf="visibleCommentThreads && visibleCommentThreads.length">
+    <mat-card class="comment-box" *ngFor="let thread of visibleCommentThreads">
+        <mat-card-content class="comment-font">
+            <strong>{{thread.root.authorName || 'Anonymous'}}</strong> <span *ngIf="thread.root.isAdmin">(Admin)</span><br/>
+            {{thread.root.comment}}
+        </mat-card-content>
+        <div class="comment-bottom-section">
+            <span class="comment-date-font">Posted on {{thread.root.dateOfPublish | date:'mediumDate'}}</span>
+            <span>
+                <button *ngIf="isAdmin" mat-button color="primary" (click)="replyDrafts[thread.root._id] = replyDrafts[thread.root._id] || ''">Reply</button>
+                <button *ngIf="isAdmin" mat-button color="warn" (click)="onDeleteComment(thread.root._id)">Delete</button>
+            </span>
+        </div>
+
+        <div *ngIf="isAdmin && replyDrafts[thread.root._id] !== undefined" style="margin-top: 8px;">
+            <mat-form-field class="comment-text-area">
+                <mat-label>Write admin reply</mat-label>
+                <textarea rows="2" cols="300" matInput placeholder="Admin reply..." [(ngModel)]="replyDrafts[thread.root._id]" maxlength="500"></textarea>
+                <mat-hint align="end">{{replyDrafts[thread.root._id]?.length || 0}} / 500</mat-hint>
+            </mat-form-field>
+            <button mat-stroked-button color="primary" (click)="onReplySubmit(thread.root._id)">Post Reply</button>
+        </div>
+
+        <div *ngFor="let reply of thread.replies" style="margin-left: 20px; margin-top: 8px;">
+            <mat-card class="comment-box">
+                <mat-card-content class="comment-font">
+                    <strong>{{reply.authorName || 'Admin'}}</strong> <span>(Admin Reply)</span><br/>
+                    {{reply.comment}}
+                </mat-card-content>
+                <div class="comment-bottom-section">
+                    <span class="comment-date-font">Posted on {{reply.dateOfPublish | date:'mediumDate'}}</span>
+                    <button *ngIf="isAdmin" mat-button color="warn" (click)="onDeleteComment(reply._id)">Delete</button>
+                </div>
+            </mat-card>
+        </div>
+    </mat-card>
+</div>
+
+<div *ngIf="loadMoreEnabled && totalCommentsCount > commentsLimit" class="comments-thread">
+    <button mat-button (click)="loadMoreComments()">Load More ({{totalCommentsCount - commentsLimit}} more)</button>
+</div>
+
 <div *ngIf="suggestedBlogs && suggestedBlogs.blogs.length > 0 ">
     <div class="recommended-blog-header">
         <p class="recommended-blog-header-text"> Here are some other blogs that you should checkout</p>

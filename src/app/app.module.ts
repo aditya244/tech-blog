@@ -41,6 +41,7 @@ import { SubscribeDialogComponent } from './components/shared/subscribe-dialog/s
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { DateFormatPipe } from './pipes/date-format.pipe';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { environment } from 'src/environments/environment';
 import { GithubSuccessComponent } from './pages/github-success/github-success.component';
 
@@ -89,7 +90,8 @@ import { GithubSuccessComponent } from './pages/github-success/github-success.co
     SocialLoginModule,
     FontAwesomeModule,
     MatPaginatorModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatTooltipModule
     
   ],
   providers: [{provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true}, {
