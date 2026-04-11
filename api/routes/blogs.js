@@ -84,9 +84,12 @@ router.post(
   checkAuth,
   multer({ storage: multer.memoryStorage() }).single("image"),
   async (req, res, next) => {
-    console.log('Received file:', req.file);
-    console.log('Environment:', process.env.NODE_ENV);
-    console.log('BLOB_READ_WRITE_TOKEN set:', !!process.env.BLOB_READ_WRITE_TOKEN)
+    console.log("Received file:", req.file);
+    console.log("Environment:", process.env.NODE_ENV);
+    console.log(
+      "BLOB_READ_WRITE_TOKEN set:",
+      !!process.env.BLOB_READ_WRITE_TOKEN,
+    );
     const isValid = MIME_TYPE_MAP[req.file.mimetype];
     if (!isValid) {
       return res.status(400).json({ message: "Invalid mime type" });
@@ -95,7 +98,10 @@ router.post(
       const imageUrl = await uploadToVercelBlob(req.file);
       const isAdmin = req.headers.isadmin.trim();
       const tags = JSON.parse(req.body.tags);
-      const keywords = JSON.parse(req.body.keywords)
+      const suggestedBlogIds = req.body.suggestedBlogIds
+        ? JSON.parse(req.body.suggestedBlogIds)
+        : [];
+      const keywords = JSON.parse(req.body.keywords);
       if (isAdmin === "true") {
         const blogs = new Blog({
           title: req.body.title,
@@ -107,12 +113,12 @@ router.post(
           metaDescription: req.body.metaDescription,
           ogTitle: req.body.ogTitle,
           ogDescription: req.body.ogDescription,
-          suggestedBlogIds: req.body.suggestedBlogIds
+          suggestedBlogIds: suggestedBlogIds,
         });
         await blogs.save();
         res.status(201).json({
           message: "Post added successfully",
-          blog: blogs
+          blog: blogs,
         });
       } else {
         res.status(403).json({
@@ -123,10 +129,10 @@ router.post(
       console.error("Error on post blog:", error);
       res.status(500).json({
         message: "An error occurred while saving the blog post.",
-        error: error.message
+        error: error.message,
       });
     }
-  }
+  },
 );
 
 router.put(
