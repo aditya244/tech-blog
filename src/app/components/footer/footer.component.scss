@@ -22,4 +22,15 @@
 .contact-link {
     cursor: pointer;
     text-decoration: underline;
+    color: #ffffff;
+}
+
+.contact-link,
+.contact-link:link,
+.contact-link:visited,
+.contact-link:hover,
+.contact-link:active,
+.contact-link:focus {
+    color: #ffffff !important;
+    text-decoration: underline;
 }

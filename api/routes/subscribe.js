@@ -121,6 +121,46 @@ router.post("/subscribe", async (req, res) => {
   }
 });
 
+router.post("/contact", async (req, res) => {
+  try {
+    const { title, name, email, message } = req.body;
+
+    if (!title || !name || !email || !message) {
+      return res.status(400).json({ message: 'All fields are required.' });
+    }
+
+    const payload = {
+      from: "Debugtek <info@debugtek.com>",
+      to: process.env.EMAIL_ADMIN,
+      subject: `[Contact Us] ${title}`,
+      replyTo: email,
+      html: `
+        <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
+          <h2>New Contact Request</h2>
+          <p><strong>Name:</strong> ${name}</p>
+          <p><strong>Email:</strong> ${email}</p>
+          <p><strong>Title:</strong> ${title}</p>
+          <p><strong>Message:</strong></p>
+          <div style="white-space: pre-wrap; padding: 10px; background: #f7f7f7; border-radius: 6px;">${message}</div>
+        </div>
+      `,
+    };
+
+    console.log("CONTACT EMAIL PAYLOAD:", payload);
+    const response = await resend.emails.send(payload);
+    console.log("CONTACT EMAIL RESPONSE:", response);
+
+    return res.status(200).json({
+      message: "Your message has been sent successfully. Thank you for reaching out!",
+    });
+  } catch (error) {
+    console.error("Contact error:", error);
+    return res.status(500).json({
+      message: "Unable to send contact message. Please try again later.",
+    });
+  }
+});
+
 router.get("/get-subscription-updates/:email", (req, res, next) => {
   SubscriptionDataSchema.findOne({email: req.params.email})
     .then((existingEmail) => {

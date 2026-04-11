@@ -35,6 +35,7 @@ import {
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { ForgotPasswordComponent } from './pages/forgot-password/forgot-password.component';
 import { ResetPasswordComponent } from './pages/reset-password/reset-password.component';
+import { ContactUsComponent } from './pages/contact-us/contact-us.component';
 import { SubscribeComponent } from './components/shared/subscribe/subscribe.component';
 import { SocialLoginComponent } from './components/shared/login-social/social-login.component';
 import { SubscribeDialogComponent } from './components/shared/subscribe-dialog/subscribe-dialog.component';
@@ -60,6 +61,7 @@ import { GithubSuccessComponent } from './pages/github-success/github-success.co
     SignUpComponent,
     ForgotPasswordComponent,
     ResetPasswordComponent,
+    ContactUsComponent,
     SubscribeComponent,
     SocialLoginComponent,
     SubscribeDialogComponent,

@@ -1,0 +1,43 @@
+<section class="contact-page">
+  <div class="contact-card">
+    <h1>Contact Us</h1>
+    <p>If you have a question, feedback, or need support, send a message and we will respond as soon as possible.</p>
+
+    <div *ngIf="errorMessage" class="message-box error-message">{{ errorMessage }}</div>
+    <div *ngIf="successMessage" class="message-box success-message">{{ successMessage }}</div>
+
+    <form [formGroup]="contactForm" (ngSubmit)="submitContactForm()">
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Title</mat-label>
+        <input matInput placeholder="Enter message title" formControlName="title" />
+        <mat-error *ngIf="title?.hasError('required')">Title is required.</mat-error>
+        <mat-error *ngIf="title?.hasError('maxlength')">Title cannot exceed 120 characters.</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Name</mat-label>
+        <input matInput placeholder="Your name" formControlName="name" />
+        <mat-error *ngIf="name?.hasError('required')">Name is required.</mat-error>
+        <mat-error *ngIf="name?.hasError('maxlength')">Name cannot exceed 80 characters.</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Email</mat-label>
+        <input matInput placeholder="Your email" formControlName="email" type="email" />
+        <mat-error *ngIf="email?.hasError('required')">Email is required.</mat-error>
+        <mat-error *ngIf="email?.hasError('email')">Enter a valid email address.</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Message</mat-label>
+        <textarea matInput placeholder="Write your message" formControlName="message" rows="7"></textarea>
+        <mat-error *ngIf="message?.hasError('required')">Message is required.</mat-error>
+        <mat-error *ngIf="message?.hasError('maxlength')">Message cannot exceed 2000 characters.</mat-error>
+      </mat-form-field>
+
+      <button mat-raised-button color="primary" type="submit" [disabled]="contactForm.invalid || isSubmitting">
+        {{ isSubmitting ? 'Sending...' : 'Send Message' }}
+      </button>
+    </form>
+  </div>
+</section>

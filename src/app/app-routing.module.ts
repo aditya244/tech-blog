@@ -10,6 +10,7 @@ import { PostBlogComponent } from './pages/post-blog/post-blog.component';
 import { ReadingListComponent } from './pages/reading-list/reading-list.component';
 import { ResetPasswordComponent } from './pages/reset-password/reset-password.component';
 import { SignUpComponent } from './pages/sign-up/sign-up.component';
+import { ContactUsComponent } from './pages/contact-us/contact-us.component';
 import { AuthGuard } from './services/auth.guard';
 import { GithubSuccessComponent } from './pages/github-success/github-success.component';
 
@@ -22,6 +23,7 @@ const routes: Routes = [
   {path: 'blog-details/:id', component: BlogDetailsComponent},
   {path: 'edit-blog/:id', component: PostBlogComponent},
   {path: 'about-author', component: AuthorComponent},
+  {path: 'contact-us', component: ContactUsComponent},
   {path: 'post-blog', component: PostBlogComponent, canActivate: [AuthGuard]},
   {path: 'my-reading-list', component: ReadingListComponent, canActivate: [AuthGuard]},
   {path: 'forgot-password', component: ForgotPasswordComponent },
