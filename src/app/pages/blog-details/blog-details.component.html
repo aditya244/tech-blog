@@ -127,7 +127,7 @@
                         [innerHTML]="blog.content.slice(0, 100)"
                     ></div>
                     <div class="button-container">
-                        <a [routerLink]="['/blog-details/', blog.id, { relaiveTo: null }]"
+                        <a [routerLink]="['/blog-details/', blog._id, { relaiveTo: null }]"
                         ><button type="button" class="read-more-btn">
                             Read More
                         </button></a
