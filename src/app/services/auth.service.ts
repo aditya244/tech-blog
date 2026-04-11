@@ -88,7 +88,6 @@ export class AuthService {
     };
     const observer = {
       next: (response: { message: string }) => {
-        console.log(response, 'AUTH_DATA');
         this.authResponseOnAuthentication.next({
           message: response.message,
           error: false,
@@ -130,7 +129,6 @@ export class AuthService {
           this.setAuthTimer(expiresInDuration);
           // to convert sec into milliseconds
           localStorage.setItem('email', response.email);
-          console.log(response, 'RES');
           this.authStatusListener.next(true);
           this.router.navigate(['/home']);
 
@@ -223,7 +221,6 @@ export class AuthService {
         firstName: string;
       }>(`${this.apiUrl}/user/login-with-google`, userData)
       .subscribe((response) => {
-        console.log(response, 'RESPONSE, LOGIN WITH GOOOGLE');
         const token = response.token;
         this.userEmailId = response.email;
         this.token = token;
@@ -233,7 +230,6 @@ export class AuthService {
           this.setAuthTimer(expiresInDuration);
           // to conver sec into miliseconds
           localStorage.setItem('email', response.email);
-          console.log(response, 'RES');
           //this.userDetails = response.firstName
           this.authStatusListener.next(true);
           this.userDetailsListerner.next({
@@ -257,7 +253,6 @@ export class AuthService {
   this.httpClient
     .post(`${this.apiUrl}/user/login-with-github`, data)
     .subscribe((response: any) => {
-        console.log(response, 'RESPONSE, LOGIN WITH GITHUB');
         const token = response.token;
         this.userEmailId = response.email;
         this.token = token;
@@ -267,7 +262,6 @@ export class AuthService {
           this.setAuthTimer(expiresInDuration);
           // to conver sec into miliseconds
           localStorage.setItem('email', response.email);
-          console.log(response, 'RES');
           //this.userDetails = response.firstName
           this.authStatusListener.next(true);
           this.userDetailsListerner.next({

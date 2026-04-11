@@ -77,8 +77,6 @@ export class BlogDetailsComponent implements OnInit {
             this.suggestedBlogs = response;
             this.fetchComments();
             this.fetchBlogLikes();
-            // Handle the second API response here
-            console.log('SuggestedBlog:', this.suggestedBlogs);
           },
           error: (error) => {
             this.isLoading = false;
@@ -89,14 +87,12 @@ export class BlogDetailsComponent implements OnInit {
 
     this.authService.getAuthStatusListerner().subscribe((isAuthenticated) => {
       this.isAuthenticated = isAuthenticated;
-      console.log(isAuthenticated, 'isAuthenticated');
     });
     // The below code is to handle scrollToTop after click on Homepage to Blog Details
     const userDetailsStr: any = sessionStorage.getItem('userDetails');
     if (userDetailsStr) {
       const jsonUserDetails = JSON.parse(userDetailsStr);
       this.isAdmin = jsonUserDetails?.isAdmin;
-      console.log(jsonUserDetails, 'jsonUserDetails')
       this.currentUserName = `${jsonUserDetails?.firstName ?? ''} ${jsonUserDetails?.lastName ?? ''}`.trim();
       this.currentUserEmail = jsonUserDetails?.userEmailId || '';
     }
@@ -110,9 +106,7 @@ export class BlogDetailsComponent implements OnInit {
     //   }
     // });
 
-    console.log(this.currentUserEmail, 'currentUserEmail_init')
-
-    console.log(this.isAdmin, this.isAuthenticated, 'user authentication DETAILS');
+    
   }
 
   commentForm: UntypedFormGroup = this.fb.group({
@@ -336,7 +330,6 @@ export class BlogDetailsComponent implements OnInit {
   }
 
   private addLike(): void {
-    console.log(this.id, this.currentUserEmail, 'like_Debug')
     if (!this.id || !this.currentUserEmail) {
       this.openSnackBar('Error: Cannot add like', 'error');
       return;
@@ -443,7 +436,6 @@ export class BlogDetailsComponent implements OnInit {
     this.blogService.readingList$
       .pipe(take(1))  // Unsubscribe after the first emission to prevent memory leaks
       .subscribe((currentReadingList) => {
-        console.log(currentReadingList, 'currentReadingList')
         this.showAddToReadingList = currentReadingList.indexOf(selectedBlog._id) === -1;
       });
   }

@@ -104,11 +104,8 @@ router.post("/subscribe", async (req, res) => {
         </html>
       `,
     };
-    console.log("EMAIL PAYLOAD:", payload);
     const response = await resend.emails.send(payload);
 
-    console.log("RESEND RESPONSE:", response);
-    // ✅ Then send response
     return res.status(200).json({
       message: "Successfully Subscribed!",
     });
@@ -146,9 +143,7 @@ router.post("/contact", async (req, res) => {
       `,
     };
 
-    console.log("CONTACT EMAIL PAYLOAD:", payload);
     const response = await resend.emails.send(payload);
-    console.log("CONTACT EMAIL RESPONSE:", response);
 
     return res.status(200).json({
       message: "Your message has been sent successfully. Thank you for reaching out!",

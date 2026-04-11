@@ -43,7 +43,6 @@ export class AppComponent implements OnInit {
     this.userDetailsSubs = this.authService
       .getUserDetailsListener()
       .subscribe((userDetails) => {
-        console.log(userDetails, 'USER_DET');
         this.userDetils = userDetails;
         this.isAdmin = userDetails.isAdmin;
         // Store user details in sessionStorage for session convenience only
@@ -60,7 +59,6 @@ export class AppComponent implements OnInit {
     }
     // Validate session on app init - ensures server agrees with stored user details
     this.authService.autoAuthUser();
-    console.log(this.isAdmin, this.isUserAuthenticated, 'DATA');
   }
 
   logout() {

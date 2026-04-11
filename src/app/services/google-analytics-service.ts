@@ -9,10 +9,12 @@ declare let gtag: Function;
 })
 export class GoogleAnalyticsService {
   constructor(private router: Router) {
-    console.log('GoogleAnalyticsService initialized');
-    console.log(environment.environmentName, 'env')
     if (environment.production) {
-        console.log('analytics calls being made from prod')
+      this.router.events.subscribe((event) => {
+        if (event instanceof NavigationEnd) {
+          this.setPageView(event.urlAfterRedirects);
+        }
+      });
       this.router.events.subscribe((event) => {
         if (event instanceof NavigationEnd) {
           this.setPageView(event.urlAfterRedirects);

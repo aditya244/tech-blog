@@ -78,7 +78,6 @@ export class PostBlogComponent implements OnInit {
         this.mode = 'edit';
         this.blogId = paramMap.get('id');
         this.blogService.getBlogDetails(this.blogId).subscribe((res) => {
-          console.log(res, 'EDIT');
           this.blog = { ...res.blog };
           this.form.setValue({
             title: this.blog.title,
@@ -103,7 +102,6 @@ export class PostBlogComponent implements OnInit {
     const userDetailsStr: any = sessionStorage.getItem('userDetails');
     const jsonUserDetails = JSON.parse(userDetailsStr);
     this.isAdmin = jsonUserDetails.isAdmin;
-    console.log(this.isAdmin, 'ISADMIN');
   }
 
   blogDetails = new UntypedFormControl();
@@ -114,7 +112,6 @@ export class PostBlogComponent implements OnInit {
       this.blog.tags.push(tag);
       this.form.get('tag')?.setValue('');
     }
-    console.log(this.blog.tags, 'TAGS');
   }
 
   addKeywordsToArray() {
@@ -144,12 +141,10 @@ export class PostBlogComponent implements OnInit {
       suggestedBlogIds: this.blog.suggestedBlogIds
     };
 
-    console.log(this.form.value, 'form_value')
     // move the two api calls to service file and subscribe here
     const headers = new HttpHeaders({
       isAdmin: this.isAdmin.toString(),
     });
-    console.log('valid form');
     if (this.mode === 'create') {
       this.submitBlog(
         this.blog,
@@ -174,7 +169,6 @@ export class PostBlogComponent implements OnInit {
       })
       .subscribe({
         next: (response) => {
-          console.log(response);
           this.publishMessage = response?.message || 'Blog published successfully';
           this.publishMessageType = 'success';
         },
@@ -194,7 +188,6 @@ export class PostBlogComponent implements OnInit {
     // this condition is to check if the image is also being update, that is new file
     // or we are using the old image path that has been retrieved from server
     if (typeof blog.imagePath === 'object') {
-      console.log('gettinginside');
       blogData = this.createFormObject(blog)
     } else {
       blogData = {
@@ -216,7 +209,6 @@ export class PostBlogComponent implements OnInit {
       })
       .subscribe({
         next: (response: any) => {
-          console.log(response);
           this.publishMessage = response?.message || 'Blog updated successfully';
           this.publishMessageType = 'success';
         },
