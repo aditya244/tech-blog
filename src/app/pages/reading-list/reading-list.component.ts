@@ -25,6 +25,7 @@ export class ReadingListComponent implements OnInit {
     this.blogService.getReadingListData(emailId).subscribe((response: any) => {
       this.readingListRes = response;
       this.fetchReadingListBlogs(this.readingListRes);
+      console.log(response, 'reading-list-comp');
       this.blogService.readingList$.next(response.readingList);
     });
   }
@@ -38,7 +39,9 @@ export class ReadingListComponent implements OnInit {
       .pipe(
         map((data: any) => {
           // added this pipe and map to convert each data _id to id to map with frontends
+          console.log(data, 'FETCHED_BLOGS');
           return data.blogs.map((blogData: any) => {
+            console.log(blogData, 'blogData_fetchReadingListBlogs');
             return {
               title: blogData.title,
               id: blogData._id,
@@ -55,6 +58,7 @@ export class ReadingListComponent implements OnInit {
       )
       .subscribe((data) => {
         if (data) {
+          console.log(data, 'data');
           this.isLoading = false;
           this.readingList = data;
         }

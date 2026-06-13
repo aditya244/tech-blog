@@ -49,6 +49,7 @@ export class HomepageComponent implements OnInit {
     // can combine both the below behaviorSubject to send data together and will require only one subscription.
     this.authService.getAuthStatusListerner().subscribe((isAuthenticated) => {
       this.isUserAuthenticated = isAuthenticated;
+      console.log(isAuthenticated, 'isAuthenticated');
     });
     this.screenSizeService.screenSize$.subscribe(size => {
       this.screenWidth = size.width;
@@ -64,12 +65,15 @@ export class HomepageComponent implements OnInit {
     this.loadBlogs();
     this.socialAuthService.authState.subscribe((user) => {
       this.user = user;
+      console.log(this.user, 'USER_GOOGLE');
       if (user) {
         this.authService.onLoginWithGoogle(user);
       }
     });
+    console.log(this.screenHeight, this.screenWidth, 'screenSize')
     this.authService.userDetailsListerner.subscribe((userDetails) => {
       this.blogService.readingList$.next(userDetails.readingList);
+      console.log(userDetails.readingList, 'readingList_Homepage');
     });
 
     this.blogService.getReadingListResSubscription().subscribe((resStatus) => {
@@ -104,6 +108,7 @@ export class HomepageComponent implements OnInit {
           this.currentPage = data.currentPage;
           this.totalPages = Math.ceil(this.totalBlogs / this.pageSize);
   
+          console.log(this.screenWidth, 'screenWidth');
           this.ngZone.runOutsideAngular(() => {
             setTimeout(() => {
               if (this.screenWidth < 700 && !this.hasDialogAppeared) {
@@ -123,6 +128,7 @@ export class HomepageComponent implements OnInit {
       console.error('Blog ID is missing!');
       return;
     }
+    console.log(this.isUserAuthenticated, 'isAuth');
     this.selectedBlogTitle = title;
     if (!this.isUserAuthenticated) {
       this.clearMessage('errorMessage');

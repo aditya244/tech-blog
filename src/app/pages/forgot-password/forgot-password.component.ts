@@ -29,6 +29,7 @@ export class ForgotPasswordComponent implements OnInit {
         this.message = 'Password reset link has been sent to your email.';
       },
       (error) => {
+        console.log(error, 'error_forgot-pwd')
         this.message = 'Failed to send password reset link. Please try again.';
       }
     );

@@ -36,6 +36,7 @@ export class LoginComponent implements OnInit {
           } 
           else {
             this.successMessage = authStatus.message;
+            console.log(authStatus.message)
           }
         }
       }
@@ -56,6 +57,7 @@ export class LoginComponent implements OnInit {
             this.authService.isSubscriber.next(true)
             sessionStorage.setItem('subscriptionStatus', 'true')
           }
+          console.log('Subscription Status:', response);
           // Handle response as needed
         },
         (error) => {
