@@ -15,15 +15,10 @@
 <div class="blog-body">
     <div class="blog-content">
         <p class="blog-title">{{selectedBlog.title}}</p>
-        <img
-            [src]="selectedBlog.imagePath"
-            [alt]="selectedBlog.title"
-            width="1200"
-            height="675"
-            class="banner-image"
-        />
+        <img [src]="selectedBlog.imagePath" [alt]="selectedBlog.title" width="1200" height="675" class="banner-image" />
         <!-- <p> <img [src]="selectedBlog.imagePath" class="banner-image" /></p> -->
-        <span class="content-font" innerHTML={{selectedBlog.content}}></span>
+        <div class="content-font" [innerHTML]="selectedBlog.content">
+        </div>
     </div>
     <!-- <div class="tag-container">
         <div class="tag-content" *ngFor="let tag of selectedBlog.tags">

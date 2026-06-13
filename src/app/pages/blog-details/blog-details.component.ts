@@ -50,7 +50,7 @@ export class BlogDetailsComponent implements OnInit {
     private http: HttpClient,
     private authService: AuthService,
     public dialog: MatDialog,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
   ) {}
 
   ngOnInit(): void {
@@ -59,31 +59,52 @@ export class BlogDetailsComponent implements OnInit {
       .subscribe(() => {
         window.scrollTo(0, 0);
       });
-      this.route.paramMap.subscribe((params) => {
-        const id = params.get('id');
-        this.id = id;
-        this.isLoading = true;
+    this.route.paramMap.subscribe((params) => {
+      const id = params.get('id');
+      this.id = id;
+      this.isLoading = true;
 
-        this.blogService.getBlogDetails(id).pipe(
-          tap((res) => {
-            this.selectedBlog = res.blog;
-            this.toggleReadingListBtn(this.selectedBlog);
-          }),
-          // Chain the second API call after the first one completes
-          switchMap(() => this.blogService.getSuggestedBlogs(this.selectedBlog.suggestedBlogIds)) // Replace with your second API method
-        ).subscribe({
-          next: (response) => {
-            this.isLoading = false;
-            this.suggestedBlogs = response;
-            this.fetchComments();
-            this.fetchBlogLikes();
-          },
-          error: (error) => {
-            this.isLoading = false;
-            console.error(error);
-          }
-        });
-      })
+      this.blogService.getBlogDetails(id).subscribe({
+        next: (res) => {
+          this.selectedBlog = res.blog;
+
+          // Hide immediately
+          this.isLoading = false;
+
+          this.toggleReadingListBtn(this.selectedBlog);
+
+          // Load secondary content later
+          this.blogService
+            .getSuggestedBlogs(this.selectedBlog.suggestedBlogIds)
+            .subscribe((r) => {
+              this.suggestedBlogs = r;
+            });
+
+          this.fetchComments();
+          this.fetchBlogLikes();
+        },
+      });
+
+      // this.blogService.getBlogDetails(id).pipe(
+      //   tap((res) => {
+      //     this.selectedBlog = res.blog;
+      //     this.toggleReadingListBtn(this.selectedBlog);
+      //   }),
+      //   // Chain the second API call after the first one completes
+      //   switchMap(() => this.blogService.getSuggestedBlogs(this.selectedBlog.suggestedBlogIds)) // Replace with your second API method
+      // ).subscribe({
+      //   next: (response) => {
+      //     this.isLoading = false;
+      //     this.suggestedBlogs = response;
+      //     this.fetchComments();
+      //     this.fetchBlogLikes();
+      //   },
+      //   error: (error) => {
+      //     this.isLoading = false;
+      //     console.error(error);
+      //   }
+      // });
+    });
 
     this.authService.getAuthStatusListerner().subscribe((isAuthenticated) => {
       this.isAuthenticated = isAuthenticated;
@@ -93,7 +114,8 @@ export class BlogDetailsComponent implements OnInit {
     if (userDetailsStr) {
       const jsonUserDetails = JSON.parse(userDetailsStr);
       this.isAdmin = jsonUserDetails?.isAdmin;
-      this.currentUserName = `${jsonUserDetails?.firstName ?? ''} ${jsonUserDetails?.lastName ?? ''}`.trim();
+      this.currentUserName =
+        `${jsonUserDetails?.firstName ?? ''} ${jsonUserDetails?.lastName ?? ''}`.trim();
       this.currentUserEmail = jsonUserDetails?.userEmailId || '';
     }
 
@@ -105,8 +127,6 @@ export class BlogDetailsComponent implements OnInit {
     //     this.isAdmin = userDetails.isAdmin ?? this.isAdmin;
     //   }
     // });
-
-    
   }
 
   commentForm: UntypedFormGroup = this.fb.group({
@@ -143,27 +163,36 @@ export class BlogDetailsComponent implements OnInit {
       error: (error) => {
         console.error('Failed to fetch comments', error);
         this.openSnackBar('Could not load comments', 'error');
-      }
+      },
     });
   }
 
   prepareCommentThreads() {
     const rootComments = this.allComments
       .filter((c) => !c.parentCommentId)
-      .sort((a, b) => new Date(a.dateOfPublish).valueOf() - new Date(b.dateOfPublish).valueOf());
+      .sort(
+        (a, b) =>
+          new Date(a.dateOfPublish).valueOf() -
+          new Date(b.dateOfPublish).valueOf(),
+      );
 
     const repliesByParent: { [key: string]: any[] } = {};
     this.allComments
       .filter((c) => c.parentCommentId)
-      .sort((a, b) => new Date(a.dateOfPublish).valueOf() - new Date(b.dateOfPublish).valueOf())
+      .sort(
+        (a, b) =>
+          new Date(a.dateOfPublish).valueOf() -
+          new Date(b.dateOfPublish).valueOf(),
+      )
       .forEach((reply) => {
-        repliesByParent[reply.parentCommentId] = repliesByParent[reply.parentCommentId] || [];
+        repliesByParent[reply.parentCommentId] =
+          repliesByParent[reply.parentCommentId] || [];
         repliesByParent[reply.parentCommentId].push(reply);
       });
 
     this.allCommentThreads = rootComments.map((root) => ({
       root,
-      replies: repliesByParent[root._id] || []
+      replies: repliesByParent[root._id] || [],
     }));
   }
 
@@ -233,7 +262,7 @@ export class BlogDetailsComponent implements OnInit {
       error: (error) => {
         console.error('Error adding comment:', error);
         this.openSnackBar('Could not add comment', 'error');
-      }
+      },
     });
   }
 
@@ -271,7 +300,7 @@ export class BlogDetailsComponent implements OnInit {
       error: (error) => {
         console.error('Error posting reply', error);
         this.openSnackBar('Could not post reply', 'error');
-      }
+      },
     });
   }
 
@@ -289,7 +318,7 @@ export class BlogDetailsComponent implements OnInit {
       error: (error) => {
         console.error('Error deleting comment', error);
         this.openSnackBar('Comment delete failed', 'error');
-      }
+      },
     });
   }
 
@@ -306,13 +335,14 @@ export class BlogDetailsComponent implements OnInit {
       next: (res) => {
         this.blogLikes = res.likeCount || 0;
         if (this.isAuthenticated && this.currentUserEmail) {
-          this.userHasLiked = res.likedBy?.includes(this.currentUserEmail) || false;
+          this.userHasLiked =
+            res.likedBy?.includes(this.currentUserEmail) || false;
         }
       },
       error: (error) => {
         console.error('Failed to fetch likes', error);
         this.blogLikes = 0;
-      }
+      },
     });
   }
 
@@ -344,7 +374,7 @@ export class BlogDetailsComponent implements OnInit {
       error: (error) => {
         console.error('Error adding like', error);
         this.openSnackBar('Could not add like', 'error');
-      }
+      },
     });
   }
 
@@ -363,13 +393,21 @@ export class BlogDetailsComponent implements OnInit {
       error: (error) => {
         console.error('Error removing like', error);
         this.openSnackBar('Could not remove like', 'error');
-      }
+      },
     });
   }
 
   openSnackBar(message: string, type: 'success' | 'error' | 'info') {
-    const setClass = type === 'success' ? 'snack-success' : type === 'error' ? 'snack-error' : 'snack-info';
-    this.snackBar.open(message, 'OK', { duration: 3000, panelClass: [setClass] });
+    const setClass =
+      type === 'success'
+        ? 'snack-success'
+        : type === 'error'
+          ? 'snack-error'
+          : 'snack-info';
+    this.snackBar.open(message, 'OK', {
+      duration: 3000,
+      panelClass: [setClass],
+    });
   }
 
   openDialog(): void {
@@ -434,9 +472,10 @@ export class BlogDetailsComponent implements OnInit {
 
   private toggleReadingListBtn(selectedBlog: { _id: string }) {
     this.blogService.readingList$
-      .pipe(take(1))  // Unsubscribe after the first emission to prevent memory leaks
+      .pipe(take(1)) // Unsubscribe after the first emission to prevent memory leaks
       .subscribe((currentReadingList) => {
-        this.showAddToReadingList = currentReadingList.indexOf(selectedBlog._id) === -1;
+        this.showAddToReadingList =
+          currentReadingList.indexOf(selectedBlog._id) === -1;
       });
   }
 }
