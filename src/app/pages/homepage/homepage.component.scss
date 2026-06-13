@@ -93,9 +93,10 @@
     margin-right: 20px;
 }
 
-.banner-image {
-    height: 200px;
-    width: 350px;
+.banner-image{
+  width:100%;
+  height:auto;
+  display:block;
 }
 
 .read-more-btn, .reading-list-btn {
