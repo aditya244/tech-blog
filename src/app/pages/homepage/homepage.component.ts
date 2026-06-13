@@ -116,7 +116,7 @@ export class HomepageComponent implements OnInit {
                   this.openSubscribeDialog();
                 });
               }
-            }, 5000);
+            }, 7000);
           });
         }
       });
