@@ -357,104 +357,52 @@
 }
 
 @media (min-width: 701px) and (max-width: 1350px) {
-  .container {
-    flex-direction: row;
-  }
 
-  .blog-container {
-    width: 75%;
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: space-around;
-  }
+.blog-content{
+    display:flex;
 
-  .side-bar {
-    width: 25%;
-    display: flex;
-    flex-direction: column;
-    padding: 20px;
-    padding-top: 0px;
-    margin-top: 30px;
-    height: fit-content;
-    box-shadow: 2px 2px 5px #c2c1c2;
-    position: sticky;
-  }
+    align-items:flex-start;
 
-  // Added code for mobile view to remove whitespaces
-  .container,
-  .blog-container {
-    width: 100%;
-    padding: 0;
-  }
+    gap:16px;
 
-  .subscribe-input {
-    width: 150px;
-    align-self: center;
-  }
+    overflow:hidden;
+}
 
-  .blog-feed-container {
-    width: auto;
-    height: auto;
-    box-shadow: 2px 2px 5px #c2c1c2;
-  }
+.image-container{
+    width:320px;
 
-  .blog-content {
-    flex-direction: row;
-  }
+    min-width:320px;
 
-  // .image-container {
-  //     margin-right: 20px;
-  //     width: 40%;
-  // }
+    aspect-ratio:16/9;
 
-  .content-container {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    width: 60%;
-  }
+    overflow:hidden;
+}
 
-  // .banner-image {
-  //     height: 200px;
-  //     width: 100%;
-  // }
+.banner-image{
+    width:100%;
+    height:100%;
 
-  .image-container {
-    width: 320px;
-  }
+    object-fit:cover;
+}
 
-  .read-more-btn,
-  .reading-list-btn {
-    padding: 8px;
-    border-radius: 2px;
-    background-color: white;
-    box-shadow: 2px 2px 5px #c2c1c2;
-    border: none;
-    cursor: pointer;
-  }
+.content-container{
+    flex:1;
 
-  .read-more-btn,
-  .reading-list-btn {
-    flex: 1;
-    margin: 0 10px;
-  }
+    min-width:0;
 
-  .font-style {
-    font-family: "Times New Roman", Times, serif;
-    color: #26323d;
-    font-size: 14px;
-    text-align: justify;
-  }
+    overflow-wrap:break-word;
 
-  .error-message,
-  .success-message {
-    padding: 5px;
-    width: auto;
-    border: 1px solid;
-    border-radius: 5px;
-    font-size: 12px;
-    text-align: center;
-  }
+    word-break:break-word;
+}
+
+.heading{
+    overflow-wrap:break-word;
+}
+
+.font-style{
+    overflow-wrap:anywhere;
+}
+
 }
 
 @media (min-width: 701px) and (max-width: 1024px) {
