@@ -73,12 +73,16 @@ export class BlogDetailsComponent implements OnInit {
 
           this.toggleReadingListBtn(this.selectedBlog);
 
-          // Load secondary content later
-          this.blogService
-            .getSuggestedBlogs(this.selectedBlog.suggestedBlogIds)
-            .subscribe((r) => {
-              this.suggestedBlogs = r;
-            });
+          // Load secondary content later (only if suggestedBlogIds present)
+          if (this.selectedBlog.suggestedBlogIds && this.selectedBlog.suggestedBlogIds.length) {
+            this.blogService
+              .getSuggestedBlogs(this.selectedBlog.suggestedBlogIds)
+              .subscribe((r) => {
+                this.suggestedBlogs = r;
+              });
+          } else {
+            this.suggestedBlogs = { blogs: [] };
+          }
 
           this.fetchComments();
           this.fetchBlogLikes();

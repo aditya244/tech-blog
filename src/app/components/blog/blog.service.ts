@@ -169,6 +169,9 @@ export class BlogService {
   }
 
   public getSuggestedBlogs(suggestedBlogIds: string[]) {
+    if (!suggestedBlogIds || !suggestedBlogIds.length) {
+      return of({ blogs: [] });
+    }
     const stringId = suggestedBlogIds.join(',');
     return this.httpClient.get(`${this.apiUrl}/blogs/suggestedBlogs/` + stringId);
   }

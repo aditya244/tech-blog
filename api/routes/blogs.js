@@ -1,6 +1,7 @@
 const express = require("express");
 const Blog = require("../models/blog");
 const Comment = require("../models/comment");
+const mongoose = require('mongoose');
 const router = express.Router();
 const checkAuth = require("../middleware/check-auth");
 const multer = require("multer");
@@ -220,32 +221,46 @@ router.get("", (req, res, next) => {
 
 router.get("/suggestedBlogs/:ids", (req, res, next) => {
   console.log(req.params.ids, 'suggestedBlogIds')
-  const suggestedBlogIds = req.params.ids.split(',');
+  let suggestedBlogIds = req.params.ids ? req.params.ids.split(',') : [];
   console.log(suggestedBlogIds, 'PARAMS');
-  Blog.find({
-    _id: { $in: suggestedBlogIds}
-  })
-  .then(blogs => {
-    console.log(blogs, 'BLOGS')
-    return res.status(200).json({
-      message: 'Recommended blogs fetched',
-      blogs: blogs
+  // Filter out any invalid ObjectId values to avoid CastError
+  suggestedBlogIds = suggestedBlogIds.filter((id) => mongoose.Types.ObjectId.isValid(id));
+  if (!suggestedBlogIds.length) {
+    return res.status(400).json({ message: 'No valid suggested blog ids provided', blogs: [] });
+  }
+
+  Blog.find({ _id: { $in: suggestedBlogIds } })
+    .then(blogs => {
+      console.log(blogs, 'BLOGS')
+      return res.status(200).json({
+        message: 'Recommended blogs fetched',
+        blogs: blogs
+      })
     })
-  })
-  .catch(error => {
-    return res.status(500).json({
-      error: error,
-      message: 'Failed to fetch recommended blogs. Please visit the homepage to check more.'
+    .catch(error => {
+      return res.status(500).json({
+        error: error,
+        message: 'Failed to fetch recommended blogs. Please visit the homepage to check more.'
+      })
     })
-  })
 })
 
 router.get("/:id", (req, res, next) => {
-  Blog.findById(req.params.id).then((document) => {
+  const id = req.params.id;
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(400).json({ message: 'Invalid blog id' });
+  }
+
+  Blog.findById(id).then((document) => {
+    if (!document) {
+      return res.status(404).json({ message: 'Blog not found' });
+    }
     res.status(200).json({
       message: "Blog Post fetched successfully",
       blog: document,
     });
+  }).catch(error => {
+    res.status(500).json({ message: 'Failed to fetch blog', error: error.message });
   });
 });
 
