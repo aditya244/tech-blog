@@ -83,50 +83,75 @@
   box-shadow: 2px 2px 5px #c2c1c2;
 }
 
-// .blog-content {
-//     display: flex;
-//     flex-direction: row;
-// }
+.container {
+  display: flex;
+  justify-content: center;
 
-// .image-container {
-//     width: 350px;
-//     height: 200px;
-//     flex-shrink: 0;
-//     overflow: hidden;
-//     border-radius: 8px; /* optional */
-// }
+  gap: 24px;
 
-// .banner-image {
-//     width: 100%;
-//     height: 100%;
-//     object-fit: cover;
-//     display: block;
-// }
+  max-width: 1500px;
+
+  margin: auto;
+
+  padding: 0 20px;
+}
+
+.blog-feed-container {
+  width: 1000px;
+
+  margin-top: 30px;
+
+  padding: 20px;
+
+  box-shadow: 2px 2px 5px #c2c1c2;
+}
 
 .blog-content {
   display: flex;
-  flex-direction: row;
+
+  align-items: flex-start;
+
   gap: 20px;
 }
 
-// .image-container {
-//     width: 350px;
-//     aspect-ratio: 16 / 9;
-//     flex-shrink: 0;
-//     overflow: hidden;
-//     border-radius: 8px;
-// }
+.image-container {
+  flex: 0 0 320px;
 
-// .banner-image {
-//     width: 100%;
-//     height: 100%;
-//     object-fit: cover;
-//     display: block;
-// }
+  overflow: hidden;
+
+  border-radius: 8px;
+
+  aspect-ratio: 16 / 9;
+}
+
+.banner-image {
+  width: 100%;
+
+  height: 100%;
+
+  object-fit: cover;
+
+  display: block;
+}
 
 .content-container {
   flex: 1;
+
   min-width: 0;
+}
+
+.side-bar {
+  width: 280px;
+
+  min-width: 280px;
+
+  margin-top: 30px;
+
+  position: sticky;
+
+  top: 20px;
+
+  height: fit-content;
 }
 
 .read-more-btn,
@@ -161,18 +186,18 @@
   width: fit-content;
 }
 
-.side-bar {
-  display: flex;
-  flex-direction: column;
-  padding: 20px;
-  padding-top: 20px;
-  margin-top: 30px;
-  height: fit-content;
-  width: 30%;
-  box-shadow: 2px 2px 5px #c2c1c2;
-  //position: relative;
-  position: sticky;
-}
+// .side-bar {
+//   display: flex;
+//   flex-direction: column;
+//   padding: 20px;
+//   padding-top: 20px;
+//   margin-top: 30px;
+//   height: fit-content;
+//   width: 30%;
+//   box-shadow: 2px 2px 5px #c2c1c2;
+//   //position: relative;
+//   position: sticky;
+// }
 
 .sign-in-btn {
   margin: 0;
@@ -241,112 +266,36 @@
 }
 
 /* Mobile-specific optimizations */
-@media (max-width: 700px) {
-  body {
-    overflow-x: hidden; /* Prevent horizontal scroll */
-    position: relative; /* Create new stacking context */
-    width: 100%;
-  }
+@media (max-width:700px){
 
-  .container {
-    margin: 0;
-    padding: 0;
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    overflow-x: hidden;
-    height: auto;
-    min-height: 100vh;
-  }
+.container{
+  flex-direction:column;
+}
 
-  /* Optimize image loading and rendering */
-  // .banner-image {
-  //     height: 200px;
-  //     width: 100%;
-  //     object-fit: cover; /* Maintain aspect ratio */
-  //     will-change: transform; /* Optimize for animations/transitions */
-  //     transform: translateZ(0); /* Force GPU acceleration */
-  // }
+.blog-feed-container{
+  width:auto;
 
-  .blog-content {
-    flex-direction: column;
-  }
+  margin:15px;
+}
 
-  .image-container {
-    width: 100%;
-    aspect-ratio: 16/9;
-  }
+.blog-content{
+  flex-direction:column;
+}
 
-  .banner-image {
-    width: 100%;
-    height: 100%;
-  }
+.image-container{
+  flex:none;
 
-  /* Improve blog feed container performance */
-  .blog-feed-container {
-    margin: 15px;
-    padding: 15px;
-    width: auto;
-    height: auto;
-    /* Use more performant box-shadow */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    /* Enable hardware acceleration */
-    transform: translateZ(0);
-    backface-visibility: hidden;
-    perspective: 1000px;
-  }
+  width:100%;
+}
 
-  /* Optimize blog content layout */
-  .blog-content {
-    display: flex;
-    flex-direction: column;
-    gap: 15px; /* Use gap instead of margins for better performance */
-  }
+.side-bar{
+  width:auto;
 
-  .button-container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    margin-top: 15px;
-  }
+  min-width:unset;
 
-  /* Optimize message display */
-  .error-message,
-  .success-message {
-    position: relative;
-    margin: 10px 15px;
-    width: calc(100% - 30px);
-    transform: translateZ(0);
-  }
+  margin:15px;
+}
 
-  /* Improve loader performance */
-  .loader {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(255, 255, 255, 0.9);
-    z-index: 1000;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transform: translateZ(0);
-  }
-
-  /* Optimize side-bar for mobile */
-  .side-bar {
-    margin: 15px;
-    width: auto;
-    height: auto;
-    transform: translateZ(0);
-  }
-
-  /* Improve pagination performance */
-  .nav-area {
-    padding: 15px;
-    transform: translateZ(0);
-  }
 }
 
 /* Add smooth scrolling for modern browsers */
@@ -356,99 +305,27 @@
   }
 }
 
-@media (min-width: 701px) and (max-width: 1350px) {
 
-.blog-content{
-    display:flex;
+@media (min-width:701px)
+and (max-width:1200px){
 
-    align-items:flex-start;
+.container{
+   gap:16px;
+}
 
-    gap:16px;
-
-    overflow:hidden;
+.blog-feed-container{
+   width:auto;
 }
 
 .image-container{
-    width:320px;
-
-    min-width:320px;
-
-    aspect-ratio:16/9;
-
-    overflow:hidden;
+   flex:0 0 240px;
 }
 
-.banner-image{
-    width:100%;
-    height:100%;
+.side-bar{
+   width:240px;
 
-    object-fit:cover;
-}
-
-.content-container{
-    flex:1;
-
-    min-width:0;
-
-    overflow-wrap:break-word;
-
-    word-break:break-word;
-}
-
-.heading{
-    overflow-wrap:break-word;
-}
-
-.font-style{
-    overflow-wrap:anywhere;
+   min-width:240px;
 }
 
 }
 
-@media (min-width: 701px) and (max-width: 1024px) {
-  .container {
-    flex-direction: row;
-  }
-
-  .blog-container {
-    width: 68%;
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: space-around;
-  }
-
-  .side-bar {
-    width: 32%;
-    display: flex;
-    flex-direction: column;
-    padding: 15px;
-    padding-top: 0px;
-    margin-top: 30px;
-    height: fit-content;
-    box-shadow: 2px 2px 5px #c2c1c2;
-    position: sticky;
-  }
-
-  .blog-feed-container {
-    width: auto;
-    height: auto;
-    box-shadow: 2px 2px 5px #c2c1c2;
-  }
-
-  // .image-container {
-  //     margin-right: 20px;
-  //     width: 40%;
-  // }
-
-  .content-container {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    width: 60%;
-  }
-
-  // .banner-image {
-  //     height: 200px;
-  //     width: 100%;
-  // }
-}
